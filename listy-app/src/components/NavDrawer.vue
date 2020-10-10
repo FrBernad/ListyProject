@@ -4,7 +4,7 @@
                        left
                        permanent
                        :expand-on-hover="$vuetify.breakpoint.smAndDown"
-                       color="#DEE2E6"
+                       color="rgba(227,237,247,1)"
   >
     <v-list dense>
       <v-list-item
@@ -18,7 +18,7 @@
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title class="text-h7">{{ item.title }}</v-list-item-title>
+          <v-list-item-title class="text-h6">{{ item.title }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -37,8 +37,8 @@ export default {
         {title: 'Mis Listas', icon: 'mdi-note-text-outline', route: '/UserHome'},
         {title: 'Destacadas', icon: 'mdi-star', route: '/UserHome/Destacadas'},
         {title: 'Grupos', icon: 'mdi-account-group', route: '/UserHome/Grupos'},
-        {title: 'Configuracion', icon: 'mdi-help-circle', route: '/UserHome/Configuracion'},
-        {title: 'Ayuda', icon: 'mdi-tools', route: '/UserHome/Ayuda'}
+        {title: 'Configuracion', icon: 'mdi-tools', route: '/UserHome/Configuracion'},
+        {title: 'Ayuda', icon: 'mdi-help-circle', route: '/UserHome/Ayuda'}
       ],
     }
   },
