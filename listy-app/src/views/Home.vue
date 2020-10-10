@@ -1,11 +1,49 @@
 <template>
-<h1>hola</h1>
+  <v-container fill-height fluid>
+    <v-row align="center">
+      <v-col cols="12" lg="6">
+        <v-container class="d-flex justify-center justify-lg-start ml-lg-7">
+          <v-img src="../assets/images/longlogonobg.png" lazy-src="../assets/images/longlogonobg.png" contain max-width="450"
+                 max-height="200">
+            <template v-slot:placeholder>
+              <v-row
+                class="fill-height ma-0"
+                align="center"
+                justify="center"
+              >
+                <v-progress-circular
+                  indeterminate
+                  color="grey lighten-5"
+                ></v-progress-circular>
+              </v-row>
+            </template>
+          </v-img>
+        </v-container>
+        <v-container class="d-flex justify-center justify-lg-start ml-lg-7">
+          <p class="text-h4 font-weight-medium text-lg-left text-center px-lg-5 mx-sm-6 mx-lg-0">
+            Listy te ayuda a organizar tus listas de compra de manera simple, rápida y compartida.</p>
+        </v-container>
+      </v-col>
+      <v-col cols="12" lg="6">
+        <Login></Login>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-// @ is an alias to /src
+  import Login from '../components/Login'
 
-export default {
-  name: 'Home'
-}
+  export default {
+    name: 'Home',
+    components: {
+      Login
+    }
+  }
 </script>
+
+<style scoped>
+  * {
+    background-color: #DEE2E6;
+  }
+</style>
