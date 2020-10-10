@@ -23,12 +23,38 @@ const routes = [
         path: '',
         name: 'UserHome',
         component: () => import('../views/UserHome.vue')
+      },
+      {
+        path: 'configuracion',
+        name: 'Configuracion',
+        component: () => import('../views/Configuracion')
+      },
+      {
+        path: 'destacadas',
+        name: 'Destacadas',
+        component: () => import('../views/Destacadas')
+      },
+      {
+        path: 'grupos',
+        name: 'Grupos',
+        component: () => import('../views/Grupos')
+      },
+      {
+        path: 'ayuda',
+        name: 'Ayuda',
+        component: () => import('../views/Ayuda')
+      },
+      {
+        path: 'createList',
+        name: 'CreateList',
+        component: () => import('../views/CreateList')
       }
+
     ]
   },
   {
     path: '*',
-    redirect:'/404',
+    redirect: '/404',
     name: 'PageNotFound',
     component: () => import('../layouts/LayoutNoAppBar'),
     children: [

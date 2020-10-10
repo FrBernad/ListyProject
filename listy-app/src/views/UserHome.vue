@@ -25,7 +25,7 @@
           <v-row justify="center">
             <v-col cols="12" sm="9" md="7" lg="6">
               <div class="d-flex justify-center">
-                <v-btn color="primary" x-large width="50%">Crear Lista</v-btn>
+                <v-btn color="primary" x-large width="50%" to="/UserHome/createList">Crear Lista</v-btn>
               </div>
             </v-col>
           </v-row>
