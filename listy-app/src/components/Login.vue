@@ -22,7 +22,7 @@
               counter
               @click:append="show = !show"
             ></v-text-field>
-            <v-btn color="primary" @click="signIn" large width="90%">Entrar</v-btn>
+            <v-btn color="primary" large width="90%">Entrar</v-btn>
           </v-form>
 
           <div class="mt-3">
