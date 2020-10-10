@@ -4,16 +4,25 @@
       <v-col cols="10" sm="8">
         <v-card class="pa-8 text-center">
           <v-form>
+            <!--ERROR-->
+            <v-col cols="12" v-if="signInError" class="pt-2 pb-0">
+              <p class="red--text font-weight-medium">Ya existe una cuenta bajo ese email, intente con otro</p>
+            </v-col>
+            <!--EMAIL-->
             <v-text-field
-              label="Usuario"
+              @blur="$v.email.$touch()"
+              :error-messages=emailErrors
+              label="Correo electrónico"
               outlined
               append-icon="mdi-account"
-              v-model="user"
+              v-model="email"
             ></v-text-field>
+            <!--PASSWORD-->
             <v-text-field
+              @blur="$v.password.$touch()"
+              :error-messages=passwordErrors
               v-model="password"
               :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="[rules.min]"
               :type="show ? 'text' : 'password'"
               name="input-10-1"
               label="Contraseña"
@@ -22,7 +31,7 @@
               counter
               @click:append="show = !show"
             ></v-text-field>
-            <v-btn color="primary" large width="90%">Entrar</v-btn>
+            <v-btn color="primary" @click="processData" large width="90%">Entrar</v-btn>
           </v-form>
 
           <div class="mt-3">
@@ -33,9 +42,13 @@
                 contraseña?</a>
             </v-hover>
           </div>
+
           <v-divider class="mt-4 mb-6"/>
+
           <v-btn color="success" large width="70%" @click="registerOverlay=true">Registrarse</v-btn>
+
           <RegisterOverlay :r-on="registerOverlay" @closeRegisterOverlay="registerOverlay=false"></RegisterOverlay>
+
         </v-card>
       </v-col>
     </v-row>
@@ -43,43 +56,75 @@
 </template>
 
 <script>
+  import {required, maxLength, minLength, email} from 'vuelidate/lib/validators'
+
   import RegisterOverlay from "./RegisterOverlay";
+
   export default {
     name: 'Login',
     components: {RegisterOverlay},
     data() {
       return {
+        email: "",
+        password: "",
         show: false,
-        user: "",
-        password: 'Contraseña',
-        rules: {
-          min: v => v.length >= 8 || 'Minimo 8 caracteres',
-        },
-        registerOverlay: false
+        registerOverlay: false,
+        signInError: false
       }
     },
     methods: {
-      async signIn() {
-        let userData = {
-          name: this.user,
-          password: this.password
+      async processData() {
+        if (this.$v.$invalid) {
+          console.log("the form is missing something");
+          return;
         }
         try {
-          const response = await fetch(
-            `https://listy-itba-app.firebaseio.com/users.json`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(userData)
-            }
-          );
+          await this.$store.dispatch('signIn', {
+            email: this.email,
+            password: this.password
+          })
         } catch (e) {
           console.log(e);
+          this.signInError = true;
+          setTimeout(this.resetForm, 4000);
         }
+      },
+      resetForm() {
+        this.$v.$reset();
+        this.email = "";
+        this.password = "";
+        this.signInError = false;
       }
+    },
+
+    validations: {
+      email: {
+        required, email
+      },
+      password: {
+        required, minLenght: minLength(8)
+      }
+    },
+
+    computed: {
+      passwordErrors() {
+        const errors = []
+        if (!this.$v.password.$dirty) return errors
+        !this.$v.password.minLenght && errors.push('Minimo 8 caracteres.')
+        !this.$v.password.required && errors.push('La contraseña es obligatoria.')
+        return errors
+      }
+      ,
+      emailErrors() {
+        const errors = []
+        if (!this.$v.email.$dirty) return errors
+        !this.$v.email.email && errors.push('Inserte un email valido.')
+        !this.$v.email.required && errors.push('El e-mail es requerido.')
+        return errors
+      }
+      ,
     }
+    ,
   }
 </script>
 

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store/index'
 
 Vue.use(VueRouter)
 
@@ -10,17 +11,17 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'Home',
-        component: () => import('../views/Home')
+        name: 'landingPage',
+        component: () => import('../views/LandingPage')
       }
     ]
   },
   {
-    path: '/UserHome',
+    path: '/:id',
     component: () => import('../layouts/LayoutDefault'),
     children: [
       {
-        path: '',
+        path: 'home',
         name: 'UserHome',
         component: () => import('../views/UserHome.vue')
       },
@@ -71,6 +72,13 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach(function (to, _, next) {
+  if (to.meta.requiresAuth && !store.getters.isAuthenticated)
+    next('/');
+  else
+    next();
 })
 
 export default router
