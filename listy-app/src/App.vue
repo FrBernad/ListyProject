@@ -7,9 +7,21 @@
 <script>
   export default {
     name: 'App',
-    created() {
-      this.$store.dispatch('auth/tryLogin');
-    }
+    computed: {
+      didAutoLogout() {
+        return this.$store.getters["auth/didAutoLogout"];
+      }
+    },
+    watch: {
+      didAutoLogout(curValue, oldValue) {
+        console.log("curr: "+curValue + " old: "+oldValue);
+        console.log("watching..");
+        if (curValue && curValue !== oldValue) {
+          console.log("bum..");
+          this.$router.replace('/');
+        }
+      }
+    },
   }
 </script>
 

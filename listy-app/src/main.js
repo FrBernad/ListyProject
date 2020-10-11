@@ -9,9 +9,9 @@ Vue.use(Vuelidate);
 
 Vue.config.productionTip = false
 new Vue({
-  router,
   store,
   vuetify,
+  router,
   render: h => h(App)
 }).$mount('#app')
 

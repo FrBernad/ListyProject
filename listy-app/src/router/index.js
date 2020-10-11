@@ -83,22 +83,18 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach(function (to, from, next) {
-  console.log(to);
-  console.log(from);
-  console.log(store.getters);
-  console.log("is auth "+store.getters["auth/isAuthenticated"])
-  if (to.meta.requiresAuth && !store.getters["auth/isAuthenticated"]) {
-    console.log("redirected to landing page")
-    next('/');
-  } else if (to.meta.requiresUnauth && store.getters["auth/isAuthenticated"]) {
-    console.log("redirected to home");
-    console.log(to.meta.requiresUnauth);
-    next('/home');
-  } else {
-    console.log("nexting")
-    next();
-  }
-});
+store.dispatch('auth/tryLogin').then(
+  router.beforeEach(function (to, from, next) {
+    if (to.meta.requiresAuth && !store.getters["auth/isAuthenticated"]) {
+      console.log("redirected to landing page")
+      next('/');
+    } else if (to.meta.requiresUnauth && store.getters["auth/isAuthenticated"]) {
+      console.log("redirected to home");
+      next('/home');
+    } else {
+      console.log("nexting")
+      next();
+    }
+  }));
 
 export default router
