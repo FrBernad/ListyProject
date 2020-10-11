@@ -49,7 +49,7 @@ export default {
       throw new Error(responseData.message);
     }
 
-    // const expiresIn = +responseData.expiresIn * 1000;
+    const expiresIn = +responseData.expiresIn * 1000;
     const expirationDate = new Date().getTime() + expiresIn;
 
     localStorage.setItem('token', responseData.idToken);
