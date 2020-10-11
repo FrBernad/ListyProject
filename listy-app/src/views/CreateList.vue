@@ -2,7 +2,6 @@
 <v-container>
   <List :title="title" :category="category"></List>
   <ListFooter :total="total"  :founds="founds"></ListFooter>
-
 </v-container>
 </template>
 
