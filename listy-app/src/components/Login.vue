@@ -6,7 +6,7 @@
           <v-form>
             <!--ERROR-->
             <v-col cols="12" v-if="signInError" class="pt-2 pb-0">
-              <p class="red--text font-weight-medium">Ya existe una cuenta bajo ese email, intente con otro</p>
+              <p class="red--text font-weight-medium">Ingrese datos correctos</p>
             </v-col>
             <!--EMAIL-->
             <v-text-field
@@ -78,15 +78,21 @@
           console.log("the form is missing something");
           return;
         }
+
         try {
-          await this.$store.dispatch('signIn', {
+
+          await this.$store.dispatch('auth/signIn', {
             email: this.email,
             password: this.password
           })
+
+          await this.$router.replace('/home');
+
         } catch (e) {
           console.log(e);
           this.signInError = true;
           setTimeout(this.resetForm, 4000);
+          return;
         }
       },
       resetForm() {

@@ -34,11 +34,11 @@ export default {
   data() {
     return {
       items: [
-        {title: 'Mis Listas', icon: 'mdi-note-text-outline', route: '/UserHome'},
-        {title: 'Destacadas', icon: 'mdi-star', route: '/UserHome/Destacadas'},
-        {title: 'Grupos', icon: 'mdi-account-group', route: '/UserHome/Grupos'},
-        {title: 'Configuracion', icon: 'mdi-tools', route: '/UserHome/Configuracion'},
-        {title: 'Ayuda', icon: 'mdi-help-circle', route: '/UserHome/Ayuda'}
+        {title: 'Mis Listas', icon: 'mdi-note-text-outline', route: '/home'},
+        {title: 'Destacadas', icon: 'mdi-star', route: '/home/destacadas'},
+        {title: 'Grupos', icon: 'mdi-account-group', route: '/home/grupos'},
+        {title: 'Configuracion', icon: 'mdi-tools', route: '/home/configuracion'},
+        {title: 'Ayuda', icon: 'mdi-help-circle', route: '/home/ayuda'}
       ],
     }
   },

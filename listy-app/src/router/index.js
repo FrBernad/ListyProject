@@ -12,42 +12,51 @@ const routes = [
       {
         path: '',
         name: 'landingPage',
-        component: () => import('../views/LandingPage')
+        component: () => import('../views/LandingPage'),
+        meta: {requiresUnauth: true}
       }
     ]
   },
+
   {
-    path: '/:id',
+    path: '/home',
     component: () => import('../layouts/LayoutDefault'),
     children: [
       {
-        path: 'home',
-        name: 'UserHome',
-        component: () => import('../views/UserHome.vue')
+        path: '',
+        name: 'home',
+        meta: {requiresAuth: true},
+        component: () => import('../views/Home.vue')
       },
       {
         path: 'configuracion',
         name: 'Configuracion',
-        component: () => import('../views/Configuracion')
+        meta: {requiresAuth: true},
+        component: () => import('../views/Configuracion'),
+
       },
       {
         path: 'destacadas',
         name: 'Destacadas',
+        meta: {requiresAuth: true},
         component: () => import('../views/Destacadas')
       },
       {
         path: 'grupos',
         name: 'Grupos',
+        meta: {requiresAuth: true},
         component: () => import('../views/Grupos')
       },
       {
         path: 'ayuda',
         name: 'Ayuda',
+        meta: {requiresAuth: true},
         component: () => import('../views/Ayuda')
       },
       {
         path: 'createList',
         name: 'CreateList',
+        meta: {requiresAuth: true},
         component: () => import('../views/CreateList')
       }
 
@@ -74,11 +83,22 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach(function (to, _, next) {
-  if (to.meta.requiresAuth && !store.getters.isAuthenticated)
+router.beforeEach(function (to, from, next) {
+  console.log(to);
+  console.log(from);
+  console.log(store.getters);
+  console.log("is auth "+store.getters["auth/isAuthenticated"])
+  if (to.meta.requiresAuth && !store.getters["auth/isAuthenticated"]) {
+    console.log("redirected to landing page")
     next('/');
-  else
+  } else if (to.meta.requiresUnauth && store.getters["auth/isAuthenticated"]) {
+    console.log("redirected to home");
+    console.log(to.meta.requiresUnauth);
+    next('/home');
+  } else {
+    console.log("nexting")
     next();
-})
+  }
+});
 
 export default router

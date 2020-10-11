@@ -103,11 +103,12 @@
           return;
         }
         try {
-          await this.$store.dispatch('signup', {
+          await this.$store.dispatch('auth/signUp', {
             email: this.email,
             password: this.password,
             username: this.username
           })
+          await this.$router.replace('/home');
         } catch (e) {
           console.log(e);
           this.mailExists = true;
