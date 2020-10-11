@@ -4,7 +4,7 @@
       <v-row justify="center">
         <v-col cols="12" sm="9" md="7" lg="6">
           <div class="d-flex justify-center">
-            <v-btn color="primary" x-large to="/UserHome/createList">Crear Lista</v-btn>
+            <v-btn color="primary" x-large to="/home/createList">Crear Lista</v-btn>
           </div>
         </v-col>
       </v-row>
@@ -31,5 +31,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
