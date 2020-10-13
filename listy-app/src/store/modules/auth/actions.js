@@ -10,7 +10,7 @@ export default {
     const userData = {
       username: payload.username,
     };
-    await context.rootState.dispatch('user/addUserToDB', userData);
+    await context.dispatch('user/addUserToDB', userData);
   },
 
   async signIn(context, payload) {

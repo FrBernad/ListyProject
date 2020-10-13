@@ -103,7 +103,7 @@
           return;
         }
         try {
-          await this.$store.dispatch('auth/signUp', {
+          await this.$store.dispatch('signUp', {
             email: this.email,
             password: this.password,
             username: this.username

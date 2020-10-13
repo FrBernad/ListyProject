@@ -81,7 +81,7 @@
 
         try {
 
-          await this.$store.dispatch('auth/signIn', {
+          await this.$store.dispatch('signIn', {
             email: this.email,
             password: this.password
           })
