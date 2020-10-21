@@ -86,18 +86,11 @@ const router = new VueRouter({
 store.dispatch('tryLogin');
 
 router.beforeEach(function (to, from, next) {
-    console.log("to ");
-    console.log(to);
-    console.log("from ");
-    console.log(from);
     if (to.meta.requiresAuth && !store.getters["isAuthenticated"]) {
-      console.log("redirected to landing page")
       next('/');
     } else if (to.meta.requiresUnauth && store.getters["isAuthenticated"]) {
-      console.log("redirected to home");
       next('/home');
     } else {
-      console.log("nexting")
       next();
     }
   });

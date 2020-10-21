@@ -30,7 +30,7 @@ export default {
     else
       throw new Error("invalid mode");
 
-    const response = await fetch(url, {
+    let response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -42,7 +42,7 @@ export default {
       })
     })
 
-    const responseData = await response.json();
+    let responseData = await response.json();
 
     if (!response.ok) {
       console.log(responseData);
@@ -60,20 +60,40 @@ export default {
       context.dispatch('autoLogout');
     }, expiresIn);
 
-    context.commit('setUser', {
+    const userAuth = {
       token: responseData.idToken,
       userId: responseData.localId,
-    });
+    }
+
+    context.commit('setUser', userAuth);
+
+    url = `https://listy-itba-app.firebaseio.com/users/${userAuth.userId}.json?auth=` +
+      userAuth.token;
+
+    response = await fetch(url);
+
+    responseData = await response.json();
+
+    if (!response.ok) {
+      throw new Error("Error getting user data in login");
+    }
+
+    let userData = {username: ""};
+    for (const key in responseData) {
+      userData.username = responseData[key].username
+    }
+
+    context.commit("user/setUserData", userData);
   },
 
-  tryLogin(context) {
+  async tryLogin(context) {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
     const tokenExpiration = localStorage.getItem('tokenExpiration');
 
     const expiresIn = +tokenExpiration - new Date().getTime();
 
-    if (expiresIn < 1000*60)
+    if (expiresIn < 1000 * 60)
       return;
 
     timer = setTimeout(function () {
@@ -85,14 +105,32 @@ export default {
         token: token,
         userId: userId,
       });
+
+      const url = `https://listy-itba-app.firebaseio.com/users/${userId}.json?auth=` +
+        token;
+
+      const response = await fetch(url);
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        throw new Error("Error getting user data in login");
+      }
+      let userData = {username: ""};
+      for (const key in responseData) {
+        userData.username = responseData[key].username
+      }
+      context.commit("user/setUserData", userData);
     }
-  },
+  }
+  ,
 
   autoLogout(context) {
     console.log("loggin out");
     context.dispatch('logout');
     context.commit('setAutoLogout');
-  },
+  }
+  ,
 
   logout(context) {
     localStorage.removeItem('token');
