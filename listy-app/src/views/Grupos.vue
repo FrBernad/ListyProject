@@ -1,10 +1,15 @@
 <template>
-
+  <Group></Group>
 </template>
 
 <script>
+import Group from "@/components/Group";
+
 export default {
-name: "Grupos"
+name: "Grupos",
+  components: {
+    Group,
+  }
 }
 </script>
 
