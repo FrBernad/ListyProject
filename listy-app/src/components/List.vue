@@ -64,14 +64,7 @@ export default {
   components: {ListItem, ElementDetails},
   data(){
     return{
-      item: {
-        name: '',
-        quantity: '0',
-        price: '0',
-        responsible: '',
-        description: '',
-      },
-      dialog: false
+     dialog: false
     }
   },
   computed:{

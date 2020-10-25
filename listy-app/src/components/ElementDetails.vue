@@ -1,20 +1,21 @@
 <template>
-  <v-card class="pa-3">
+  <v-card class="pa-5">
     <v-row>
       <v-col cols="12" class="pa-0">
-        <v-card-text class="ma-0 py-0">Nombre:</v-card-text>
-        <v-autocomplete class="px-4 ma-0 py-0" v-model="nombre"
+        <v-autocomplete v-model="nombre"
                         :items="items"
                         :loading="isLoading"
                         :search-input.sync="search"
-                        color="white"
+
+                        label="Nombre"
                         hide-no-data
-                        hide-selected
                         item-text="Description"
                         item-value="API"
                         placeholder="Start typing to Search"
                         prepend-icon="mdi-database-search"
-                        return-object></v-autocomplete>
+                        return-object>
+
+        </v-autocomplete>
       </v-col>
     </v-row>
     <v-row>
