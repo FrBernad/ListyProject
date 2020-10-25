@@ -19,7 +19,10 @@ export default {
       throw new Error("Error creating list");
     }
 
-    return responseData["name"];
+    const listId = responseData["name"];
+    for (const item in payload.items){
+      await context.dispatch("addItem",{item:item,listId:listId});
+    }
   },
 
   async addItem(context, payload) {
@@ -30,13 +33,14 @@ export default {
       "/items" +
       ".json?auth=" +
       context.rootGetters["token"];
+
     const response = await fetch(
       url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({item: payload.item}),
+        body: JSON.stringify(payload.item),
       });
 
     const responseData = await response.json();
