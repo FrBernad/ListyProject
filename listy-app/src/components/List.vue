@@ -1,9 +1,10 @@
 <template>
   <v-card class="pa-5 fill-height" elevation="10" outlined>
     <v-row class="align-center  justify-center">
-      <v-col cols="12" sm="8" class="d-flex align-center justify-start">
-        <h1>{{ title }}</h1>
+      <v-col cols="12" sm="8" class="d-flex align-center justify-center">
+        <h1>{{ this.title }}</h1>
       </v-col>
+
       <v-col cols="12" sm="4" class="d-flex align-center justify-space-around">
         <v-btn icon color="#000000">
           <v-icon>mdi-pencil</v-icon>
@@ -39,7 +40,7 @@
 
 
     <v-row class="align-center  justify-center">
-      <v-expansion-panels popout>
+      <v-expansion-panels popout >
         <ListItem :itemName="itemName" :quantity="quantity" :price="price" responsible="responsible" description="description"></ListItem>
         <ListItem :itemName="itemName" :quantity="quantity" :price="price" responsible="responsible" description="description"></ListItem>
         <ListItem :itemName="itemName" :quantity="quantity" :price="price" responsible="responsible" description="description"></ListItem>
@@ -62,10 +63,6 @@ export default {
       type:String,
       default:'Titulo'
     },
-    category:{
-      type:String,
-      default:'Categoria'
-    }
   },
   components: {ListItem, ElementDetails},
   data(){
@@ -77,6 +74,9 @@ export default {
       description: 'Fernet para la previa',
       dialog: false
     }
+  },
+  computed:{
+    ...get("lists/*")
   }
 
 }

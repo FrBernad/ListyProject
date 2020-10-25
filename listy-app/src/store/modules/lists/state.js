@@ -1,6 +1,6 @@
 const state = {
-  name: null,
-  items: []
+  listName: '',
+  listItems: []
 }
 
 export default state
