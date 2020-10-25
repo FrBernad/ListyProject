@@ -25,7 +25,6 @@ export default {
     };
 
     await context.dispatch('user/addUserToDB', userData);
-
   },
 
 
@@ -70,6 +69,7 @@ export default {
       throw new Error(responseData.message);
     }
   },
+
   async getUserInfo(context, payload) {
     let url = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${context.getters["apiKey"]}`
 
@@ -123,10 +123,7 @@ export default {
     }
 
     let userData = {username: ""};
-    for (const key in responseData) {
-      userData.username = responseData[key].username
-    }
-
+    userData.username = responseData.username;
     context.commit("user/setUserData", userData);
   },
 
@@ -189,12 +186,15 @@ export default {
       const responseData = await response.json();
 
       if (!response.ok) {
-        throw new Error("Error getting user data in login");
+        throw new Error("Error getting user data in autologin");
+      }
+
+      let userKey;
+      for (const key in responseData) {
+        userKey = key;
       }
       let userData = {username: ""};
-      for (const key in responseData) {
-        userData.username = responseData[key].username
-      }
+      userData.username = responseData.username;
       context.commit("user/setUserData", userData);
     }
   }

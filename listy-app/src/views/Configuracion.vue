@@ -3,10 +3,10 @@
     <v-card>
       <v-row align="start" justify="center">
         <v-col cols="10">
-          <v-text-field v-model="title" placeholder="title" @click="createList"></v-text-field>
+          <v-text-field v-model="title" placeholder="title"></v-text-field>
         </v-col>
         <v-col cols="4" class="d-flex justify-center">
-          <v-btn>CREATE</v-btn>
+          <v-btn @click="createList">CREATE</v-btn>
         </v-col>
 
         <v-col cols="12">
@@ -14,10 +14,10 @@
         </v-col>
 
         <v-col cols="10">
-          <v-text-field v-model="item" placeholder="item" @click="addItem"></v-text-field>
+          <v-text-field v-model="item" placeholder="item"></v-text-field>
         </v-col>
         <v-col cols="4" class="d-flex justify-center">
-          <v-btn>ADD</v-btn>
+          <v-btn @click="addItem">ADD</v-btn>
         </v-col>
 
       </v-row>
@@ -31,22 +31,23 @@
     data() {
       return {
         item: "",
-        title: ""
+        title: "",
+        listId: null
       }
     },
     methods: {
       async createList() {
         try {
-          await this.$store.dispatch("createList",{name:this.title});
+          this.listId = await this.$store.dispatch("lists/createList", {name: this.title});
         } catch (e) {
           console.log(e);
         }
       },
-       async addItem() {
+      async addItem() {
         try {
-          await this.$store.dispatch("createList",{
-            listName:this.title,
-            item:this.item
+          await this.$store.dispatch("lists/addItem", {
+            listId: this.listId,
+            item: this.item
           });
         } catch (e) {
           console.log(e);
