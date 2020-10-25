@@ -35,7 +35,7 @@
   import Login from '../components/Login'
 
   export default {
-    name: 'Home',
+    name: 'LandingPage',
     components: {
       Login
     }
