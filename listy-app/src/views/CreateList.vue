@@ -73,9 +73,8 @@
       </v-row>
 
       <v-row class="align-center  justify-center">
-        <v-expansion-panels popout v-for="{item,index} in listItems" :key="index">
-          <ListItem :item="item" responsible="responsible"
-                    description="description"></ListItem>
+        <v-expansion-panels popout v-for="(item,index) in listItems" :key="index">
+          <ListItem :item="item"></ListItem>
         </v-expansion-panels>
       </v-row>
 
@@ -100,7 +99,7 @@
 <script>
   import ListItem from "../components/ListItem";
   import ElementDetails from "../components/ElementDetails";
-  import {sync} from "vuex-pathify";
+  import {get} from "vuex-pathify";
 
   export default {
     name: "createList",
@@ -115,7 +114,7 @@
     },
 
     computed: {
-      ...sync("lists/*")
+      ...get("lists/*")
     },
 
     methods: {

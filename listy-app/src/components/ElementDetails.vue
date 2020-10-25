@@ -44,12 +44,12 @@
                       @blur="$v.item.price.$touch()"></v-text-field>
       </v-col>
     </v-row>
-    <v-row>
-      <!--      <v-col cols="12">-->
-      <!--        <a id="forgot" :class="{'text-decoration-underline':hover}" class="text-center">¿No encontraste el producto que-->
-      <!--          buscabas?</a>-->
-      <!--      </v-col>-->
-    </v-row>
+    <!--    <v-row>-->
+    <!--      <v-col cols="12">-->
+    <!--        <a id="forgot" :class="{'text-decoration-underline':hover}" class="text-center">¿No encontraste el producto que-->
+    <!--          buscabas?</a>-->
+    <!--      </v-col>-->
+    <!--    </v-row>-->
     <v-row class="align-center justify-end">
       <v-col cols="12" sm="8" md="6" class="d-flex align-center justify-space-around">
         <v-btn color="#212529" outlined @click="elementClose">Cerrar</v-btn>
@@ -64,6 +64,7 @@
 
   export default {
     name: "ElementDetails",
+
     data() {
       return {
         item: {
@@ -75,12 +76,12 @@
         },
       }
     },
+
     methods: {
       elementClose() {
         this.$emit('elementClose');
       },
       addElement() {
-        console.log(this.item);
         const copy = {
           name: this.item.name,
           quantity: this.item.quantity,
@@ -88,6 +89,7 @@
           note: this.item.note,
           price: this.item.price
         };
+        console.log(copy);
         this.$store.commit('lists/addItem', copy);
         this.elementClose();
         this.resetFields();
@@ -100,6 +102,7 @@
         this.item.price = 0;
       }
     },
+
     validations: {
       item: {
         name: {
@@ -114,6 +117,7 @@
         }
       }
     },
+
     computed: {
       nameError() {
         const errors = [];
@@ -153,7 +157,6 @@
         !this.$v.item.price.minValue && errors.push('El precio debe ser mayor o igual que 0');
         return errors;
       },
-
 
     }
   }

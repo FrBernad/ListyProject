@@ -17,5 +17,4 @@ export default {
     state.listItems.splice(payload.index, 1);
   },
 
-
 };
