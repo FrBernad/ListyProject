@@ -40,14 +40,10 @@
 
 
     <v-row class="align-center  justify-center">
-      <v-expansion-panels popout >
-        <ListItem :itemName="itemName" :quantity="quantity" :price="price" responsible="responsible" description="description"></ListItem>
-        <ListItem :itemName="itemName" :quantity="quantity" :price="price" responsible="responsible" description="description"></ListItem>
-        <ListItem :itemName="itemName" :quantity="quantity" :price="price" responsible="responsible" description="description"></ListItem>
+      <v-expansion-panels popout v-for="item in listItems">
+        <ListItem :itemName="item.name" :quantity="item.quantity" :price="item.price" responsible="responsible" description="description"></ListItem>
       </v-expansion-panels>
-
     </v-row>
-
 
   </v-card>
 </template>
@@ -55,6 +51,7 @@
 <script>
 import ListItem from "@/components/ListItem";
 import ElementDetails from "@/components/ElementDetails";
+import {get} from "vuex-pathify";
 
 export default {
   name: "List",
@@ -67,11 +64,13 @@ export default {
   components: {ListItem, ElementDetails},
   data(){
     return{
-      itemName: 'Fernet Branca',
-      quantity: '0',
-      price:'0',
-      responsible: 'Frano',
-      description: 'Fernet para la previa',
+      item: {
+        name: '',
+        quantity: '0',
+        price: '0',
+        responsible: '',
+        description: '',
+      },
       dialog: false
     }
   },
