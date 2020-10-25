@@ -1,5 +1,36 @@
 <template>
   <v-card class="pa-5 fill-height" elevation="10" outlined>
+
+    <!--LOADING DIALOG-->
+    <v-dialog
+      v-model="loading"
+      width="500px"
+    >
+      <v-card light color="#F8F9FA" width="500px" height="250px">
+        <v-container fill-height fluid>
+          <v-row align="center" justify="center">
+            <v-fade-transition>
+              <v-col v-if="!errorMessage" cols="5" class="d-flex align-center justify-center">
+                <v-progress-circular
+                  :size="70"
+                  :width="7"
+                  color="purple"
+                  indeterminate
+                ></v-progress-circular>
+              </v-col>
+            </v-fade-transition>
+            <v-fade-transition>
+              <v-col cols="8" v-if="errorMessage" class="mt-8">
+                <h2 class="text-h5 text-center light-green--text">{{errorMessage}}</h2>
+              </v-col>
+            </v-fade-transition>
+          </v-row>
+        </v-container>
+      </v-card>
+    </v-dialog>
+
+
+    <!--LIST HEADER-->
     <v-row class="align-center  justify-center">
       <v-col cols="12" sm="8" class="d-flex align-center justify-start">
         <h1>{{ this.title }}</h1>
@@ -24,24 +55,25 @@
       </v-col>
     </v-row>
 
+    <!--LIST ELEMTNS-->
     <v-row class="align-center justify-center">
       <v-col cols="12">
-        <v-dialog v-model="dialog" max-width="600px">
+        <v-dialog v-model="addElement" max-width="600px">
           <template v-slot:activator="{on, attrs}">
             <v-btn color="rgba(227,237,247,1)" block v-bind="attrs" v-on="on">
               <v-icon color="#69A74E" size="x-large">mdi-plus-circle</v-icon>
               <span class="font-weight-bold ">Agregar elemento</span>
             </v-btn>
           </template>
-          <ElementDetails @elementClose="dialog=false"></ElementDetails>
+          <ElementDetails @elementClose="addElement=false"></ElementDetails>
         </v-dialog>
       </v-col>
     </v-row>
 
-
     <v-row class="align-center  justify-center">
-      <v-expansion-panels popout v-for="item in listItems">
-        <ListItem :item="item"></ListItem>
+      <v-expansion-panels popout v-for="{item,index} in listItems" :key="index">
+        <ListItem :itemName="item.name" :quantity="item.quantity" :price="item.price" responsible="responsible"
+                  description="description"></ListItem>
       </v-expansion-panels>
     </v-row>
 
@@ -49,29 +81,63 @@
 </template>
 
 <script>
-import ListItem from "@/components/ListItem";
-import ElementDetails from "@/components/ElementDetails";
-import {get} from "vuex-pathify";
+  import ListItem from "../components/ListItem";
+  import ElementDetails from "../components/ElementDetails";
+  import {sync} from "vuex-pathify";
 
-export default {
-  name: "List",
-  props: {
-    title:{
-      type:String,
-      default:'Titulo'
+  export default {
+    name: "List",
+    props: {
+      title: {
+        type: String,
+        default: 'Titulo'
+      },
     },
-  },
-  components: {ListItem, ElementDetails},
-  data(){
-    return{
-     dialog: false
-    }
-  },
-  computed:{
-    ...get("lists/*")
-  }
+    components: {ListItem, ElementDetails},
+    data() {
+      return {
+        item: {
+          name: '',
+          quantity: '0',
+          price: '0',
+          responsible: '',
+          description: '',
+        },
+        errorMessage: "",
+        loading: false,
+        addElement: false
+      }
+    },
+    computed: {
+      ...sync("lists/listItems")
+    },
 
-}
+    methods: {
+      async createList() {
+        const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
+        try {
+          this.loading = true;
+          await sleep(1000);
+          // this.listId = await this.$store.dispatch("lists/createList", {
+          //   name: this.title,
+          //   items: this.listItems
+          // });
+          this.errorMessage = "Lista creada exitosamente.";
+          await sleep(2000);
+          this.loading = false;
+          this.errorMessage = "";
+        } catch (e) {
+          this.errorMessage = "Error a crear la lista.";
+          await setTimeout(() => {
+            this.errorMessage = "";
+            this.loading = false;
+          }, 2000);
+          console.log(e);
+        }
+      },
+    }
+
+  }
 </script>
 
 <style scoped>
