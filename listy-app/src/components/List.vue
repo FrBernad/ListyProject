@@ -1,7 +1,7 @@
 <template>
   <v-card class="pa-5 fill-height" elevation="10" outlined>
     <v-row class="align-center  justify-center">
-      <v-col cols="12" sm="8" class="d-flex align-center justify-center">
+      <v-col cols="12" sm="8" class="d-flex align-center justify-start">
         <h1>{{ this.title }}</h1>
       </v-col>
 
@@ -40,14 +40,10 @@
 
 
     <v-row class="align-center  justify-center">
-      <v-expansion-panels popout >
-        <ListItem :itemName="itemName" :quantity="quantity" :price="price" responsible="responsible" description="description"></ListItem>
-        <ListItem :itemName="itemName" :quantity="quantity" :price="price" responsible="responsible" description="description"></ListItem>
-        <ListItem :itemName="itemName" :quantity="quantity" :price="price" responsible="responsible" description="description"></ListItem>
+      <v-expansion-panels popout v-for="item in listItems">
+        <ListItem :item="item"></ListItem>
       </v-expansion-panels>
-
     </v-row>
-
 
   </v-card>
 </template>
@@ -55,6 +51,7 @@
 <script>
 import ListItem from "@/components/ListItem";
 import ElementDetails from "@/components/ElementDetails";
+import {get} from "vuex-pathify";
 
 export default {
   name: "List",
@@ -67,12 +64,7 @@ export default {
   components: {ListItem, ElementDetails},
   data(){
     return{
-      itemName: 'Fernet Branca',
-      quantity: '0',
-      price:'0',
-      responsible: 'Frano',
-      description: 'Fernet para la previa',
-      dialog: false
+     dialog: false
     }
   },
   computed:{
