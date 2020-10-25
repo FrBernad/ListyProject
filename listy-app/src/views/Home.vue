@@ -18,11 +18,8 @@
     </v-row>
     <v-row class="justify-center align-center">
       <v-col cols="12" sm="9" md="7" lg="6">
-        <v-dialog v-model="createList" persistent width="700px" class="justify-center align-center">
-          <CreateListDialog @closeDialog="createList=false"></CreateListDialog>
-        </v-dialog>
         <div class="d-flex justify-center">
-          <v-btn color="primary" x-large width="50%" @click="createList=true">Crear Lista</v-btn>
+          <v-btn color="primary" x-large width="50%" to="/home/createList">Crear Lista</v-btn>
         </div>
       </v-col>
     </v-row>
@@ -31,14 +28,8 @@
 
 <script>
 
-import CreateListDialog from "@/components/CreateListDialog";
-
 export default {
   name: "Home",
-  components: {CreateListDialog},
-  data() {
-    return {createList: false,}
-  },
 }
 </script>
 
