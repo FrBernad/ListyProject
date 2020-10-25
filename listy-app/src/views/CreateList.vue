@@ -67,7 +67,7 @@
                 <span class="font-weight-bold ">Agregar elemento</span>
               </v-btn>
             </template>
-            <ElementDetils @elementClose="addElement=false"></ElementDetils>
+            <ElementDetails @elementClose="addElement=false"></ElementDetails>
           </v-dialog>
         </v-col>
       </v-row>
