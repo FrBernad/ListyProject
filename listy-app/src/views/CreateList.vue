@@ -13,7 +13,7 @@
             <v-row align="center" justify="center">
               <v-fade-transition>
                 <v-col v-if="errorMessage" cols="8" class="d-flex align-center justify-center">
-                    <h2 class="text-h5 text-center light-green--text">{{errorMessage}}</h2>
+                  <h2 class="text-h5 text-center light-green--text">{{errorMessage}}</h2>
                 </v-col>
               </v-fade-transition>
               <v-fade-transition>
@@ -57,7 +57,7 @@
         </v-col>
       </v-row>
 
-      <!--LIST ELEMTNS-->
+      <!--LIST ELEMETNS-->
       <v-row class="align-center justify-center">
         <v-col cols="12">
           <v-dialog v-model="addElement" max-width="600px">
@@ -74,10 +74,11 @@
 
       <v-row class="align-center  justify-center">
         <v-expansion-panels popout v-for="{item,index} in listItems" :key="index">
-          <ListItem :itemName="item.name" :quantity="item.quantity" :price="item.price" responsible="responsible"
+          <ListItem :item="item" responsible="responsible"
                     description="description"></ListItem>
         </v-expansion-panels>
       </v-row>
+
     </v-card>
 
     <v-card class="px-5 " elevation="10" outlined height="10%">

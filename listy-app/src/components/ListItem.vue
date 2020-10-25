@@ -19,7 +19,6 @@
     </v-expansion-panel-header>
 
     <v-expansion-panel-content>
-
       <v-row>
         <v-col cols="6" class="justify-end">
           <v-card>
@@ -34,7 +33,6 @@
           </v-card>
         </v-col>
       </v-row>
-
     </v-expansion-panel-content>
 
   </v-expansion-panel>
