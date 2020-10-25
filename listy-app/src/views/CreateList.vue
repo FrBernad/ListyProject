@@ -67,7 +67,7 @@
                 <span class="font-weight-bold ">Agregar elemento</span>
               </v-btn>
             </template>
-            <ElementDetails @elementClose="addElement=false"></ElementDetails>
+            <ElementDetils @elementClose="addElement=false"></ElementDetils>
           </v-dialog>
         </v-col>
       </v-row>
@@ -123,10 +123,10 @@
         try {
           this.loading = true;
           await sleep(1000);
-          // this.listId = await this.$store.dispatch("lists/createList", {
-          //   name: this.title,
-          //   items: this.listItems
-          // });
+          await this.$store.dispatch("lists/createList", {
+            name: this.title,
+            items: this.listItems
+          });
           this.errorMessage = "Lista creada exitosamente.";
           await sleep(2000);
           this.loading = false;
