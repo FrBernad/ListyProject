@@ -1,7 +1,7 @@
 <template>
   <v-card class="pa-5 fill-height" elevation="10" outlined>
     <v-row class="align-center  justify-center">
-      <v-col cols="12" sm="8" class="d-flex align-center justify-center">
+      <v-col cols="12" sm="8" class="d-flex align-center justify-start">
         <h1>{{ title }}</h1>
       </v-col>
       <v-col cols="12" sm="4" class="d-flex align-center justify-space-around">

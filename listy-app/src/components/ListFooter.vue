@@ -4,13 +4,9 @@
       <v-col cols="6" class="px-5">
         <v-icon color="black">mdi-cart</v-icon>
       </v-col>
-      <v-col cols="3">
-        <span>Fondos: {{founds}}</span>
+      <v-col cols="6">
+        <span class="d-flex justify-center offset-3">Total: ${{total}} </span>
       </v-col>
-      <v-col cols="3">
-        <span class="px-12">Total: {{total}} </span>
-      </v-col>
-
     </v-row>
   </v-card>
 </template>
