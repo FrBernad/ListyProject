@@ -204,8 +204,7 @@ export default {
     console.log("loggin out");
     context.dispatch('logout');
     context.commit('setAutoLogout');
-  }
-  ,
+  },
 
   logout(context) {
     localStorage.removeItem('token');

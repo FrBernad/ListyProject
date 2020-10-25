@@ -5,12 +5,13 @@ import pathify from "vuex-pathify";
 
 import auth from './modules/auth/index.js';
 import user from './modules/user/index.js';
+import lists from './modules/lists/index.js';
 
 Vue.use(Vuex)
 
 const store = {
   modules: {
-    user, auth
+    user, auth, lists
   }
 }
 
