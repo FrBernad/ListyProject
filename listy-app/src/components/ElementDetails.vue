@@ -12,7 +12,9 @@
                         item-value="API"
                         placeholder="Comienza a escribir para buscar el producto"
                         prepend-icon="mdi-database-search"
-                        return-object>
+                        return-object
+                        :error-messages="nameError"
+                        @blur="$v.item.name.$touch()">
         </v-autocomplete>
       </v-col>
     </v-row>
@@ -20,7 +22,8 @@
     <v-row class="justify-center align-center">
       <v-col cols="4" class="pt-0">
         <v-text-field width="100%" background-color="#ffffff" dense hide-details solo label="Cantidad"
-                      clearable v-model="item.quantity"></v-text-field>
+                      clearable type="number" v-model="item.quantity" :error-messages="quantityError" @blur="$v.item.quantity.$touch()"
+        ></v-text-field>
       </v-col>
       <v-col cols="8" class="pt-0">
         <v-text-field background-color="#ffffff" dense hide-details solo label="Responsable"
@@ -28,14 +31,14 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" class="pt-0">
+      <v-col cols="12" class="py-0">
         <v-textarea
           outlined
           name="input-7-4"
           v-value="item.note"
           label="Aclaración"
           no-resize="true"
-          class="px-1"
+          :error-messages="noteError" @blur="$v.item.note.$touch()"
         ></v-textarea>
       </v-col>
     </v-row>
@@ -60,6 +63,8 @@
 </template>
 
 <script>
+import {maxLength,minLength,required,minValue} from 'vuelidate/lib/validators'
+
 export default {
   name: "ElementDetails",
   data() {
@@ -82,6 +87,67 @@ export default {
       this.$store.commit('addItem',copy);
       this.elementClose();
     }
+  },
+  validations: {
+    item: {
+      name: {
+        required, minLength: minLength(1), maxLength: maxLength(50)
+      },
+      quantity: {required, minValue: minValue(1)},
+      note: {
+        maxLength: maxLength(25)
+      },
+      price:{
+        minValue: minValue(0),
+      }
+    }
+  },
+  computed: {
+    nameError()
+    {
+      const errors = [];
+      if (!this.$v.item.name.$dirty) {
+        return errors;
+      }
+      !this.$v.item.name.minLength && errors.push('El nombre debe contener por lo menos un caracter');
+      !this.$v.item.name.maxLength && errors.push('El nombre debe contener como máximo 50 caracteres');
+      !this.$v.item.name.required && errors.push('El nombre es requerido');
+      return errors;
+    },
+
+    quantityError()
+    {
+      const errors = [];
+      if (!this.$v.item.quantity.$dirty) {
+        return errors;
+      }
+      !this.$v.item.quantity.required && errors.push('La cantidad es requerida');
+      !this.$v.item.quantity.maxLength && errors.push('La cantidad debe ser minimamente 1');
+      return errors;
+    },
+
+    noteError()
+    {
+      const errors = [];
+      if (!this.$v.item.note.$dirty) {
+        return errors;
+      }
+      !this.$v.item.note.maxLength && errors.push('La nota debe ser como maximo de 25 caracteres');
+      return errors;
+    },
+
+    priceError()
+    {
+      const errors = [];
+      if (!this.$v.item.price.$dirty) {
+        return errors;
+      }
+      !this.$v.item.price.minValue && errors.push('El precio debe ser mayor o igual que 0');
+      return errors;
+    },
+
+
+
   }
 }
 </script>
