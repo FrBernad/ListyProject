@@ -33,8 +33,8 @@
           </v-text-field>
         </v-col>
         <v-col cols="12">
-          <v-text-field background-color="#ffffff" dense hide-details solo label="Descripcion"
-                        clearable>{{ description }}
+          <v-text-field background-color="#ffffff" dense hide-details solo label="Aclaración"
+                        clearable>{{ aclaracion }}
           </v-text-field>
         </v-col>
 
@@ -67,10 +67,11 @@ export default {
       type: String,
       default: ''
     },
-    description: {
+    aclaracion: {
       type: String,
       default: ''
-    }
+    },
+
 
   }
 }

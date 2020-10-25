@@ -1,5 +1,4 @@
 <template>
-
   <v-card class="pa-5 fill-height" elevation="10" outlined>
     <v-row class="align-center  justify-center">
       <v-col cols="12" sm="8" class="d-flex align-center justify-center">
@@ -24,12 +23,17 @@
       </v-col>
     </v-row>
 
-    <v-row class="align-center  justify-center">
-      <v-col cols="12" class="pb-1">
-        <v-btn color="rgba(227,237,247,1)" block>
-          <v-icon color="#69A74E" size="x-large">mdi-plus-circle</v-icon>
-          <span class="font-weight-bold ">Agregar elemento</span>
-        </v-btn>
+    <v-row class="align-center justify-center">
+      <v-col cols="12">
+        <v-dialog v-model="dialog" max-width="600px">
+          <template v-slot:activator="{on, attrs}">
+            <v-btn color="rgba(227,237,247,1)" block v-bind="attrs" v-on="on">
+              <v-icon color="#69A74E" size="x-large">mdi-plus-circle</v-icon>
+              <span class="font-weight-bold ">Agregar elemento</span>
+            </v-btn>
+          </template>
+          <ElementDetails @elementClose="dialog=false"></ElementDetails>
+        </v-dialog>
       </v-col>
     </v-row>
 
@@ -45,11 +49,11 @@
 
 
   </v-card>
-
 </template>
 
 <script>
 import ListItem from "@/components/ListItem";
+import ElementDetails from "@/components/ElementDetails";
 
 export default {
   name: "List",
@@ -63,14 +67,15 @@ export default {
       default:'Categoria'
     }
   },
-  components: {ListItem},
+  components: {ListItem, ElementDetails},
   data(){
     return{
       itemName: 'Fernet Branca',
       quantity: '0',
       price:'0',
       responsible: 'Frano',
-      description: 'Fernet para la previa'
+      description: 'Fernet para la previa',
+      dialog: false
     }
   }
 
