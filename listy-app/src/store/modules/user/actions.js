@@ -1,7 +1,7 @@
 export default {
   async addUserToDB(context, payload) {
-    const userId = context.rootGetters.userId
-    const token = context.rootGetters.token
+    const userId = payload.userAuth.userId
+    const token = payload.userAuth.token
 
     const response = await fetch(`https://listy-itba-app.firebaseio.com/users/${userId}.json?auth=` +
       token,
@@ -10,7 +10,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(payload.userInfo),
       });
 
     if (!response.ok) {
@@ -18,9 +18,10 @@ export default {
     }
 
     const user = {
-      username: payload.username
+      username: payload.userInfo.username
     };
 
     context.commit("setUserData", user);
   },
+
 }

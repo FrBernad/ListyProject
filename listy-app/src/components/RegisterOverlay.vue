@@ -108,7 +108,7 @@
             password: this.password,
             username: this.username
           })
-          await this.$router.replace('/home');
+          await this.$router.replace('/verifyAccount');
         } catch (e) {
           console.log(e);
           this.mailExists = true;

@@ -14,6 +14,12 @@ const routes = [
         name: 'landingPage',
         component: () => import('../views/LandingPage'),
         meta: {requiresUnauth: true}
+      },
+      {
+        path: 'verifyAccount',
+        name: 'verifyAccount',
+        component: () => import('../views/VerifyAccount'),
+        meta: {requiresUnauth: true}
       }
     ]
   },
@@ -86,13 +92,13 @@ const router = new VueRouter({
 store.dispatch('tryLogin');
 
 router.beforeEach(function (to, from, next) {
-    if (to.meta.requiresAuth && !store.getters["isAuthenticated"]) {
-      next('/');
-    } else if (to.meta.requiresUnauth && store.getters["isAuthenticated"]) {
-      next('/home');
-    } else {
-      next();
-    }
-  });
+  if (to.meta.requiresAuth && !store.getters["isAuthenticated"]) {
+    next('/');
+  } else if (to.meta.requiresUnauth && store.getters["isAuthenticated"]) {
+    next('/home');
+  } else {
+    next();
+  }
+});
 
 export default router

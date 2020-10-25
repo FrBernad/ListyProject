@@ -2,7 +2,7 @@
   <v-container class="fill-height">
     <v-row justify="center" align="center">
       <v-col cols="10" sm="8">
-        <v-card class="pa-8 text-center">
+             <v-card class="pa-8 text-center">
           <v-form>
             <!--ERROR-->
             <v-col cols="12" v-if="signInError" class="pt-2 pb-0">
@@ -78,17 +78,18 @@
           console.log("the form is missing something");
           return;
         }
-
         try {
-
           await this.$store.dispatch('signIn', {
             email: this.email,
             password: this.password
           })
 
           await this.$router.replace('/home');
-
         } catch (e) {
+          if (e === 400) {;
+            await this.$store.dispatch("verifyEmail");
+            await this.$router.replace('/verifyAccount');
+          }
           console.log(e);
           this.signInError = true;
           setTimeout(this.resetForm, 4000);
