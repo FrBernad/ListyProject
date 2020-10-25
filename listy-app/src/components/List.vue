@@ -35,12 +35,10 @@
 
 
     <v-row class="align-center  justify-center">
-
       <v-expansion-panels popout>
         <ListItem :itemName="itemName" :quantity="quantity" :price="price" responsible="responsible" description="description"></ListItem>
         <ListItem :itemName="itemName" :quantity="quantity" :price="price" responsible="responsible" description="description"></ListItem>
         <ListItem :itemName="itemName" :quantity="quantity" :price="price" responsible="responsible" description="description"></ListItem>
-
       </v-expansion-panels>
 
     </v-row>
