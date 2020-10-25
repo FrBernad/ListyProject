@@ -2,20 +2,13 @@
   <v-card class="pa-5">
     <v-row class="justify-center align-center">
       <v-col cols="12">
-        <v-autocomplete v-model="item.name"
-                        :items="items"
-                        :loading="isLoading"
-                        :search-input.sync="search"
+        <v-text-field v-model="item.name"
                         label="Nombre"
-                        hide-no-data
-                        item-text="Description"
-                        item-value="API"
                         placeholder="Comienza a escribir para buscar el producto"
                         prepend-icon="mdi-database-search"
-                        return-object
                         :error-messages="nameError"
                         @blur="$v.item.name.$touch()">
-        </v-autocomplete>
+        </v-text-field>
       </v-col>
     </v-row>
 
@@ -43,8 +36,8 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="4" class="d-flex ma-0 pa-0 justify-start">
-        <span class="px-4">Precio: {{ item.price}}</span>
+      <v-col cols="4" class="d-flex py-0 justify-start">
+        <v-text-field label="Precio" v-model="item.price" :error-messages="priceError" @blur="$v.item.price.$touch()"></v-text-field>
       </v-col>
     </v-row>
     <v-row>
@@ -86,6 +79,14 @@ export default {
       const copy = {name:this.item.name, quantity: this.item.quantity, responsible: this.item.responsible,note:this.item.note, price: this.item.price};
       this.$store.commit('addItem',copy);
       this.elementClose();
+      this.resetFields();
+    },
+    resetFields(){
+      this.item.name ='';
+      this.item.quantity = 0;
+      this.item.responsible = '';
+      this.item.note = '';
+      this.item.price = 0;
     }
   },
   validations: {
