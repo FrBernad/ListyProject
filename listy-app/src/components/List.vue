@@ -1,7 +1,7 @@
 <template>
   <v-card class="pa-5 fill-height" elevation="10" outlined>
     <v-row class="align-center  justify-center">
-      <v-col cols="12" sm="8" class="d-flex align-center justify-center">
+      <v-col cols="12" sm="8" class="d-flex align-center justify-start">
         <h1>{{ this.title }}</h1>
       </v-col>
 
@@ -41,7 +41,7 @@
 
     <v-row class="align-center  justify-center">
       <v-expansion-panels popout v-for="item in listItems">
-        <ListItem :itemName="item.name" :quantity="item.quantity" :price="item.price" responsible="responsible" description="description"></ListItem>
+        <ListItem :item="item"></ListItem>
       </v-expansion-panels>
     </v-row>
 
