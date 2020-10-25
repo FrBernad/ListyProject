@@ -32,7 +32,7 @@ const routes = [
         path: '',
         name: 'home',
         meta: {requiresAuth: true},
-        component: () => import('../views/Home.vue')
+        component: () => import('../views/Home.vue'),
       },
       {
         path: 'configuracion',

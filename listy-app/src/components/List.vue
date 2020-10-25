@@ -2,8 +2,9 @@
   <v-card class="pa-5 fill-height" elevation="10" outlined>
     <v-row class="align-center  justify-center">
       <v-col cols="12" sm="8" class="d-flex align-center justify-center">
-        <h1>{{ title }}</h1>
+        <h1>{{ this.title }}</h1>
       </v-col>
+
       <v-col cols="12" sm="4" class="d-flex align-center justify-space-around">
         <v-btn icon color="#000000">
           <v-icon>mdi-pencil</v-icon>
@@ -39,14 +40,10 @@
 
 
     <v-row class="align-center  justify-center">
-      <v-expansion-panels popout>
-        <ListItem :itemName="itemName" :quantity="quantity" :price="price" responsible="responsible" description="description"></ListItem>
-        <ListItem :itemName="itemName" :quantity="quantity" :price="price" responsible="responsible" description="description"></ListItem>
-        <ListItem :itemName="itemName" :quantity="quantity" :price="price" responsible="responsible" description="description"></ListItem>
+      <v-expansion-panels popout v-for="item in listItems">
+        <ListItem :itemName="item.name" :quantity="item.quantity" :price="item.price" responsible="responsible" description="description"></ListItem>
       </v-expansion-panels>
-
     </v-row>
-
 
   </v-card>
 </template>
@@ -54,6 +51,7 @@
 <script>
 import ListItem from "@/components/ListItem";
 import ElementDetails from "@/components/ElementDetails";
+import {get} from "vuex-pathify";
 
 export default {
   name: "List",
@@ -62,21 +60,22 @@ export default {
       type:String,
       default:'Titulo'
     },
-    category:{
-      type:String,
-      default:'Categoria'
-    }
   },
   components: {ListItem, ElementDetails},
   data(){
     return{
-      itemName: 'Fernet Branca',
-      quantity: '0',
-      price:'0',
-      responsible: 'Frano',
-      description: 'Fernet para la previa',
+      item: {
+        name: '',
+        quantity: '0',
+        price: '0',
+        responsible: '',
+        description: '',
+      },
       dialog: false
     }
+  },
+  computed:{
+    ...get("lists/*")
   }
 
 }

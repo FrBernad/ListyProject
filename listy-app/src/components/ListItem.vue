@@ -22,14 +22,16 @@
 
       <v-row>
         <v-col cols="6" class="justify-end">
-          <v-text-field background-color="#ffffff" dense hide-details solo label="Aclaración"
-                        clearable>{{ aclaracion }}
-          </v-text-field>
+          <v-card>
+            <v-card-title>Aclaración</v-card-title>
+            <v-card-text>{{ aclaracion }}</v-card-text>
+          </v-card>
         </v-col>
         <v-col cols="6" class="justify-start">
-          <v-text-field background-color="#ffffff" dense hide-details solo label="Responsable"
-                        clearable>{{ responsible }}
-          </v-text-field>
+          <v-card>
+            <v-card-title>Responsable</v-card-title>
+            <v-card-text>{{ responsable }}</v-card-text>
+          </v-card>
         </v-col>
       </v-row>
 
@@ -56,13 +58,13 @@ export default {
       type: String,
       default: ''
     },
-    responsible: {
+    responsable: {
       type: String,
-      default: ''
+      default: 'Juan, Pedro, Fran, Agus'
     },
     aclaracion: {
       type: String,
-      default: ''
+      default: 'The star is more admiral now than astronaut. colorful and nosily seismic. Rob me plunder, ye heavy-hearted reef! The resistance is a final planet.'
     },
 
 
