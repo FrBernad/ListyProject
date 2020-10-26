@@ -97,7 +97,6 @@ export default {
         note: this.item.note,
         price: this.item.price
       };
-      console.log(copy);
       this.$store.commit('lists/addItem', copy);
       this.elementClose();
       this.resetFields();

@@ -1,36 +1,87 @@
 <template>
-  <v-container fluid fill-height>
-    <v-row class="align-center justify-center">
-      <v-col class="d-flex align-center justify-center" cols="12">
-        <p class="text-h4 px-2 px-sm-0 text-center">Organiza tus compras creando tus listas</p>
+  <v-container fluid style="height: 100%">
+    <v-row align="start" justify="center" style="height: 100%">
+      <v-col cols="12">
+        <v-row class="px-8 pt-4" :justify="this.currentEntries.length ? 'start': 'center'">
+          <v-col cols="12" class="d-flex justify-center align-center" v-if="this.currentEntries.length">
+            <v-btn color="primary" width="40%" to="/home/createList">CREAR LISTA</v-btn>
+          </v-col>
+          <v-col v-if="!this.currentEntries.length" cols="10" sm="8">
+            <v-card :height="$vuetify.breakpoint.smAndDown ? '40vh' : '400px'"
+                    class="d-flex justify-center align-center mt-5">
+              <v-row justify="center" align="center">
+                <v-col cols="12">
+                  <p class="my-md-3 my-0 px-6 px-md-13 text-center text-body-1 text-sm-h6 text-md-h4 grey--text">
+                    Parece que no has creado ninguna lista, clickea en
+                    <strong>CREAR LISTA</strong> para crear una.</p>
+                </v-col>
+                <v-col cols="8" class="d-flex justify-center align-center mt-md-3">
+                  <v-btn color="primary" width="80%" to="/home/createList">CREAR LISTA</v-btn>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+          <v-col cols="12" md="6" lg="4" v-for="(entry,index) in currentEntries" :key="index">
+            <ListPreview :data="entry"/>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="12" class="d-flex justify-center align-center align-self-end">
+        <v-container class="max-width">
+          <v-pagination
+            v-model="page"
+            class="my-4"
+            :length="pages"
+            total-visible="5"
+            @input="changePage"
+          ></v-pagination>
+        </v-container>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col cols="12" class="d-flex align-center justify-center">
-        <v-img src="../assets/images/list.png" contain max-width="450" max-height="200">
-          <template v-slot:placeholder>
-            <v-row class="fill-height ma-0 align-center justify-center">
-              <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-            </v-row>
-          </template>
-        </v-img>
-      </v-col>
-    </v-row>
-    <v-row class="justify-center align-center">
-      <v-col cols="12" sm="9" md="7" lg="6">
-        <div class="d-flex justify-center">
-          <v-btn color="primary" x-large width="50%" to="/home/createList">Crear Lista</v-btn>
-        </div>
-      </v-col>
-    </v-row>
+
   </v-container>
 </template>
 
 <script>
+  import ListPreview from "../components/ListPreview";
 
-export default {
-  name: "Home",
-}
+  export default {
+    name: "Home",
+
+    components: {ListPreview},
+
+    data() {
+      return {
+        entries: [],
+        currentEntries: [],
+        page: 1,
+        totalPages: 0,
+        itemsPerPage: 6,
+        pages: 0,
+      }
+    },
+
+    created() {
+      this.seedEntries();
+    },
+
+    methods: {
+      async seedEntries() {
+        try {
+          let lists = Object.entries(await this.$store.dispatch('lists/getLists'));
+          this.totalPages = lists.length;
+          this.pages = Math.ceil((this.totalPages / this.itemsPerPage));
+          this.entries = lists;
+          this.currentEntries = this.entries.slice(this.page - 1, this.itemsPerPage)
+        } catch (e) {
+          console.log(e);
+        }
+      },
+      changePage() {
+        this.currentEntries = this.entries.slice(this.page - 1, this.itemsPerPage);
+      }
+    }
+  }
 </script>
 
 <style scoped>

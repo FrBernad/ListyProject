@@ -142,9 +142,9 @@
         !this.$v.listName.required && errors.push('El nombre es requerido');
         return errors;
       },
-      total(){
+      total() {
         let sum = 0;
-        return this.listItems.reduce((sum, item) => sum + item.price*item.quantity, 0);
+        return this.listItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
       }
     },
 
@@ -160,13 +160,14 @@
           this.loading = true;
           await sleep(1000);
           await this.$store.dispatch("lists/createList", {
-            name: this.title,
+            name: this.listName,
             items: this.listItems
           });
           this.errorMessage = "Lista creada exitosamente.";
           await sleep(2000);
           this.loading = false;
           this.errorMessage = "";
+          await this.$router.replace("/home")
         } catch (e) {
           this.errorMessage = "Error a crear la lista.";
           await setTimeout(() => {

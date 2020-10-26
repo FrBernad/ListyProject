@@ -64,8 +64,16 @@ const routes = [
         name: 'CreateList',
         meta: {requiresAuth: true},
         component: () => import('../views/CreateList')
+      },
+      {
+        path: 'list',
+        name: 'List',
+        meta: {requiresAuth: true},
+        component: () => import('../views/EditList'),
+        props: route => ({
+          listId: route.query.listId,
+        }),
       }
-
     ]
   },
   {

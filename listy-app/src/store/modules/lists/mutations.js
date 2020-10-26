@@ -8,9 +8,14 @@ export default {
     state.listItems.push(payload);
   },
 
-  resetList(state){
+  resetList(state) {
     state.listItems = [];
     state.listName = '';
+  },
+
+  setList(state, payload) {
+    state.listItems = Object.entries(payload.items);
+    state.listName = payload.name;
   },
 
   deleteFromList(state, payload) {

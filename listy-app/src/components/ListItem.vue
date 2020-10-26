@@ -46,7 +46,7 @@ export default {
     item: {
       type: Object,
     },
-  }
+  },
 }
 </script>
 
