@@ -113,7 +113,6 @@
 
     data() {
       return {
-        total: 0,
         errorMessage: "",
         loading: false,
         addElement: false
@@ -143,6 +142,10 @@
         !this.$v.listName.required && errors.push('El nombre es requerido');
         return errors;
       },
+      total(){
+        let sum = 0;
+        return this.listItems.reduce((sum, item) => sum + item.price*item.quantity, 0);
+      }
     },
 
     methods: {

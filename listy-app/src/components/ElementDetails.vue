@@ -76,10 +76,10 @@ export default {
     return {
       item: {
         name: '',
-        quantity: undefined,
+        quantity: 0,
         responsible: '',
         note: '',
-        price: undefined
+        price: 0
       },
     }
   },
