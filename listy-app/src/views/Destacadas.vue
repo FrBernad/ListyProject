@@ -61,7 +61,7 @@ export default {
   methods: {
     async seedEntries() {
       try {
-        let lists = Object.entries(await this.$store.dispatch('lists/getLists'));
+        let lists = Object.entries(await this.$store.dispatch('lists/getFavourites'));
         this.totalPages = lists.length;
         this.pages = Math.ceil((this.totalPages / this.itemsPerPage));
         this.entries = lists;
