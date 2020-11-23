@@ -15,7 +15,7 @@ export default {
         body: JSON.stringify({
           name: payload.name,
           owner: context.rootGetters["userId"],
-          users: [context.rootGetters["userId"]]
+          users: []
         }),
       });
 
@@ -31,7 +31,6 @@ export default {
     for (const item of payload.items) {
       await context.dispatch("addItem", {item: item, listId: listId});
     }
-
 
     //add list to user lists
     url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters["userId"]}/lists/${listId}.json?auth=` +
@@ -94,7 +93,7 @@ export default {
       throw new Error("Error creating list");
     }
 
-    return listsInfo;
+    return listsInfo ? listsInfo : {};
   },
 
   async getList(context, payload) {
@@ -120,7 +119,7 @@ export default {
 
     let response = await fetch(url);
 
-    let responseData = response.json();
+    let responseData = await response.json();
 
     if (!response.ok) {
       console.log(responseData)
@@ -130,7 +129,6 @@ export default {
     let users = responseData.users;
 
     let owner = responseData.owner === context.rootGetters["userId"];
-
 
     //remove list from local user
     url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters["userId"]}/lists/${payload.listId}.json?auth=` +
@@ -182,7 +180,47 @@ export default {
           throw new Error("Error deleting list from other user");
       }
     }
+  },
 
+  async favRoutine(context, payload) {
+    let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters["userId"]}/favourites/${payload.listId}.json?auth=` +
+      context.rootGetters["token"];
+
+    let response = await fetch(
+      url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({name: payload.name})
+      });
+
+    let responseData = await response.json();
+
+    if (!response.ok) {
+      console.log(responseData)
+      throw new Error("Error faving routine");
+    }
+  },
+
+  async unfavRoutine(context, payload) {
+    let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters["userId"]}/favourites/${payload.listId}.json?auth=` +
+      context.rootGetters["token"];
+
+    let response = await fetch(
+      url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+    let responseData = await response.json();
+
+    if (!response.ok) {
+      console.log(responseData)
+      throw new Error("Error unfaving routine");
+    }
   }
 
 }
