@@ -182,7 +182,7 @@ export default {
     }
   },
 
-  async favRoutine(context, payload) {
+  async favList(context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters["userId"]}/favourites/${payload.listId}.json?auth=` +
       context.rootGetters["token"];
 
@@ -203,7 +203,7 @@ export default {
     }
   },
 
-  async unfavRoutine(context, payload) {
+  async unfavList(context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters["userId"]}/favourites/${payload.listId}.json?auth=` +
       context.rootGetters["token"];
 
@@ -221,6 +221,19 @@ export default {
       console.log(responseData)
       throw new Error("Error unfaving routine");
     }
-  }
+  },
+
+  async checkFav(context, payload) {
+    let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters["userId"]}/favourites/${payload.listId}.json?auth=` +
+      context.rootGetters["token"];
+
+    let response = await fetch(url);
+    let responseData = await response.json();
+    if (!response.ok) {
+      console.log(responseData)
+      throw new Error("Error faving routine");
+    }
+    return !!responseData;
+  },
 
 }

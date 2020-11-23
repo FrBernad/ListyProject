@@ -17,8 +17,9 @@
             <v-btn icon color="#000000">
               <v-icon>mdi-star</v-icon>
             </v-btn>
-            <v-btn icon color="#000000">
-              <v-icon>mdi-share-variant</v-icon>
+            <v-btn icon color="#000000" @click="toogleFav">
+              <v-icon v-if="fav">mdi-heart</v-icon>
+              <v-icon v-else>mdi-heart-outline</v-icon>
             </v-btn>
             <v-btn icon color="#000000">
               <v-icon>mdi-credit-card-outline</v-icon>
@@ -67,12 +68,14 @@
       return {
         errorMessage: "",
         loading: false,
-        addElement: false
+        addElement: false,
+        fav: false
       }
     },
 
     created() {
       this.$store.commit("lists/resetList");
+      this.checkFav();
       this.seedList();
     },
 
@@ -85,6 +88,42 @@
     },
 
     methods: {
+
+      async checkFav() {
+        try {
+          this.fav = await this.$store.dispatch("lists/checkFav", {listId: this.listId});
+        } catch (e) {
+          console.log(e);
+        }
+      },
+
+      async toogleFav() {
+        if (this.fav) {
+          try {
+            await this.$store.dispatch("lists/unfavList", {
+              listId: this.listId,
+            });
+            this.fav = false;
+          } catch (e) {
+            this.fav = false;
+            console.log("error unfaving");
+            console.log(e);
+          }
+        } else {
+          try {
+            await this.$store.dispatch("lists/favList", {
+              listId: this.listId,
+              name: this.$store.getters["lists/listName"]
+            });
+            this.fav = true;
+          } catch (e) {
+            this.fav = true;
+            console.log("error faving");
+            console.log(e);
+          }
+        }
+      },
+
       async seedList() {
         try {
           const listData = await this.$store.dispatch("lists/getList", {listId: this.listId});
