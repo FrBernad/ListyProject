@@ -180,8 +180,6 @@ export default {
 
         if (!response.ok)
           throw new Error("Error deleting list from other user");
-
-
       }
     }
 

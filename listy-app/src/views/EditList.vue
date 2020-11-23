@@ -23,7 +23,7 @@
             <v-btn icon color="#000000">
               <v-icon>mdi-credit-card-outline</v-icon>
             </v-btn>
-            <v-btn icon color="#000000">
+            <v-btn icon color="#000000" @click="deleteList">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </v-col>
@@ -89,6 +89,15 @@
         try {
           const listData = await this.$store.dispatch("lists/getList", {listId: this.listId});
           this.$store.commit("lists/setList", listData);
+        } catch (e) {
+          console.log(e)
+        }
+      },
+
+      async deleteList() {
+        try {
+          await this.$store.dispatch("lists/deleteList", {listId: this.listId});
+          await this.$router.replace("/home")
         } catch (e) {
           console.log(e)
         }
