@@ -11,7 +11,7 @@
         <v-btn @click="logout" class="mx-4">
           logout
         </v-btn>
-        <v-btn>
+        <v-btn to="/home/miPerfil">
           <v-spacer></v-spacer>
           <v-icon class="px-1">mdi-account</v-icon>
           {{user}}

@@ -35,11 +35,10 @@ const routes = [
         component: () => import('../views/Home.vue'),
       },
       {
-        path: 'configuracion',
-        name: 'Configuracion',
+        path: 'miPerfil',
+        name: 'MiPerfil ',
         meta: {requiresAuth: true},
-        component: () => import('../views/Configuracion'),
-
+        component: () => import('../views/MiPerfil'),
       },
       {
         path: 'destacadas',
