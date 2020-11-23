@@ -39,23 +39,6 @@
                           v-model="listName"></v-text-field>
           </v-col>
 
-          <v-col cols="12" sm="4" class="d-flex align-center justify-space-around">
-            <v-btn icon color="#000000">
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <v-btn icon color="#000000">
-              <v-icon>mdi-star</v-icon>
-            </v-btn>
-            <v-btn icon color="#000000">
-              <v-icon>mdi-share-variant</v-icon>
-            </v-btn>
-            <v-btn icon color="#000000">
-              <v-icon>mdi-credit-card-outline</v-icon>
-            </v-btn>
-            <v-btn icon color="#000000">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </v-col>
         </v-row>
 
         <!--LIST ELEMETNS-->
@@ -75,7 +58,7 @@
 
         <draggable v-model="listItems" direction="vertical" @start="drag=true" @end="drag=false">
           <v-expansion-panels popout v-for="(item,index) in listItems" :key="index">
-            <ListItem @send="deleteItem" :item="item" :index="index"></ListItem>
+            <ListItem @send="deleteItem" :editable="true" :item="item" :index="index"></ListItem>
           </v-expansion-panels>
         </draggable>
 

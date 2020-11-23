@@ -8,7 +8,7 @@
         <v-row class="align-center justify-center">
           <v-col cols="12" sm="8" class="d-flex align-center justify-start">
             <v-text-field class="text-h4 font-weight-bold" @blur="$v.listName.$touch()" :error-messages="nameError"
-                          readonly v-model="listName">{{listName}}</v-text-field>
+                          :readonly="!edit" v-model="listName">{{listName}}</v-text-field>
           </v-col>
 
           <v-col cols="12" sm="4" class="d-flex align-center justify-space-around">
@@ -47,10 +47,9 @@
         <!--LIST ELEMETNS-->
         <v-row class="align-center  justify-center">
           <v-expansion-panels popout v-for="(item,index) of listItems" :key="index">
-            <ListItem :item="item[1]"></ListItem>
+            <ListItem :editable="edit" :item="item[1]"></ListItem>
           </v-expansion-panels>
         </v-row>
-
       </v-card>
 
       <v-card class="px-5 " elevation="10" outlined height="10%">
@@ -58,7 +57,7 @@
           <v-col cols="6" class="d-flex justify-start align-center">
             <v-btn @click="modifyList"  v-if="edit">
               <v-icon left color="black">mdi-cart</v-icon>
-              MODIFY
+              MODIFICAR
             </v-btn>
           </v-col>
           <v-col cols="6" class="d-flex justify-end align-center">
@@ -78,6 +77,7 @@
   import {sync} from "vuex-pathify";
   import ElementDetails from '../components/ElementDetails'
   import draggable from 'vuedraggable';
+  import { maxLength, minLength, required } from 'vuelidate/lib/validators'
 
   export default {
     name: "EditList",
@@ -100,8 +100,25 @@
       this.seedList();
     },
 
+    validations: {
+      listName: {
+        required, minLength: minLength(1), maxLength: maxLength(15)
+      }
+    },
+
     computed: {
       ...sync("lists/*"),
+
+      nameError() {
+        const errors = [];
+        if (!this.$v.listName.$dirty) {
+          return errors;
+        }
+        !this.$v.listName.minLength && errors.push('El nombre debe contener por lo menos un caracter');
+        !this.$v.listName.maxLength && errors.push('El nombre debe contener como máximo 15 caracteres');
+        !this.$v.listName.required && errors.push('El nombre es requerido');
+        return errors;
+      },
       total() {
         let sum = 0;
         return this.listItems.reduce((sum, item) => sum + item[1].price * item[1].quantity, 0);
@@ -127,9 +144,11 @@
         }
       },
 
-      async modifyList(){
-
+      deleteItem(index) {
+        this.$store.commit('lists/deleteFromList', {index:index});
       },
+
+
     }
   }
 </script>

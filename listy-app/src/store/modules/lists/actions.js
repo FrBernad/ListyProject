@@ -111,6 +111,11 @@ export default {
     return responseData;
   },
 
+  async modifyList(context,payload){
+
+
+  },
+
   async deleteList(context, payload) {
 
     //get global list data
@@ -181,6 +186,8 @@ export default {
       }
     }
   },
+
+
 
   async favRoutine(context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters["userId"]}/favourites/${payload.listId}.json?auth=` +
