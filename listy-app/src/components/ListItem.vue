@@ -4,7 +4,9 @@
     <v-expansion-panel-header class="pt-0 pb-0 ">
       <v-row class="align-center  justify-center">
         <v-col cols="1">
-          <v-checkbox color="#0099FF"></v-checkbox>
+          <v-btn @click.stop="" icon color="#000000" @click="sendDelete">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
         </v-col>
         <v-col cols="7" class="text-start">
           <span>{{ item.name }}</span>
@@ -46,7 +48,15 @@ export default {
     item: {
       type: Object,
     },
+    index: {
+      type: Number,
+    }
   },
+  methods: {
+    sendDelete() {
+      this.$emit('send', this.index)
+    }
+  }
 }
 </script>
 

@@ -75,7 +75,7 @@
 
         <draggable v-model="listItems" direction="vertical" @start="drag=true" @end="drag=false">
           <v-expansion-panels popout v-for="(item,index) in listItems" :key="index">
-            <ListItem :item="item"></ListItem>
+            <ListItem @send="deleteItem" :item="item" :index="index"></ListItem>
           </v-expansion-panels>
         </draggable>
 
@@ -178,6 +178,9 @@
           console.log(e);
         }
       },
+      deleteItem(index) {
+          this.$store.commit('lists/deleteFromList', {index:index});
+      }
     }
   }
 </script>
