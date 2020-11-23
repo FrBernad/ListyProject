@@ -73,11 +73,11 @@
           </v-col>
         </v-row>
 
-          <draggable v-model="listItems" direction="vertical" @start="drag=true" @end="drag=false">
-            <v-expansion-panels popout v-for="(item,index) in listItems" :key="index">
-              <ListItem :item="item"></ListItem>
-            </v-expansion-panels>
-          </draggable>
+        <draggable v-model="listItems" direction="vertical" @start="drag=true" @end="drag=false">
+          <v-expansion-panels popout v-for="(item,index) in listItems" :key="index">
+            <ListItem :item="item"></ListItem>
+          </v-expansion-panels>
+        </draggable>
 
       </v-card>
 
@@ -100,54 +100,54 @@
 </template>
 
 <script>
-import ListItem from "../components/ListItem";
-import ElementDetails from "../components/ElementDetails";
-import {sync} from "vuex-pathify";
-import draggable from 'vuedraggable';
+  import ListItem from "../components/ListItem";
+  import ElementDetails from "../components/ElementDetails";
+  import {sync} from "vuex-pathify";
+  import draggable from 'vuedraggable';
 
-import {maxLength, minLength, required} from 'vuelidate/lib/validators'
+  import {maxLength, minLength, required} from 'vuelidate/lib/validators'
 
-export default {
-  name: "createList",
+  export default {
+    name: "createList",
 
-  components: {ListItem, ElementDetails, draggable},
+    components: {ListItem, ElementDetails, draggable},
 
-  data() {
-    return {
-      errorMessage: "",
-      loading: false,
-      addElement: false
-    }
-  },
-
-  created() {
-    this.$store.commit("lists/resetList");
-  },
-
-
-  validations: {
-    listName: {
-      required, minLength: minLength(1), maxLength: maxLength(15)
-    }
-  },
-
-  computed: {
-    ...sync("lists/*"),
-    nameError() {
-      const errors = [];
-      if (!this.$v.listName.$dirty) {
-        return errors;
+    data() {
+      return {
+        errorMessage: "",
+        loading: false,
+        addElement: false
       }
-      !this.$v.listName.minLength && errors.push('El nombre debe contener por lo menos un caracter');
-      !this.$v.listName.maxLength && errors.push('El nombre debe contener como máximo 15 caracteres');
-      !this.$v.listName.required && errors.push('El nombre es requerido');
-      return errors;
     },
-    total() {
-      let sum = 0;
-      return this.listItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    }
-  },
+
+    created() {
+      this.$store.commit("lists/resetList");
+    },
+
+
+    validations: {
+      listName: {
+        required, minLength: minLength(1), maxLength: maxLength(15)
+      }
+    },
+
+    computed: {
+      ...sync("lists/*"),
+      nameError() {
+        const errors = [];
+        if (!this.$v.listName.$dirty) {
+          return errors;
+        }
+        !this.$v.listName.minLength && errors.push('El nombre debe contener por lo menos un caracter');
+        !this.$v.listName.maxLength && errors.push('El nombre debe contener como máximo 15 caracteres');
+        !this.$v.listName.required && errors.push('El nombre es requerido');
+        return errors;
+      },
+      total() {
+        let sum = 0;
+        return this.listItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      }
+    },
 
     methods: {
       async createList() {
@@ -167,12 +167,19 @@ export default {
           this.errorMessage = "Lista creada exitosamente.";
           await sleep(2000);
           this.loading = false;
-        }, 2000);
-        console.log(e);
-      }
-    },
+          this.errorMessage = "";
+          await this.$router.replace("/home");
+        } catch (e) {
+          this.errorMessage = "Error al crear lista."
+          await setTimeout(() => {
+            this.errorMessage = "";
+            this.loading = false;
+          }, 2000);
+          console.log(e);
+        }
+      },
+    }
   }
-}
 </script>
 
 <style scoped>
