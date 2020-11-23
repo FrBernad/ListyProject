@@ -161,7 +161,6 @@
           await sleep(1000);
           await this.$store.dispatch("lists/createList", {
             name: this.listName,
-            owner: true,
             items: this.listItems
           });
           this.errorMessage = "Lista creada exitosamente.";

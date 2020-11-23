@@ -41,7 +41,7 @@
       <v-card class="px-5 " elevation="10" outlined height="10%">
         <v-row align="center" justify="end">
           <v-col cols="6" class="d-flex justify-center align-center">
-            <span>Total: ${{total}} </span>
+            <span>Total: ${{total}}</span>
           </v-col>
         </v-row>
       </v-card>

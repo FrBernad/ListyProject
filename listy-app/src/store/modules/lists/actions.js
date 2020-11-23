@@ -1,6 +1,8 @@
 export default {
 
   async createList(context, payload) {
+
+    //add list to global lists
     let url = `https://listy-itba-app.firebaseio.com/lists.json?auth=` +
       context.rootGetters["token"];
 
@@ -10,7 +12,11 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({name: payload.name}),
+        body: JSON.stringify({
+          name: payload.name,
+          owner: context.rootGetters["userId"],
+          users: [context.rootGetters["userId"]]
+        }),
       });
 
     let responseData = await response.json();
@@ -26,6 +32,8 @@ export default {
       await context.dispatch("addItem", {item: item, listId: listId});
     }
 
+
+    //add list to user lists
     url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters["userId"]}/lists/${listId}.json?auth=` +
       context.rootGetters["token"];
 
@@ -35,7 +43,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({name: payload.name, owner: payload.owner}),
+        body: JSON.stringify({name: payload.name}),
       });
 
     responseData = await response.json();
@@ -102,6 +110,81 @@ export default {
       throw new Error("Error creating list");
     }
     return responseData;
+  },
+
+  async deleteList(context, payload) {
+
+    //get global list data
+    let url = `https://listy-itba-app.firebaseio.com/lists/${payload.listId}.json?auth=` +
+      context.rootGetters["token"];
+
+    let response = await fetch(url);
+
+    let responseData = response.json();
+
+    if (!response.ok) {
+      console.log(responseData)
+      throw new Error("Error getting global list data when deleting");
+    }
+
+    let users = responseData.users;
+
+    let owner = responseData.owner === context.rootGetters["userId"];
+
+
+    //remove list from local user
+    url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters["userId"]}/lists/${payload.listId}.json?auth=` +
+      context.rootGetters["token"];
+
+    response = await fetch(
+      url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+    if (!response.ok) {
+      throw new Error("Error deleting list from user");
+    }
+
+    //if owner remove list from global lists
+    if (owner) {
+      url = `https://listy-itba-app.firebaseio.com/lists/${payload.listId}.json?auth=` +
+        context.rootGetters["token"];
+
+      response = await fetch(
+        url, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        });
+
+      if (!response.ok) {
+        throw new Error("Error deleting list from user");
+      }
+
+      //delete list from all users
+      for (const userId in users) {
+        url = `https://listy-itba-app.firebaseio.com/users/${userId}/lists/${payload.listId}.json?auth=` +
+          context.rootGetters["token"];
+
+        response = await fetch(
+          url, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          });
+
+        if (!response.ok)
+          throw new Error("Error deleting list from other user");
+
+
+      }
+    }
+
   }
 
 }
