@@ -20,12 +20,13 @@
         <!--LIST HEADER-->
         <v-row class="align-center justify-center">
           <v-col cols="12" sm="8" class="d-flex align-center justify-start">
-            <h1>{{listName}}</h1>
+            <v-text-field class="text-h4 font-weight-bold" @blur="$v.listName.$touch()" :error-messages="nameError"
+                          readonly v-model="listName">{{listName}}</v-text-field>
           </v-col>
 
           <v-col cols="12" sm="4" class="d-flex align-center justify-space-around">
-            <v-btn icon color="#000000">
-              <v-icon>mdi-pencil</v-icon>
+            <v-btn @click="edit = !edit" icon color="#000000">
+              <v-icon >mdi-pencil</v-icon>
             </v-btn>
             <v-btn icon color="#000000" @click="shareList">
               <v-icon>mdi-share-variant</v-icon>
@@ -43,6 +44,20 @@
           </v-col>
         </v-row>
 
+        <v-row v-if="edit" class="align-center justify-center">
+          <v-col cols="12">
+            <v-dialog v-model="addElement" max-width="600px">
+              <template v-slot:activator="{on, attrs}">
+                <v-btn color="rgba(227,237,247,1)" block v-bind="attrs" v-on="on">
+                  <v-icon color="#69A74E" size="x-large">mdi-plus-circle</v-icon>
+                  <span class="font-weight-bold ">Agregar elemento</span>
+                </v-btn>
+              </template>
+              <ElementDetails @elementClose="addElement=false"></ElementDetails>
+            </v-dialog>
+          </v-col>
+        </v-row>
+
         <!--LIST ELEMETNS-->
         <v-row class="align-center  justify-center">
           <v-expansion-panels popout v-for="(item,index) of listItems" :key="index">
@@ -53,8 +68,14 @@
       </v-card>
 
       <v-card class="px-5 " elevation="10" outlined height="10%">
-        <v-row align="center" justify="end">
-          <v-col cols="6" class="d-flex justify-center align-center">
+        <v-row align="center" justify="center">
+          <v-col cols="6" class="d-flex justify-start align-center">
+            <v-btn @click="modifyList"  v-if="edit">
+              <v-icon left color="black">mdi-cart</v-icon>
+              MODIFY
+            </v-btn>
+          </v-col>
+          <v-col cols="6" class="d-flex justify-end align-center">
             <span>Total: ${{total}}</span>
           </v-col>
         </v-row>
@@ -69,13 +90,15 @@
 <script>
   import ListItem from "../components/ListItem";
   import {sync} from "vuex-pathify";
+  import ElementDetails from '../components/ElementDetails'
+  import draggable from 'vuedraggable';
 
   export default {
     name: "EditList",
 
     props: ["listId"],
 
-    components: {ListItem},
+    components: {ListItem,ElementDetails,draggable},
 
     data() {
       return {
@@ -162,7 +185,11 @@
         } catch (e) {
           console.log(e)
         }
-      }
+      },
+
+      async modifyList(){
+
+      },
     }
   }
 </script>
