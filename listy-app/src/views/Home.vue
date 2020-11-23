@@ -72,6 +72,7 @@
           this.totalPages = lists.length;
           this.pages = Math.ceil((this.totalPages / this.itemsPerPage));
           this.entries = lists;
+          console.log(lists)
           this.currentEntries = this.entries.slice(this.page - 1, this.itemsPerPage)
         } catch (e) {
           console.log(e);

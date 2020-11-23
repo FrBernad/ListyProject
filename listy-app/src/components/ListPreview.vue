@@ -14,7 +14,7 @@
 <script>
   export default {
     name: "ListPreview",
-    props: ["data"]
+    props: ["data"],
   }
 </script>
 

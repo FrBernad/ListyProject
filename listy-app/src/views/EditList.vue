@@ -88,7 +88,7 @@
       async seedList() {
         try {
           const listData = await this.$store.dispatch("lists/getList", {listId: this.listId});
-          this.$store.commit("lists/setList", listData)
+          this.$store.commit("lists/setList", listData);
         } catch (e) {
           console.log(e)
         }
