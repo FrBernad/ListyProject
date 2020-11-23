@@ -25,7 +25,7 @@
       <v-col cols="4" class="pt-0">
         <v-text-field width="100%" background-color="#ffffff" dense hide-details
                       solo label="Cantidad"
-                      clearable type="number" v-model.number="item.quantity"
+                      type="number" v-model.number="item.quantity"
                       :error-messages="quantityError"
                       @blur="$v.item.quantity.$touch()"
         ></v-text-field>
@@ -90,6 +90,11 @@ export default {
       this.$emit('elementClose');
     },
     addElement() {
+      if (this.$v.$invalid) {
+        this.$v.$touch();
+        console.log("the form is missing something");
+        return;
+      }
       const copy = {
         name: this.item.name,
         quantity: this.item.quantity,
