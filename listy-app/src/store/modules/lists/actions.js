@@ -2,6 +2,7 @@ export default {
   async createList(context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters["userId"]}/lists.json?auth=` +
       context.rootGetters["token"];
+
     const response = await fetch(
       url, {
         method: 'POST',

@@ -19,33 +19,30 @@
                 <p class="red--text font-weight-medium">Ya existe una cuenta bajo ese email, intente con otro</p>
               </v-col>
               <!--NAME-->
-              <v-col cols="12">
+              <v-col cols="12" class="pb-0">
                 <v-text-field
                   @blur="$v.username.$touch()"
                   :error-messages=usernameErrors
-                  hide-details="auto"
                   label="Usuario"
                   v-model="username"
                   outlined
                 ></v-text-field>
               </v-col>
               <!--EMAIL-->
-              <v-col cols="12">
+              <v-col cols="12" class="py-0">
                 <v-text-field
                   @blur="$v.email.$touch()"
                   :error-messages=emailErrors
-                  hide-details="auto"
                   label="Correo electronico"
                   v-model="email"
                   outlined
                 ></v-text-field>
               </v-col>
               <!--PASSWORD-->
-              <v-col cols="12" class="pb-0">
+              <v-col cols="12" class="py-0">
                 <v-text-field
                   @blur="$v.password.$touch()"
                   :error-messages=passwordErrors
-                  hide-details="auto"
                   v-model="password"
                   :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                   :type="show ? 'text' : 'password'"
@@ -94,11 +91,13 @@
 
     methods: {
       closeOverlay() {
+        this.resetForm();
         this.$emit('closeRegisterOverlay');
       },
 
       async processData() {
         if (this.$v.$invalid) {
+          this.$v.$touch();
           console.log("the form is missing something");
           return;
         }

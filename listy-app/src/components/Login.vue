@@ -75,6 +75,7 @@
     methods: {
       async processData() {
         if (this.$v.$invalid) {
+          this.$v.$touch();
           console.log("the form is missing something");
           return;
         }
@@ -86,7 +87,7 @@
 
           await this.$router.replace('/home');
         } catch (e) {
-          if (e === 400) {;
+          if (e === 400) {
             await this.$store.dispatch("verifyEmail");
             await this.$router.replace('/verifyAccount');
           }

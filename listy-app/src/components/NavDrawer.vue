@@ -13,6 +13,7 @@
         link
         :to="item.route"
         class="itemList"
+        exact
       >
         <v-list-item-icon>
           <v-icon>{{ item.icon }}</v-icon>
@@ -22,31 +23,28 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
-
-
-
   </v-navigation-drawer>
 </template>
 
 <script>
-export default {
-  name: "NavDrawer",
-  data() {
-    return {
-      items: [
-        {title: 'Mis Listas', icon: 'mdi-note-text-outline', route: '/home'},
-        {title: 'Destacadas', icon: 'mdi-star', route: '/home/destacadas'},
-        {title: 'Grupos', icon: 'mdi-account-group', route: '/home/grupos'},
-        {title: 'Configuracion', icon: 'mdi-tools', route: '/home/configuracion'},
-        {title: 'Ayuda', icon: 'mdi-help-circle', route: '/home/ayuda'}
-      ],
-    }
-  },
-}
+  export default {
+    name: "NavDrawer",
+    data() {
+      return {
+        items: [
+          {title: 'Mis Listas', icon: 'mdi-note-text-outline', route: '/home'},
+          {title: 'Destacadas', icon: 'mdi-star', route: '/home/destacadas'},
+          {title: 'Grupos', icon: 'mdi-account-group', route: '/home/grupos'},
+          {title: 'Configuracion', icon: 'mdi-tools', route: '/home/configuracion'},
+          {title: 'Ayuda', icon: 'mdi-help-circle', route: '/home/ayuda'}
+        ],
+      }
+    },
+  }
 </script>
 
 <style scoped>
-  .itemList{
-    font-size:200px;
+  .itemList {
+    font-size: 200px;
   }
 </style>
