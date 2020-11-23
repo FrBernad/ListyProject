@@ -96,6 +96,22 @@ export default {
     return listsInfo ? listsInfo : {};
   },
 
+  async getFavourites(context) {
+    let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters["userId"]}/favourites.json?auth=` +
+      context.rootGetters["token"];
+
+    const response = await fetch(url);
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      console.log(responseData)
+      throw new Error("Error getting favourites");
+    }
+
+    return responseData ? responseData : {};
+  },
+
   async getList(context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/lists/${payload.listId}.json?auth=` +
       context.rootGetters["token"];
@@ -106,7 +122,7 @@ export default {
 
     if (!response.ok) {
       console.log(responseData)
-      throw new Error("Error creating list");
+      throw new Error("Error getting list");
     }
     return responseData;
   },
@@ -145,6 +161,8 @@ export default {
     if (!response.ok) {
       throw new Error("Error deleting list from user");
     }
+
+    await this.unfavList(payload.listId);
 
     //if owner remove list from global lists
     if (owner) {

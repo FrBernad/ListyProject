@@ -2,6 +2,19 @@
 
   <v-fade-transition appear>
     <v-container fluid style="height:100%">
+      <v-dialog v-model="share" width="500px">
+        <v-container>
+          <v-row align="center" justify="center">
+            <v-col cols="12">
+              <h1 class="text-center">Copia el link y compartelo con tus amigos</h1>
+            </v-col>
+            <v-col cols="12" class="d-flex align-center justify-space-around">
+              <v-btn @click="share = false">Cancelar</v-btn>
+              <v-btn>Copiar link</v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-dialog>
       <v-card class="pa-5" height="90%" elevation="10" outlined>
 
         <!--LIST HEADER-->
@@ -14,8 +27,8 @@
             <v-btn icon color="#000000">
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
-            <v-btn icon color="#000000">
-              <v-icon>mdi-star</v-icon>
+            <v-btn icon color="#000000" @click="shareList">
+              <v-icon>mdi-share-variant</v-icon>
             </v-btn>
             <v-btn icon color="#000000" @click="toogleFav">
               <v-icon v-if="fav">mdi-heart</v-icon>
@@ -69,7 +82,8 @@
         errorMessage: "",
         loading: false,
         addElement: false,
-        fav: false
+        fav: false,
+        share: false
       }
     },
 
@@ -84,10 +98,18 @@
       total() {
         let sum = 0;
         return this.listItems.reduce((sum, item) => sum + item[1].price * item[1].quantity, 0);
-      }
+      },
+      routineLink() {
+        return this.$store.getters['hostUrl'] + this.$router.history._startLocation;
+      },
     },
 
     methods: {
+      shareList() {
+        this.share = true;
+        console.log(this.$router)
+        navigator.clipboard.writeText(this.routineLink);
+      },
 
       async checkFav() {
         try {
