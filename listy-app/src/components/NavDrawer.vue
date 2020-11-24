@@ -33,7 +33,7 @@
       return {
         items: [
           {title: 'Mis Listas', icon: 'mdi-note-text-outline', route: '/home'},
-          {title: 'Destacadas', icon: 'mdi-star', route: '/home/destacadas'},
+          {title: 'Destacadas', icon: 'mdi-heart', route: '/home/destacadas'},
           {title: 'Grupos', icon: 'mdi-account-group', route: '/home/grupos'},
           {title: 'Ayuda', icon: 'mdi-help-circle', route: '/home/ayuda'}
         ],
