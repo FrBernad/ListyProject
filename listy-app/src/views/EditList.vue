@@ -62,7 +62,7 @@
         <!--LIST ELEMETNS-->
         <v-row class="align-center  justify-center">
           <v-expansion-panels popout v-for="(item,index) of this.listItems" :key="index">
-            <ListItem :editable="edit" :item="item"></ListItem>
+            <ListItem :editable="edit" :item="item" :index="index" @send="deleteItem"></ListItem>
           </v-expansion-panels>
         </v-row>
       </v-card>
