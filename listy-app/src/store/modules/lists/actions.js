@@ -377,7 +377,6 @@ export default {
 
     const groupId = responseData['name']
 
-
     await context.dispatch('addUserToGroup', {
         userId: userId,
         groupId: groupId });
@@ -385,7 +384,6 @@ export default {
 
     //add group to user groups
     await context.dispatch('addGroupToUser',{userId: userId, groupId: groupId});
-
 
   },
 
@@ -431,7 +429,42 @@ export default {
       console.log(responseData)
       throw new Error('Error adding user to group')
     }
+  },
 
+  async getGroups(context){
+    //get groupsIds
+    let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters['userId']}/groups.json?auth=` +
+      context.rootGetters['token']
+
+    let response = await fetch(url)
+
+    let groupsIds = await response.json()
+
+    if (!response.ok) {
+      console.log(groupsIds)
+      throw new Error('Error retrieving groups ids ')
+    }
+
+    return await context.dispatch('getGroupsById', groupsIds);
+  },
+
+  async getGroupsById(context, payload){
+    //get groups
+    let groups = []
+
+    for (const groupId in payload) {
+      let url = `https://listy-itba-app.firebaseio.com/groups/${groupId}.json?auth=` +
+        context.rootGetters['token']
+      let response = await fetch(url)
+      let groupData = await response.json()
+      if (!response.ok) {
+        console.log(payload)
+        throw new Error('Error retrieving group list')
+      }
+      groupData.id = groupId
+      groups.push(groupData)
+    }
+    return groups;
   }
 
 

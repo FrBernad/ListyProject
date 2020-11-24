@@ -73,11 +73,11 @@ export default {
   methods: {
     async seedGroups () {
       try {
-        let groups = Object.entries(await this.$store.dispatch('user/getGroups'))
+        let groups = Object.entries(await this.$store.dispatch('lists/getGroups'))
         this.totalPages = groups.length
         this.pages = Math.ceil((this.totalPages / this.itemsPerPage))
         this.entries = groups
-        this.favoriteEntries = this.entries.slice(this.page - 1, this.itemsPerPage)
+        this.groupEntries = this.entries.slice(this.page - 1, this.itemsPerPage)
       } catch (e) {
         console.log(e)
       }
