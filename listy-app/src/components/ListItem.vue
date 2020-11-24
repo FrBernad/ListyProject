@@ -7,9 +7,14 @@
           <v-btn @click.stop="" v-if="editable" icon color="#000000" @click="sendDelete">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
+          <v-checkbox
+              @click.stop=""
+              v-if="!editable"
+              v-model="checkbox"
+          ></v-checkbox>
         </v-col>
         <v-col cols="7" class="text-start">
-          <v-text-field v-model="item.name" :readonly="!editable">{{ item.name }}</v-text-field>
+          <v-text-field v-model="item.name" :class="{done: checkbox}" :readonly="!editable">{{ item.name }}</v-text-field>
         </v-col>
         <v-col cols="2">
           <v-text-field label="Cantidad" v-model="item.quantity" :readonly="!editable">{{ item.quantity }}</v-text-field>
@@ -39,6 +44,11 @@
 <script>
 export default {
   name: "ListItem",
+  data() {
+    return {
+      checkbox: false,
+  }
+  },
   props: {
     item: {
       type: Object,
@@ -59,5 +69,7 @@ export default {
 </script>
 
 <style scoped>
-
+.done {
+  text-decoration: line-through;
+}
 </style>
