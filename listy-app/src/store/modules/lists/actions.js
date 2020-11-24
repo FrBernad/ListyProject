@@ -177,7 +177,6 @@ export default {
       ".json?auth=" +
       context.rootGetters["token"];
 
-    console.log(payload);
     let response = await fetch(
       url, {
         method: 'PATCH',

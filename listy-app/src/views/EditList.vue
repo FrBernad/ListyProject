@@ -142,9 +142,8 @@
         return this.listItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
       },
 
-      routineLink() {
-        console.log(this.$router);
-        return this.$store.getters['hostUrl'] + this.$router.history._startLocation;
+      listLink() {
+        return this.$store.getters['hostUrl'] + this.$router.currentRoute.fullPath;
       },
     },
 
@@ -154,7 +153,9 @@
       },
 
       copyToClipboard() {
-        navigator.clipboard.writeText(this.routineLink + "&share=true");
+        console.log(this.listLink);
+        console.log(this.$router);
+        navigator.clipboard.writeText(this.listLink + "&share=true");
       },
 
       async checkFav() {
