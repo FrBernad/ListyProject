@@ -104,6 +104,7 @@
       return {
         errorMessage: "",
         loading: false,
+        edit:false,
         addElement: false,
         fav: false,
         share: false
@@ -202,6 +203,10 @@
         } catch (e) {
           console.log(e)
         }
+      },
+
+      async modifyList(){
+
       },
 
       deleteItem(index) {
