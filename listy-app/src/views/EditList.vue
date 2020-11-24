@@ -153,8 +153,6 @@
       },
 
       copyToClipboard() {
-        console.log(this.listLink);
-        console.log(this.$router);
         navigator.clipboard.writeText(this.listLink + "&share=true");
       },
 
@@ -205,6 +203,10 @@
       async seedList() {
         try {
           const listData = await this.$store.dispatch("lists/getList", {listId: this.listId});
+          if (listData == null) {
+            await this.$router.replace("PageNotFound");
+            return;
+          }
           this.$store.commit("lists/setList", listData);
           if (this.share) {
             console.log("adding")
