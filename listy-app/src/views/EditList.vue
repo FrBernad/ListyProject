@@ -2,8 +2,8 @@
 
   <v-fade-transition appear>
     <v-container fluid style="height:100%">
-      <v-dialog v-model="shareDialog" width="500px">
-        <v-container>
+      <v-dialog v-model="shareDialog"  width="500px">
+        <v-container class="backgroundDialog elevation-8" >
           <v-row align="center" justify="center">
             <v-col cols="12">
               <h1 class="text-center">Copia el link y compartelo con tus amigos</h1>
@@ -71,7 +71,6 @@
         <v-row align="center" justify="center">
           <v-col cols="6" class="d-flex justify-start align-center">
             <v-btn @click="modifyList" v-if="edit">
-              <v-icon left color="black">mdi-cart</v-icon>
               MODIFICAR
             </v-btn>
           </v-col>
@@ -246,5 +245,7 @@ export default {
 </script>
 
 <style scoped>
-
+.backgroundDialog{
+  background-color: #e3edf7;
+}
 </style>
