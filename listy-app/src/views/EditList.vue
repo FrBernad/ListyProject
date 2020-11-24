@@ -223,8 +223,15 @@
 
       async modifyList(){
         try{
-          let items = this.$store.getters["lists/listItems"];
+          let aux = this.$store.getters["lists/listItems"];
+          let items = [];
+
+          for (const item of aux){
+            items.push(item[1]);
+          }
+
           let list = {listId:this.listId, listName:this.listName, items:items};
+
           await this.$store.dispatch("lists/modifyList",list);
 
         }catch(e){
