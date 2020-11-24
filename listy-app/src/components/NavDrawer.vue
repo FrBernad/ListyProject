@@ -16,10 +16,10 @@
         exact
       >
         <v-list-item-icon>
-          <v-icon>{{ item.icon }}</v-icon>
+          <v-icon class="py-1">{{ item.icon }}</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title class="text-h6">{{ item.title }}</v-list-item-title>
+          <v-list-item-title class="text-h6 py-1">{{ item.title }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
