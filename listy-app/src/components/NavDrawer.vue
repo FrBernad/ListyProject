@@ -15,9 +15,7 @@
         class="itemList"
         exact
       >
-        <v-list-item-icon>
-          <v-icon class="py-1">{{ item.icon }}</v-icon>
-        </v-list-item-icon>
+        <v-icon class="pr-3">{{ item.icon }}</v-icon>
         <v-list-item-content>
           <h1 class="text-h6">{{ item.title }}</h1>
         </v-list-item-content>

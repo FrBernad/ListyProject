@@ -2,8 +2,8 @@
 
   <v-fade-transition appear>
     <v-container fluid style="height:100%">
-      <v-dialog v-model="shareDialog"  width="500px">
-        <v-container class="backgroundDialog elevation-8" >
+      <v-dialog v-model="shareDialog" width="500px">
+        <v-container class="backgroundDialog elevation-8">
           <v-row align="center" justify="center">
             <v-col cols="12">
               <h1 class="text-center">Copia el link y compartelo con tus amigos</h1>
@@ -87,166 +87,195 @@
 </template>
 
 <script>
-import ListItem from "../components/ListItem";
-import {sync} from "vuex-pathify";
-import ElementDetails from '../components/ElementDetails'
-import draggable from 'vuedraggable';
-import {maxLength, minLength, required} from 'vuelidate/lib/validators'
+  import ListItem from "../components/ListItem";
+  import {sync} from "vuex-pathify";
+  import ElementDetails from '../components/ElementDetails'
+  import draggable from 'vuedraggable';
+  import {maxLength, minLength, required} from 'vuelidate/lib/validators'
 
-export default {
-  name: "EditList",
+  export default {
+    name: "EditList",
 
-  props: ["listId", "share"],
+    props: ["listId", "share"],
 
-  components: {ListItem, ElementDetails, draggable},
+    components: {ListItem, ElementDetails, draggable},
 
-  data() {
-    return {
-      errorMessage: "",
-      loading: false,
-      edit: false,
-      addElement: false,
-      fav: false,
-      shareDialog: false
-    }
-  },
+    data() {
+      return {
+        errorMessage: "",
+        loading: false,
+        edit: false,
+        addElement: false,
+        fav: false,
+        shareDialog: false
+      }
+    },
 
-  created() {
-    this.$store.commit("lists/resetList");
-    this.checkFav();
-    this.seedList();
-  },
+    created() {
+      this.$store.commit("lists/resetList");
+      this.checkFav();
+      this.seedList();
+    },
 
-  validations: {
-    listName: {
-      required, minLength: minLength(1), maxLength: maxLength(15)
-    }
-  },
+    validations: {
+      listName: {
+        required, minLength: minLength(1), maxLength: maxLength(15)
+      }
+    },
 
-  computed: {
-    ...sync("lists/*"),
+    computed: {
+      ...sync("lists/*"),
 
-    nameError() {
-      const errors = [];
-      if (!this.$v.listName.$dirty) {
+      nameError() {
+        const errors = [];
+        if (!this.$v.listName.$dirty) {
+          return errors;
+        }
+        !this.$v.listName.minLength && errors.push('El nombre debe contener por lo menos un caracter');
+        !this.$v.listName.maxLength && errors.push('El nombre debe contener como máximo 15 caracteres');
+        !this.$v.listName.required && errors.push('El nombre es requerido');
         return errors;
-      }
-      !this.$v.listName.minLength && errors.push('El nombre debe contener por lo menos un caracter');
-      !this.$v.listName.maxLength && errors.push('El nombre debe contener como máximo 15 caracteres');
-      !this.$v.listName.required && errors.push('El nombre es requerido');
-      return errors;
-    },
-    total() {
-      let sum = 0;
-      return this.listItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      },
+      total() {
+        let sum = 0;
+        return this.listItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      },
+
+      listLink() {
+        return this.$store.getters['hostUrl'] + this.$router.currentRoute.fullPath;
+      },
     },
 
-    listLink() {
-      return this.$store.getters['hostUrl'] + this.$router.currentRoute.fullPath;
-    },
-  },
+    methods: {
+      shareList() {
+        this.shareDialog = true;
+      },
 
-  methods: {
-    shareList() {
-      this.shareDialog = true;
-    },
+      copyToClipboard() {
+        navigator.clipboard.writeText(this.listLink + "&share=true");
+        this.shareDialog = false;
+      },
 
-    copyToClipboard() {
-      navigator.clipboard.writeText(this.listLink + "&share=true");
-      this.shareDialog = false;
-    },
-
-    async checkFav() {
-      try {
-        this.fav = await this.$store.dispatch("lists/checkFav", {listId: this.listId});
-      } catch (e) {
-        console.log(e);
-      }
-    },
-
-    async addList() {
-      try {
-        let listData = {listId: this.listId, name: this.$store.getters["lists/listName"]}
-        await this.$store.dispatch("lists/addList", listData);
-      } catch (e) {
-        console.log(e);
-      }
-    },
-
-    async toogleFav() {
-      if (this.fav) {
+      async checkFav() {
         try {
-          await this.$store.dispatch("lists/unfavList", {
-            listId: this.listId,
-          });
-          this.fav = false;
+          this.fav = await this.$store.dispatch("lists/checkFav", {listId: this.listId});
         } catch (e) {
-          this.fav = false;
-          console.log("error unfaving");
           console.log(e);
         }
-      } else {
+      },
+
+      async addList() {
         try {
-          await this.$store.dispatch("lists/favList", {
-            listId: this.listId,
-            name: this.$store.getters["lists/listName"]
-          });
-          this.fav = true;
+          let listData = {listId: this.listId, name: this.$store.getters["lists/listName"]}
+          await this.$store.dispatch("lists/addList", listData);
         } catch (e) {
-          this.fav = true;
-          console.log("error faving");
           console.log(e);
         }
-      }
-    },
+      },
 
-    async seedList() {
-      try {
-        const listData = await this.$store.dispatch("lists/getList", {listId: this.listId});
-        if (listData == null) {
-          await this.$router.replace("PageNotFound");
-          return;
+      async toogleFav() {
+        if (this.fav) {
+          try {
+            await this.$store.dispatch("lists/unfavList", {
+              listId: this.listId,
+            });
+            this.fav = false;
+          } catch (e) {
+            this.fav = false;
+            console.log("error unfaving");
+            console.log(e);
+          }
+        } else {
+          try {
+            await this.$store.dispatch("lists/favList", {
+              listId: this.listId,
+              name: this.$store.getters["lists/listName"]
+            });
+            this.fav = true;
+          } catch (e) {
+            this.fav = true;
+            console.log("error faving");
+            console.log(e);
+          }
         }
-        this.$store.commit("lists/setList", listData);
-        if (this.share) {
-          console.log("adding")
-          await this.addList();
+      },
+
+      async seedList() {
+        try {
+          const listData = await this.$store.dispatch("lists/getList", {listId: this.listId});
+          if (listData == null) {
+            await this.$router.replace("PageNotFound");
+            return;
+          }
+          this.$store.commit("lists/setList", listData);
+          if (this.share) {
+            console.log("adding")
+            await this.addList();
+          }
+        } catch (e) {
+          console.log(e)
         }
-      } catch (e) {
-        console.log(e)
-      }
-    },
+      },
 
-    async deleteList() {
-      try {
-        await this.$store.dispatch("lists/deleteList", {listId: this.listId});
-        await this.$router.replace("/home")
-      } catch (e) {
-        console.log(e)
-      }
-    },
+      async deleteList() {
+        try {
+          await this.$store.dispatch("lists/deleteList", {listId: this.listId});
+          await this.$router.replace("/home")
+        } catch (e) {
+          console.log(e)
+        }
+      },
 
-    async modifyList() {
-      try {
+      async modifyList() {
         let items = this.$store.getters["lists/listItems"];
         let list = {listId: this.listId, listName: this.listName, items: items};
-        await this.$store.dispatch("lists/modifyList", list);
+
+        this.$swal.fire({
+            didOpen: (popup) => {
+              this.$swal.showLoading();
+              this.$swal.clickConfirm();
+            },
+            padding: "6rem",
+            showConfirmButton: false,
+            preConfirm: async () => {
+              try {
+                return await this.$store.dispatch("lists/modifyList", list)
+              } catch (e) {
+                return 0;
+              }
+            },
+            allowOutsideClick: () => !this.$swal.isLoading()
+          }
+        ).then((result) => {
+            if (result.isConfirmed) {
+              if (!result.value) {
+                this.$swal.fire({
+                  icon: "error",
+                  title: "Error al modificar la rutina, intente denuevo",
+                })
+              } else {
+                this.$swal.fire({
+                  icon: "success",
+                  title: "Lista modificada",
+                })
+              }
+            }
+          }
+        )
         this.edit = false;
-      } catch (e) {
-        console.log(e)
+      },
+
+      deleteItem(index) {
+        this.$store.commit('lists/deleteFromList', {index: index});
       }
-    },
+      ,
 
-    deleteItem(index) {
-      this.$store.commit('lists/deleteFromList', {index: index});
-    },
-
+    }
   }
-}
 </script>
 
 <style scoped>
-.backgroundDialog{
-  background-color: #e3edf7;
-}
+  .backgroundDialog {
+    background-color: #e3edf7;
+  }
 </style>

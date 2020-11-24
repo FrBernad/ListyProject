@@ -1,7 +1,7 @@
 <template>
-  <v-container class="fill-height">
+  <v-container class="fill-height pt-0 pt-sm-3">
     <v-row justify="center" align="center">
-      <v-col cols="10" sm="8">
+      <v-col cols="11" sm="8">
              <v-card class="pa-8 text-center">
           <v-form>
             <!--ERROR-->

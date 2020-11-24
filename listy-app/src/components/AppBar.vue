@@ -1,22 +1,27 @@
 <template>
   <v-app-bar app clipped-left dense>
+
     <v-row align="center">
+
       <v-col cols="4" class="d-flex justify-start">
         <router-link to="/home">
           <v-img src="../assets/images/longlogonobg.png" contain max-width="70" max-height="35">
           </v-img>
         </router-link>
       </v-col>
-      <v-col cols="6" class="offset-2 d-flex justify-end">
-        <v-btn @click="logout" class="mx-4">
-          logout
-        </v-btn>
-        <v-btn to="/home/miPerfil">
-          <v-spacer></v-spacer>
-          <v-icon class="px-1">mdi-account</v-icon>
-          {{user}}
-        </v-btn>
+
+      <v-col cols="6" class="offset-2">
+        <v-tabs right background-color="#F5F5F5" color="black">
+          <v-tab @click="logout">
+            <v-icon left>mdi-logout</v-icon>
+            Cerrar sesión</v-tab>
+          <v-tab to="/home/miPerfil">
+            <v-icon left>mdi-account</v-icon>
+            {{user}}
+          </v-tab>
+        </v-tabs>
       </v-col>
+
     </v-row>
 
   </v-app-bar>
@@ -25,8 +30,8 @@
 <script>
   export default {
     name: "AppBar",
-    computed:{
-      user(){
+    computed: {
+      user() {
         return this.$store.getters["user/username"];
       }
     },

@@ -11,8 +11,6 @@
         <v-icon class="pr-4">mdi-heart</v-icon>
       </v-col>
     </v-row>
-
-
   </v-card>
 </template>
 

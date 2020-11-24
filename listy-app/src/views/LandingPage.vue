@@ -3,7 +3,8 @@
     <v-row align="center">
       <v-col cols="12" lg="6">
         <v-container class="d-flex justify-center justify-lg-start ml-lg-7">
-          <v-img src="../assets/images/longlogonobg.png" lazy-src="../assets/images/longlogonobg.png" contain max-width="450"
+          <v-img src="../assets/images/longlogonobg.png" lazy-src="../assets/images/longlogonobg.png" contain
+                 :max-width="this.$vuetify.breakpoint.smAndDown ? '300':'450'"
                  max-height="200">
             <template v-slot:placeholder>
               <v-row
@@ -20,11 +21,11 @@
           </v-img>
         </v-container>
         <v-container class="d-flex justify-center justify-lg-start ml-lg-7">
-          <p class="text-h4 font-weight-medium text-lg-left text-center px-lg-5 mx-sm-6 mx-lg-0">
+          <p class="text-h5 text-sm-h4 font-weight-medium text-lg-left text-center px-lg-5 mx-sm-6 mx-lg-0">
             Listy te ayuda a organizar tus listas de compra de manera simple, rápida y compartida.</p>
         </v-container>
       </v-col>
-      <v-col cols="12" lg="6">
+      <v-col cols="12" lg="6" class="pt-0 pt-sm-3">
         <Login></Login>
       </v-col>
     </v-row>
