@@ -257,7 +257,7 @@ export default {
       throw new Error('Error deleting list from user')
     }
 
-    await context.dispatch('unfavList', payload.listId)
+    await context.dispatch('unfavList', payload)
 
     //if owner remove list from global lists
     if (owner) {

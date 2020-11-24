@@ -14,7 +14,7 @@
     },
     watch: {
       didAutoLogout(curValue, oldValue) {
-        console.log("curr: "+curValue + " old: "+oldValue);
+        console.log("curr: " + curValue + " old: " + oldValue);
         console.log("watching..");
         if (curValue && curValue !== oldValue) {
           console.log("bum..");
@@ -24,4 +24,5 @@
     },
   }
 </script>
+
 

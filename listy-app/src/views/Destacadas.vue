@@ -11,7 +11,7 @@
                   <v-col cols="12">
                     <p class="my-md-3 my-0 px-6 px-md-13 text-center text-body-1 text-sm-h6 text-md-h4 grey--text">
                       Parece que no has destacado ninguna lista. Marca como favorita las listas mas frecuentes para
-                      hallarlas más rápido</p>
+                      hallarlas más rápido.</p>
                   </v-col>
                 </v-row>
               </v-card>
