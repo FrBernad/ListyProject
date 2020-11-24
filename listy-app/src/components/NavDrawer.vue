@@ -19,7 +19,7 @@
           <v-icon class="py-1">{{ item.icon }}</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title class="text-h6 py-1">{{ item.title }}</v-list-item-title>
+          <h1 class="text-h6">{{ item.title }}</h1>
         </v-list-item-content>
       </v-list-item>
     </v-list>
