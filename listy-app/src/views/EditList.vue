@@ -206,7 +206,14 @@
       },
 
       async modifyList(){
+        try{
+          let items = this.$store.getters["lists/listItems"];
+          let list = {listId:this.listId, listName:this.listName, items:items};
+          await this.$store.dispatch("lists/modifyList",list);
 
+        }catch(e){
+          console.log(e)
+        }
       },
 
       deleteItem(index) {
