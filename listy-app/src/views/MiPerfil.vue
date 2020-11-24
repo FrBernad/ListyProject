@@ -12,29 +12,32 @@
           Cambiar foto
         </v-btn>
       </v-row>
+      <v-row class="justify-center">
+        <v-col cols="7">
+        <v-card ref="form" class="mt-10">
+          <v-card-text>
+            <v-text-field
+              ref="username"
+              @blur="$v.username.$touch()"
+              :error-messages=usernameErrors
+              v-model="username"
+              :counter="10"
+              label="Usuario"
+              placeholder= 'ingrese su nombre de usuario'
+            ></v-text-field>
 
-      <v-card ref="form" class="mt-10">
-        <v-card-text>
-          <v-text-field
-            ref="username"
-            @blur="$v.username.$touch()"
-            :error-messages=usernameErrors
-            v-model="username"
-            :counter="10"
-            label="Usuario"
-            placeholder= 'ingrese su nombre de usuario'
-          ></v-text-field>
-
-          <v-text-field
-            ref="email"
-            @blur="$v.email.$touch()"
-            :error-messages=emailErrors
-            v-model="email"
-            label="E-mail"
-            placeholder= 'ingrese su email'
-          ></v-text-field>
-        </v-card-text>
-      </v-card>
+            <v-text-field
+              ref="email"
+              @blur="$v.email.$touch()"
+              :error-messages=emailErrors
+              v-model="email"
+              label="E-mail"
+              placeholder= 'ingrese su email'
+            ></v-text-field>
+          </v-card-text>
+        </v-card>
+        </v-col>
+      </v-row>
 
       <v-btn color="primary"  v-on:click="senddata" class="mt-6">
         <v-icon left>mdi-content-save</v-icon>
