@@ -1,7 +1,7 @@
 <template>
-  <v-card class="ma-5 pa-5 mx-auto" elevation="10" outlined max-width="80%">
+  <v-card  class="ma-5 pa-5 mx-auto" elevation="10" outlined max-width="80%">
     <v-row>
-      <v-card-title>{{ groupName }}</v-card-title>
+      <v-card-title>{{ data.groupName }}</v-card-title>
       <v-spacer></v-spacer>
       <v-card-actions>
         <v-btn icon @click="show = !show" >
@@ -15,7 +15,7 @@
         <v-divider></v-divider>
         <v-card-text>
           <ul>
-            <li v-for="member in members">
+            <li v-for="member in data.members">
               {{ member }}
             </li>
           </ul>
@@ -27,20 +27,14 @@
 
 <script>
 export default {
-  name: "Group",
+  name: "GroupPreview",
+  props: ['data'],
+
   data(){
     return{
       show: false,
-      members: ['Micky', 'Fran', 'Agus', 'Nico'],
     }
   },
-
-  props: {
-    groupName: {
-      type: String,
-      default: 'Grupo',
-    }
-  }
 }
 </script>
 

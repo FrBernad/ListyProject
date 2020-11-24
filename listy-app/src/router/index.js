@@ -73,7 +73,16 @@ const routes = [
           listId: route.query.listId,
           share: route.query.share
         }),
-      }
+      },
+      {
+        path: 'group',
+        name: 'Group',
+        meta: {requiresAuth: true},
+        component: () => import('../views/Group'),
+        props:route=>({
+          groupId: route.query.groupId,
+        })
+      },
     ]
   },
   {
