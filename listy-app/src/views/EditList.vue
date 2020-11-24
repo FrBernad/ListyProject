@@ -117,6 +117,7 @@
       this.checkFav();
       this.seedList();
       if (this.share) {
+        console.log("adding")
         this.addList();
       }
     },
@@ -155,7 +156,7 @@
       },
 
       copyToClipboard() {
-        navigator.clipboard.writeText(this.routineLink + "&shareDialog=true");
+        navigator.clipboard.writeText(this.routineLink + "&share=true");
       },
 
       async checkFav() {

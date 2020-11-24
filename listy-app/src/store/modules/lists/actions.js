@@ -150,7 +150,7 @@ export default {
   },
 
   async modifyList(context, payload) {
-    //cambio nombre
+    //cambio nombre en lista global
     let url = `https://listy-itba-app.firebaseio.com/lists/` +
       payload.listId +
       "/name" +
@@ -170,7 +170,28 @@ export default {
       throw new Error("Error modifying list name");
     }
 
-    //remove items
+    //cambio nombre de lista local
+
+    url = `https://listy-itba-app.firebaseio.com/users/` +
+      context.rootGetters["userId"] +
+      "/lists/" + payload.listId +
+      ".json?auth=" +
+      context.rootGetters["token"];
+
+    response = await fetch(
+      url, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({name: payload.listName}),
+      });
+
+    if (!response.ok) {
+      throw new Error("Error modifying local list name");
+    }
+
+    //remuevo elementos de lista global
     url = `https://listy-itba-app.firebaseio.com/lists/` +
       payload.listId +
       "/items" +
@@ -231,7 +252,7 @@ export default {
       throw new Error("Error deleting list from user");
     }
 
-    await this.unfavList(payload.listId);
+    await context.dispatch("unfavList", payload.listId);
 
     //if owner remove list from global lists
     if (owner) {
