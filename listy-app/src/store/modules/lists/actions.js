@@ -212,7 +212,7 @@ export default {
 
     //agrego nuevos items
     for (const item of payload.items) {
-      await context.dispatch("addItem", {item: item, listId: listId});
+      await context.dispatch("addItem", {item: item, listId: payload.listId});
     }
 
   },
