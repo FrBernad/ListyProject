@@ -169,7 +169,7 @@
       async addList() {
         try {
           let listData = {listId:this.listId,name:this.$store.getters["lists/listName"]}
-          await this.$store.dispatch("lists/addList");
+          await this.$store.dispatch("lists/addList",listData);
         } catch (e) {
           console.log(e);
         }

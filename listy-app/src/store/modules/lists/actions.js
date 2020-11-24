@@ -167,11 +167,10 @@ export default {
       });
 
     if (!response.ok) {
-      throw new Error("Error creating list");
+      throw new Error("Error modifying list name");
     }
 
     //remove items
-
     url = `https://listy-itba-app.firebaseio.com/lists/` +
       payload.listId +
       "/items" +
@@ -185,6 +184,10 @@ export default {
           'Content-Type': 'application/json'
         },
       });
+
+    if (!response.ok) {
+      throw new Error("Error deleting exercises");
+    }
 
     //agrego nuevos items
     for (const item of payload.items) {
