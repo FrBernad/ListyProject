@@ -505,7 +505,7 @@ export default {
   },
   async deleteGroup (context, payload) {
 
-    //get global list data
+    //get global group data
     let url = `https://listy-itba-app.firebaseio.com/groups/${payload.groupId}.json?auth=` +
       context.rootGetters['token']
 
