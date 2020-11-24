@@ -32,6 +32,7 @@ export default {
       await context.dispatch("addItem", {item: item, listId: listId});
     }
 
+
     //add list to user lists
     url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters["userId"]}/lists/${listId}.json?auth=` +
       context.rootGetters["token"];
@@ -52,6 +53,27 @@ export default {
       throw new Error("Error creating list");
     }
 
+  },
+
+  async addList(context, payload) {
+    let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters["userId"]}/lists/${payload.listId}.json?auth=` +
+      context.rootGetters["token"];
+
+    const response = await fetch(
+      url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({name: payload.name}),
+      });
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      console.log(responseData)
+      throw new Error("Error creating list");
+    }
   },
 
   async addItem(context, payload) {
@@ -127,8 +149,47 @@ export default {
     return responseData;
   },
 
-  async modifyList(context,payload){
+  async modifyList(context, payload) {
+    //cambio nombre
+    let url = `https://listy-itba-app.firebaseio.com/lists/` +
+      payload.listId +
+      "/name" +
+      ".json?auth=" +
+      context.rootGetters["token"];
 
+    let response = await fetch(
+      url, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({name: payload.listName}),
+      });
+
+    if (!response.ok) {
+      throw new Error("Error creating list");
+    }
+
+    //remove items
+
+    url = `https://listy-itba-app.firebaseio.com/lists/` +
+      payload.listId +
+      "/items" +
+      ".json?auth=" +
+      context.rootGetters["token"];
+
+    response = await fetch(
+      url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+    //agrego nuevos items
+    for (const item of payload.items) {
+      await context.dispatch("addItem", {item: item, listId: listId});
+    }
 
   },
 

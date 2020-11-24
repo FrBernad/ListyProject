@@ -2,15 +2,15 @@
 
   <v-fade-transition appear>
     <v-container fluid style="height:100%">
-      <v-dialog v-model="share" width="500px">
+      <v-dialog v-model="shareDialog" width="500px">
         <v-container>
           <v-row align="center" justify="center">
             <v-col cols="12">
               <h1 class="text-center">Copia el link y compartelo con tus amigos</h1>
             </v-col>
             <v-col cols="12" class="d-flex align-center justify-space-around">
-              <v-btn @click="share = false">Cancelar</v-btn>
-              <v-btn>Copiar link</v-btn>
+              <v-btn @click="shareDialog = false">Cancelar</v-btn>
+              <v-btn @click="copyToClipboard">Copiar link</v-btn>
             </v-col>
           </v-row>
         </v-container>
@@ -21,12 +21,13 @@
         <v-row class="align-center justify-center">
           <v-col cols="12" sm="8" class="d-flex align-center justify-start">
             <v-text-field class="text-h4 font-weight-bold" @blur="$v.listName.$touch()" :error-messages="nameError"
-                          :readonly="!edit" v-model="listName">{{listName}}</v-text-field>
+                          :readonly="!edit" v-model="listName">{{listName}}
+            </v-text-field>
           </v-col>
 
           <v-col cols="12" sm="4" class="d-flex align-center justify-space-around">
             <v-btn @click="edit = !edit" icon color="#000000">
-              <v-icon >mdi-pencil</v-icon>
+              <v-icon>mdi-pencil</v-icon>
             </v-btn>
             <v-btn icon color="#000000" @click="shareList">
               <v-icon>mdi-share-variant</v-icon>
@@ -69,7 +70,7 @@
       <v-card class="px-5 " elevation="10" outlined height="10%">
         <v-row align="center" justify="center">
           <v-col cols="6" class="d-flex justify-start align-center">
-            <v-btn @click="modifyList"  v-if="edit">
+            <v-btn @click="modifyList" v-if="edit">
               <v-icon left color="black">mdi-cart</v-icon>
               MODIFICAR
             </v-btn>
@@ -91,23 +92,23 @@
   import {sync} from "vuex-pathify";
   import ElementDetails from '../components/ElementDetails'
   import draggable from 'vuedraggable';
-  import { maxLength, minLength, required } from 'vuelidate/lib/validators'
+  import {maxLength, minLength, required} from 'vuelidate/lib/validators'
 
   export default {
     name: "EditList",
 
-    props: ["listId"],
+    props: ["listId", "share"],
 
-    components: {ListItem,ElementDetails,draggable},
+    components: {ListItem, ElementDetails, draggable},
 
     data() {
       return {
         errorMessage: "",
         loading: false,
-        edit:false,
+        edit: false,
         addElement: false,
         fav: false,
-        share: false
+        shareDialog: false
       }
     },
 
@@ -115,6 +116,9 @@
       this.$store.commit("lists/resetList");
       this.checkFav();
       this.seedList();
+      if (this.share) {
+        this.addList();
+      }
     },
 
     validations: {
@@ -147,14 +151,25 @@
 
     methods: {
       shareList() {
-        this.share = true;
-        console.log(this.$router)
-        navigator.clipboard.writeText(this.routineLink);
+        this.shareDialog = true;
+      },
+
+      copyToClipboard() {
+        navigator.clipboard.writeText(this.routineLink + "&shareDialog=true");
       },
 
       async checkFav() {
         try {
           this.fav = await this.$store.dispatch("lists/checkFav", {listId: this.listId});
+        } catch (e) {
+          console.log(e);
+        }
+      },
+
+      async addList() {
+        try {
+          let listData = {listId:this.listId,name:this.$store.getters["lists/listName"]}
+          await this.$store.dispatch("lists/addList");
         } catch (e) {
           console.log(e);
         }
@@ -205,12 +220,12 @@
         }
       },
 
-      async modifyList(){
+      async modifyList() {
 
       },
 
       deleteItem(index) {
-        this.$store.commit('lists/deleteFromList', {index:index});
+        this.$store.commit('lists/deleteFromList', {index: index});
       },
 
 
