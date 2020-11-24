@@ -1,7 +1,6 @@
 <template>
   <v-container fluid style="height: 100%">
     <transition name="fade">
-
       <v-row align="start" justify="center" style="height: 100%" v-if="!loading">
         <v-col cols="12">
           <v-row class="px-8 pt-4" :justify="this.currentEntries.length ? 'start': 'center'">
@@ -105,7 +104,7 @@
     transition: opacity .5s;
   }
 
-  .fade-enter, .fade-leave-t {
+  .fade-enter, .fade-leave-to {
     opacity: 0;
   }
 </style>

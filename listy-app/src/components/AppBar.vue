@@ -14,8 +14,9 @@
         <v-tabs right background-color="#F5F5F5" color="black">
           <v-tab @click="logout">
             <v-icon left>mdi-logout</v-icon>
-            Cerrar sesión</v-tab>
-          <v-tab to="/home/miPerfil">
+            Cerrar sesión
+          </v-tab>
+          <v-tab to="/home/miPerfil" exact>
             <v-icon left>mdi-account</v-icon>
             {{user}}
           </v-tab>

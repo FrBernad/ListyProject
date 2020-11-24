@@ -1,7 +1,7 @@
 <template>
 
-  <v-fade-transition appear>
-    <v-container fluid style="height:100%">
+  <transition name="fade">
+    <v-container v-if="ready" fluid style="height:100%">
       <v-dialog v-model="shareDialog" width="500px">
         <v-container class="backgroundDialog elevation-8">
           <v-row align="center" justify="center">
@@ -44,21 +44,21 @@
             </v-btn>
           </v-col>
         </v-row>
-
-        <v-row v-if="edit" class="align-center justify-center">
-          <v-col cols="12">
-            <v-dialog v-model="addElement" max-width="600px">
-              <template v-slot:activator="{on, attrs}">
-                <v-btn color="rgba(227,237,247,1)" block v-bind="attrs" v-on="on">
-                  <v-icon color="#69A74E" size="x-large">mdi-plus-circle</v-icon>
-                  <span class="font-weight-bold ">Agregar elemento</span>
-                </v-btn>
-              </template>
-              <ElementDetails @elementClose="addElement=false"></ElementDetails>
-            </v-dialog>
-          </v-col>
-        </v-row>
-
+        <transition name="fade">
+          <v-row v-if="edit" class="align-center justify-center">
+            <v-col cols="12">
+              <v-dialog v-model="addElement" max-width="600px">
+                <template v-slot:activator="{on, attrs}">
+                  <v-btn color="rgba(227,237,247,1)" block v-bind="attrs" v-on="on">
+                    <v-icon color="#69A74E" size="x-large">mdi-plus-circle</v-icon>
+                    <span class="font-weight-bold ">Agregar elemento</span>
+                  </v-btn>
+                </template>
+                <ElementDetails @elementClose="addElement=false"></ElementDetails>
+              </v-dialog>
+            </v-col>
+          </v-row>
+        </transition>
         <!--LIST ELEMETNS-->
         <draggable :disabled="!edit" v-model="listItems" direction="vertical" @start="drag=true" @end="drag=false">
           <v-expansion-panels class="mb-3" popout v-for="(item,index) in listItems" :key="index">
@@ -68,21 +68,21 @@
       </v-card>
 
       <v-card class="px-5 " elevation="10" outlined height="10%">
-        <v-row align="center" justify="center">
+        <v-row align="center" justify="center" style="height: 100%">
           <v-col cols="6" class="d-flex justify-start align-center">
-            <v-btn @click="modifyList" v-if="edit">
-              MODIFICAR
-            </v-btn>
+            <transition name="fade">
+              <v-btn @click="modifyList" v-if="edit" small>
+                MODIFICAR
+              </v-btn>
+            </transition>
           </v-col>
           <v-col cols="6" class="d-flex justify-end align-center">
             <span>Total: ${{ total }}</span>
           </v-col>
         </v-row>
       </v-card>
-
     </v-container>
-
-  </v-fade-transition>
+  </transition>
 
 </template>
 
@@ -107,7 +107,8 @@
         edit: false,
         addElement: false,
         fav: false,
-        shareDialog: false
+        shareDialog: false,
+        ready: false
       }
     },
 
@@ -215,12 +216,45 @@
         } catch (e) {
           console.log(e)
         }
+        this.ready = true;
       },
 
       async deleteList() {
         try {
-          await this.$store.dispatch("lists/deleteList", {listId: this.listId});
-          await this.$router.replace("/home")
+          this.$swal.fire({
+              didOpen: (popup) => {
+                this.$swal.showLoading();
+                this.$swal.clickConfirm();
+              },
+              padding: "6rem",
+              showConfirmButton: false,
+              preConfirm: async () => {
+                try {
+                  return await this.$store.dispatch("lists/deleteList", {listId: this.listId});
+                } catch (e) {
+                  return 0;
+                }
+              },
+              allowOutsideClick: () => !this.$swal.isLoading()
+            }
+          ).then((result) => {
+              if (result.isConfirmed) {
+                if (!result.value) {
+                  this.$swal.fire({
+                    icon: "error",
+                    title: "Error al eliminar la lista, intente denuevo.",
+                  })
+                } else {
+                  this.$swal.fire({
+                    icon: "success",
+                    title: "Lista eliminada.",
+                  }).then(async (result) =>
+                    await this.$router.replace("/home")
+                  )
+                }
+              }
+            }
+          )
         } catch (e) {
           console.log(e)
         }
@@ -251,12 +285,12 @@
               if (!result.value) {
                 this.$swal.fire({
                   icon: "error",
-                  title: "Error al modificar la rutina, intente denuevo",
+                  title: "Error al modificar la rutina, intente denuevo.",
                 })
               } else {
                 this.$swal.fire({
                   icon: "success",
-                  title: "Lista modificada",
+                  title: "Lista modificada.",
                 })
               }
             }
@@ -277,5 +311,13 @@
 <style scoped>
   .backgroundDialog {
     background-color: #e3edf7;
+  }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
   }
 </style>
