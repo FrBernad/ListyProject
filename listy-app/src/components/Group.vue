@@ -1,13 +1,10 @@
 <template>
-  <v-card class="pa-5 mx-auto" elevation="10" outlined max-width="80%">
+  <v-card class="ma-5 pa-5 mx-auto" elevation="10" outlined max-width="80%">
     <v-row>
       <v-card-title>{{ groupName }}</v-card-title>
       <v-spacer></v-spacer>
       <v-card-actions>
-        <v-btn
-          icon
-          @click="show = !show"
-        >
+        <v-btn icon @click="show = !show" >
           <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
         </v-btn>
       </v-card-actions>

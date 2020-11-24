@@ -153,6 +153,7 @@ export default {
 
     copyToClipboard() {
       navigator.clipboard.writeText(this.listLink + "&share=true");
+      this.shareDialog = false;
     },
 
     async checkFav() {
