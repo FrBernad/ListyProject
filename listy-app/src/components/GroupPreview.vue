@@ -2,7 +2,7 @@
   <v-card  class="ma-5 pa-5 mx-auto" elevation="10" outlined max-width="80%"
   :to="{
       path: '/home/group',
-      query: {groupId: data[1].group}
+      query: {groupId: data[1].id}
      }">
     <v-row>
       <v-col class="d-flex justify-start align-center pa-4">
@@ -16,7 +16,7 @@
 <script>
 export default {
   name: "GroupPreview",
-  props: ['data'],
+  props: ['data']
 }
 </script>
 

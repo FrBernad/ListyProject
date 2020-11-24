@@ -26,5 +26,26 @@ export default {
     state.listItems.splice(payload.index, 1);
   },
 
+  setGroup(state, payload) {
+    if (payload.members != null)
+      state.members = Object.values(payload.members);
+    else
+      state.members = [];
+
+    state.owner = payload.owner;
+    state.groupName = payload.name;
+  },
+  resetGroup(state) {
+    state.members = [];
+    state.groupName = '';
+    state.owner = '';
+  },
+  deleteFromGroup(state, payload) {
+    state.members.splice(payload.index, 1);
+  },
+  addMember(state, payload) {
+    state.members.push(payload);
+  },
+
 
 };
