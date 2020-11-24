@@ -13,7 +13,7 @@
               <v-row align="center" justify="center">
                 <v-fade-transition>
                   <v-col v-if="errorMessage" cols="8" class="d-flex align-center justify-center">
-                    <h2 class="text-h5 text-center light-green--text">{{errorMessage}}</h2>
+                    <h2 class="text-h5 text-center light-green--text">{{ errorMessage }}</h2>
                   </v-col>
                 </v-fade-transition>
                 <v-fade-transition>
@@ -39,23 +39,6 @@
                           v-model="listName"></v-text-field>
           </v-col>
 
-          <v-col cols="12" sm="4" class="d-flex align-center justify-space-around">
-            <v-btn icon color="#000000">
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <v-btn icon color="#000000">
-              <v-icon>mdi-star</v-icon>
-            </v-btn>
-            <v-btn icon color="#000000">
-              <v-icon>mdi-share-variant</v-icon>
-            </v-btn>
-            <v-btn icon color="#000000">
-              <v-icon>mdi-credit-card-outline</v-icon>
-            </v-btn>
-            <v-btn icon color="#000000">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </v-col>
         </v-row>
 
         <!--LIST ELEMETNS-->
@@ -73,11 +56,11 @@
           </v-col>
         </v-row>
 
-        <v-row class="align-center  justify-center">
-          <v-expansion-panels popout v-for="(item,index) in listItems" :key="index">
-            <ListItem :item="item"></ListItem>
+        <draggable v-model="listItems" direction="vertical" @start="drag=true" @end="drag=false">
+          <v-expansion-panels class="mb-3" popout v-for="(item,index) in listItems" :key="index">
+            <ListItem @send="deleteItem" :editable="true" :item="item" :index="index"></ListItem>
           </v-expansion-panels>
-        </v-row>
+        </draggable>
 
       </v-card>
 
@@ -90,7 +73,7 @@
             </v-btn>
           </v-col>
           <v-col cols="6" class="d-flex justify-center align-center">
-            <span>Total: ${{total}} </span>
+            <span>Total: ${{ total }} </span>
           </v-col>
         </v-row>
       </v-card>
@@ -103,13 +86,14 @@
   import ListItem from "../components/ListItem";
   import ElementDetails from "../components/ElementDetails";
   import {sync} from "vuex-pathify";
+  import draggable from 'vuedraggable';
 
   import {maxLength, minLength, required} from 'vuelidate/lib/validators'
 
   export default {
     name: "createList",
 
-    components: {ListItem, ElementDetails},
+    components: {ListItem, ElementDetails, draggable},
 
     data() {
       return {
@@ -167,9 +151,9 @@
           await sleep(2000);
           this.loading = false;
           this.errorMessage = "";
-          await this.$router.replace("/home")
+          await this.$router.replace("/home");
         } catch (e) {
-          this.errorMessage = "Error a crear la lista.";
+          this.errorMessage = "Error al crear lista."
           await setTimeout(() => {
             this.errorMessage = "";
             this.loading = false;
@@ -177,6 +161,9 @@
           console.log(e);
         }
       },
+      deleteItem(index) {
+          this.$store.commit('lists/deleteFromList', {index:index});
+      }
     }
   }
 </script>

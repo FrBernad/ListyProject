@@ -2,46 +2,81 @@
 
   <v-fade-transition appear>
     <v-container fluid style="height:100%">
+      <v-dialog v-model="shareDialog" width="500px">
+        <v-container>
+          <v-row align="center" justify="center">
+            <v-col cols="12">
+              <h1 class="text-center">Copia el link y compartelo con tus amigos</h1>
+            </v-col>
+            <v-col cols="12" class="d-flex align-center justify-space-around">
+              <v-btn @click="shareDialog = false">Cancelar</v-btn>
+              <v-btn @click="copyToClipboard">Copiar link</v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-dialog>
       <v-card class="pa-5" height="90%" elevation="10" outlined>
 
         <!--LIST HEADER-->
         <v-row class="align-center justify-center">
           <v-col cols="12" sm="8" class="d-flex align-center justify-start">
-            <h1>{{listName}}</h1>
+            <v-text-field class="text-h4 font-weight-bold" @blur="$v.listName.$touch()" :error-messages="nameError"
+                          :readonly="!edit" v-model="listName">{{listName}}
+            </v-text-field>
           </v-col>
 
           <v-col cols="12" sm="4" class="d-flex align-center justify-space-around">
-            <v-btn icon color="#000000">
+            <v-btn @click="edit = !edit" icon color="#000000">
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
-            <v-btn icon color="#000000">
-              <v-icon>mdi-star</v-icon>
-            </v-btn>
-            <v-btn icon color="#000000">
+            <v-btn icon color="#000000" @click="shareList">
               <v-icon>mdi-share-variant</v-icon>
+            </v-btn>
+            <v-btn icon color="#000000" @click="toogleFav">
+              <v-icon v-if="fav">mdi-heart</v-icon>
+              <v-icon v-else>mdi-heart-outline</v-icon>
             </v-btn>
             <v-btn icon color="#000000">
               <v-icon>mdi-credit-card-outline</v-icon>
             </v-btn>
-            <v-btn icon color="#000000">
+            <v-btn icon color="#000000" @click="deleteList">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </v-col>
         </v-row>
 
-        <!--LIST ELEMETNS-->
-        <v-row class="align-center  justify-center">
-          <v-expansion-panels popout v-for="(item,index) of listItems" :key="index">
-            <ListItem :item="item[1]"></ListItem>
-          </v-expansion-panels>
+        <v-row v-if="edit" class="align-center justify-center">
+          <v-col cols="12">
+            <v-dialog v-model="addElement" max-width="600px">
+              <template v-slot:activator="{on, attrs}">
+                <v-btn color="rgba(227,237,247,1)" block v-bind="attrs" v-on="on">
+                  <v-icon color="#69A74E" size="x-large">mdi-plus-circle</v-icon>
+                  <span class="font-weight-bold ">Agregar elemento</span>
+                </v-btn>
+              </template>
+              <ElementDetails @elementClose="addElement=false"></ElementDetails>
+            </v-dialog>
+          </v-col>
         </v-row>
 
+        <!--LIST ELEMETNS-->
+        <v-row class="align-center justify-center">
+          <v-expansion-panels class="mb-3" popout v-for="(item,index) of listItems" :key="index">
+            <ListItem :editable="edit" :item="item[1]"></ListItem>
+          </v-expansion-panels>
+        </v-row>
       </v-card>
 
       <v-card class="px-5 " elevation="10" outlined height="10%">
-        <v-row align="center" justify="end">
-          <v-col cols="6" class="d-flex justify-center align-center">
-            <span>Total: ${{total}} </span>
+        <v-row align="center" justify="center">
+          <v-col cols="6" class="d-flex justify-start align-center">
+            <v-btn @click="modifyList" v-if="edit">
+              <v-icon left color="black">mdi-cart</v-icon>
+              MODIFICAR
+            </v-btn>
+          </v-col>
+          <v-col cols="6" class="d-flex justify-end align-center">
+            <span>Total: ${{total}}</span>
           </v-col>
         </v-row>
       </v-card>
@@ -55,44 +90,153 @@
 <script>
   import ListItem from "../components/ListItem";
   import {sync} from "vuex-pathify";
+  import ElementDetails from '../components/ElementDetails'
+  import draggable from 'vuedraggable';
+  import {maxLength, minLength, required} from 'vuelidate/lib/validators'
 
   export default {
     name: "EditList",
 
-    props: ["listId"],
+    props: ["listId", "share"],
 
-    components: {ListItem},
+    components: {ListItem, ElementDetails, draggable},
 
     data() {
       return {
         errorMessage: "",
         loading: false,
-        addElement: false
+        edit: false,
+        addElement: false,
+        fav: false,
+        shareDialog: false
       }
     },
 
     created() {
       this.$store.commit("lists/resetList");
+      this.checkFav();
       this.seedList();
+      if (this.share) {
+        console.log("adding")
+        this.addList();
+      }
+    },
+
+    validations: {
+      listName: {
+        required, minLength: minLength(1), maxLength: maxLength(15)
+      }
     },
 
     computed: {
       ...sync("lists/*"),
+
+      nameError() {
+        const errors = [];
+        if (!this.$v.listName.$dirty) {
+          return errors;
+        }
+        !this.$v.listName.minLength && errors.push('El nombre debe contener por lo menos un caracter');
+        !this.$v.listName.maxLength && errors.push('El nombre debe contener como máximo 15 caracteres');
+        !this.$v.listName.required && errors.push('El nombre es requerido');
+        return errors;
+      },
       total() {
         let sum = 0;
         return this.listItems.reduce((sum, item) => sum + item[1].price * item[1].quantity, 0);
-      }
+      },
+      routineLink() {
+        return this.$store.getters['hostUrl'] + this.$router.history._startLocation;
+      },
     },
 
     methods: {
+      shareList() {
+        this.shareDialog = true;
+      },
+
+      copyToClipboard() {
+        navigator.clipboard.writeText(this.routineLink + "&share=true");
+      },
+
+      async checkFav() {
+        try {
+          this.fav = await this.$store.dispatch("lists/checkFav", {listId: this.listId});
+        } catch (e) {
+          console.log(e);
+        }
+      },
+
+      async addList() {
+        try {
+          let listData = {listId:this.listId,name:this.$store.getters["lists/listName"]}
+          await this.$store.dispatch("lists/addList",listData);
+        } catch (e) {
+          console.log(e);
+        }
+      },
+
+      async toogleFav() {
+        if (this.fav) {
+          try {
+            await this.$store.dispatch("lists/unfavList", {
+              listId: this.listId,
+            });
+            this.fav = false;
+          } catch (e) {
+            this.fav = false;
+            console.log("error unfaving");
+            console.log(e);
+          }
+        } else {
+          try {
+            await this.$store.dispatch("lists/favList", {
+              listId: this.listId,
+              name: this.$store.getters["lists/listName"]
+            });
+            this.fav = true;
+          } catch (e) {
+            this.fav = true;
+            console.log("error faving");
+            console.log(e);
+          }
+        }
+      },
+
       async seedList() {
         try {
           const listData = await this.$store.dispatch("lists/getList", {listId: this.listId});
-          this.$store.commit("lists/setList", listData)
+          this.$store.commit("lists/setList", listData);
         } catch (e) {
           console.log(e)
         }
-      }
+      },
+
+      async deleteList() {
+        try {
+          await this.$store.dispatch("lists/deleteList", {listId: this.listId});
+          await this.$router.replace("/home")
+        } catch (e) {
+          console.log(e)
+        }
+      },
+
+      async modifyList(){
+        try{
+          let items = this.$store.getters["lists/listItems"];
+          let list = {listId:this.listId, listName:this.listName, items:items};
+          await this.$store.dispatch("lists/modifyList",list);
+
+        }catch(e){
+          console.log(e)
+        }
+      },
+
+      deleteItem(index) {
+        this.$store.commit('lists/deleteFromList', {index: index});
+      },
+
+
     }
   }
 </script>

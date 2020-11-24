@@ -14,12 +14,15 @@ export default {
   },
 
   setList(state, payload) {
-    state.listItems = Object.entries(payload.items);
+    if(payload.items != null)
+      state.listItems = Object.entries(payload.items);
     state.listName = payload.name;
   },
 
   deleteFromList(state, payload) {
     state.listItems.splice(payload.index, 1);
   },
+
+
 
 };

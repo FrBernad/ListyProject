@@ -71,6 +71,7 @@ const routes = [
         component: () => import('../views/EditList'),
         props: route => ({
           listId: route.query.listId,
+          share: route.query.share
         }),
       }
     ]
