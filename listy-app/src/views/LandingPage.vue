@@ -45,6 +45,6 @@
 
 <style scoped>
   * {
-    background-color: #DEE2E6;
+    background-color: #f0f2f5;
   }
 </style>

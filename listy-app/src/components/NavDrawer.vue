@@ -4,7 +4,7 @@
                        left
                        permanent
                        :expand-on-hover="$vuetify.breakpoint.smAndDown"
-                       color="rgba(227,237,247,1)"
+                       class="navDrawerColor"
   >
     <v-list dense>
       <v-list-item
@@ -43,5 +43,8 @@
 <style scoped>
   .itemList {
     font-size: 200px;
+  }
+  .navDrawerColor{
+    background-color : #e4e6eb;
   }
 </style>

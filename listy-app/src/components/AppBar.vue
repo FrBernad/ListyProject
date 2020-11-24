@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app clipped-left height="62px">
+  <v-app-bar app clipped-left  color="#FFFFFF" height="62px">
 
     <v-row align="center">
 
@@ -15,7 +15,7 @@
             <v-icon left>mdi-account</v-icon>
             {{user}}
           </v-btn>
-          <v-btn @click="logout" small fab color="#E4E6EB" elevation="0">
+          <v-btn @click="logout" small fab color="#FFFFFF" elevation="0">
             <v-icon>mdi-logout</v-icon>
           </v-btn>
       </v-col>
