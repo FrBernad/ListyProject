@@ -1,5 +1,9 @@
 <template>
-  <v-card  class="ma-5 pa-5 mx-auto" elevation="10" outlined max-width="80%">
+  <v-card  class="ma-5 pa-5 mx-auto" elevation="10" outlined max-width="80%"
+  :to="{
+      path: '/home/group',
+      query: {groupId: data[1].group}
+     }">
     <v-row>
       <v-col class="d-flex justify-start align-center pa-4">
         <span class="pl-4">{{data[1].name}}</span>
@@ -13,12 +17,6 @@
 export default {
   name: "GroupPreview",
   props: ['data'],
-
-  data(){
-    return{
-      show: false,
-    }
-  },
 }
 </script>
 

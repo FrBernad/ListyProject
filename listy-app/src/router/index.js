@@ -13,13 +13,13 @@ const routes = [
         path: '',
         name: 'landingPage',
         component: () => import('../views/LandingPage'),
-        meta: {requiresUnauth: true}
+        meta: { requiresUnauth: true }
       },
       {
         path: 'verifyAccount',
         name: 'verifyAccount',
         component: () => import('../views/VerifyAccount'),
-        meta: {requiresUnauth: true}
+        meta: { requiresUnauth: true }
       }
     ]
   },
@@ -31,43 +31,43 @@ const routes = [
       {
         path: '',
         name: 'home',
-        meta: {requiresAuth: true},
+        meta: { requiresAuth: true },
         component: () => import('../views/Home.vue'),
       },
       {
         path: 'miPerfil',
         name: 'MiPerfil ',
-        meta: {requiresAuth: true},
+        meta: { requiresAuth: true },
         component: () => import('../views/MiPerfil'),
       },
       {
         path: 'destacadas',
         name: 'Destacadas',
-        meta: {requiresAuth: true},
+        meta: { requiresAuth: true },
         component: () => import('../views/Destacadas')
       },
       {
         path: 'grupos',
         name: 'Grupos',
-        meta: {requiresAuth: true},
+        meta: { requiresAuth: true },
         component: () => import('../views/Grupos')
       },
       {
         path: 'ayuda',
         name: 'Ayuda',
-        meta: {requiresAuth: true},
+        meta: { requiresAuth: true },
         component: () => import('../views/Ayuda')
       },
       {
         path: 'createList',
         name: 'CreateList',
-        meta: {requiresAuth: true},
+        meta: { requiresAuth: true },
         component: () => import('../views/CreateList')
       },
       {
         path: 'list',
         name: 'List',
-        meta: {requiresAuth: true},
+        meta: { requiresAuth: true },
         component: () => import('../views/EditList'),
         props: route => ({
           listId: route.query.listId,
@@ -77,9 +77,9 @@ const routes = [
       {
         path: 'group',
         name: 'Group',
-        meta: {requiresAuth: true},
+        meta: { requiresAuth: true },
         component: () => import('../views/Group'),
-        props:route=>({
+        props: route => ({
           groupId: route.query.groupId,
         })
       },
@@ -106,16 +106,16 @@ const router = new VueRouter({
   routes
 })
 
-store.dispatch('tryLogin');
+store.dispatch('tryLogin')
 
 router.beforeEach(function (to, from, next) {
-  if (to.meta.requiresAuth && !store.getters["isAuthenticated"]) {
-    next('/');
-  } else if (to.meta.requiresUnauth && store.getters["isAuthenticated"]) {
-    next('/home');
+  if (to.meta.requiresAuth && !store.getters['isAuthenticated']) {
+    next('/')
+  } else if (to.meta.requiresUnauth && store.getters['isAuthenticated']) {
+    next('/home')
   } else {
-    next();
+    next()
   }
-});
+})
 
 export default router
