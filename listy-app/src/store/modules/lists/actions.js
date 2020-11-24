@@ -32,7 +32,6 @@ export default {
       await context.dispatch("addItem", {item: item, listId: listId});
     }
 
-
     //add list to user lists
     url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters["userId"]}/lists/${listId}.json?auth=` +
       context.rootGetters["token"];
@@ -43,7 +42,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({name: payload.name}),
+        body: JSON.stringify({id: listId}),
       });
 
     responseData = await response.json();
@@ -65,7 +64,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({name: payload.name}),
+        body: JSON.stringify({id: payload.listId}),
       });
 
     const responseData = await response.json();
@@ -103,35 +102,56 @@ export default {
   },
 
   async getLists(context) {
+
+    //get listsIds
     let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters["userId"]}/lists.json?auth=` +
       context.rootGetters["token"];
 
     let response = await fetch(url);
 
-    let listsInfo = await response.json();
+    let listsIds = await response.json();
 
     if (!response.ok) {
-      console.log(listsInfo)
-      throw new Error("Error creating list");
+      console.log(listsIds)
+      throw new Error("Error retrieving lists ids ");
     }
 
-    return listsInfo ? listsInfo : {};
+    return await context.dispatch("getListsById", listsIds);
+  },
+
+  async getListsById(context, payload) {
+    //get lists
+    let lists = [];
+
+    for (const listId in payload) {
+      let url = `https://listy-itba-app.firebaseio.com/lists/${listId}.json?auth=` +
+        context.rootGetters["token"];
+      let response = await fetch(url);
+      let listData = await response.json();
+      if (!response.ok) {
+        console.log(payload)
+        throw new Error("Error retrieving list list");
+      }
+      listData.id = listId;
+      lists.push(listData);
+    }
+    return lists;
   },
 
   async getFavourites(context) {
     let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters["userId"]}/favourites.json?auth=` +
       context.rootGetters["token"];
 
-    const response = await fetch(url);
+    let response = await fetch(url);
 
-    const responseData = await response.json();
+    let listsIds = await response.json();
 
     if (!response.ok) {
-      console.log(responseData)
+      console.log(listsIds)
       throw new Error("Error getting favourites");
     }
 
-    return responseData ? responseData : {};
+    return await context.dispatch("getListsById",listsIds);
   },
 
   async getList(context, payload) {
@@ -146,6 +166,7 @@ export default {
       console.log(responseData)
       throw new Error("Error getting list");
     }
+
     return responseData;
   },
 
@@ -153,10 +174,10 @@ export default {
     //cambio nombre en lista global
     let url = `https://listy-itba-app.firebaseio.com/lists/` +
       payload.listId +
-      "/name" +
       ".json?auth=" +
       context.rootGetters["token"];
 
+    console.log(payload);
     let response = await fetch(
       url, {
         method: 'PATCH',
@@ -170,28 +191,7 @@ export default {
       throw new Error("Error modifying list name");
     }
 
-    //cambio nombre de lista local
-
-    url = `https://listy-itba-app.firebaseio.com/users/` +
-      context.rootGetters["userId"] +
-      "/lists/" + payload.listId +
-      ".json?auth=" +
-      context.rootGetters["token"];
-
-    response = await fetch(
-      url, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({name: payload.listName}),
-      });
-
-    if (!response.ok) {
-      throw new Error("Error modifying local list name");
-    }
-
-    //remuevo elementos de lista global
+    //Remuevo elementos de lista global
     url = `https://listy-itba-app.firebaseio.com/lists/` +
       payload.listId +
       "/items" +
@@ -210,7 +210,7 @@ export default {
       throw new Error("Error deleting exercises");
     }
 
-    //agrego nuevos items
+    //Agrego nuevos items
     for (const item of payload.items) {
       await context.dispatch("addItem", {item: item, listId: payload.listId});
     }
@@ -300,7 +300,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({name: payload.name})
+        body: JSON.stringify({id: payload.listId})
       });
 
     let responseData = await response.json();

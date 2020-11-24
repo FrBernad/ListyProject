@@ -60,9 +60,9 @@
         </v-row>
 
         <!--LIST ELEMETNS-->
-        <v-row class="align-center justify-center">
-          <v-expansion-panels class="mb-3" popout v-for="(item,index) of listItems" :key="index">
-            <ListItem @send="deleteItem"  :index="index" :editable="edit" :item="item[1]"></ListItem>
+        <v-row class="align-center  justify-center">
+          <v-expansion-panels popout v-for="(item,index) of this.listItems" :key="index">
+            <ListItem :editable="edit" :item="item"></ListItem>
           </v-expansion-panels>
         </v-row>
       </v-card>
@@ -116,10 +116,6 @@
       this.$store.commit("lists/resetList");
       this.checkFav();
       this.seedList();
-      if (this.share) {
-        console.log("adding")
-        this.addList();
-      }
     },
 
     validations: {
@@ -143,9 +139,11 @@
       },
       total() {
         let sum = 0;
-        return this.listItems.reduce((sum, item) => sum + item[1].price * item[1].quantity, 0);
+        return this.listItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
       },
+
       routineLink() {
+        console.log(this.$router);
         return this.$store.getters['hostUrl'] + this.$router.history._startLocation;
       },
     },
@@ -169,8 +167,8 @@
 
       async addList() {
         try {
-          let listData = {listId:this.listId,name:this.$store.getters["lists/listName"]}
-          await this.$store.dispatch("lists/addList",listData);
+          let listData = {listId: this.listId, name: this.$store.getters["lists/listName"]}
+          await this.$store.dispatch("lists/addList", listData);
         } catch (e) {
           console.log(e);
         }
@@ -207,6 +205,10 @@
         try {
           const listData = await this.$store.dispatch("lists/getList", {listId: this.listId});
           this.$store.commit("lists/setList", listData);
+          if (this.share) {
+            console.log("adding")
+            await this.addList();
+          }
         } catch (e) {
           console.log(e)
         }
@@ -221,20 +223,12 @@
         }
       },
 
-      async modifyList(){
-        try{
-          let aux = this.$store.getters["lists/listItems"];
-          let items = [];
-
-          for (const item of aux){
-            items.push(item[1]);
-          }
-
-          let list = {listId:this.listId, listName:this.listName, items:items};
-
-          await this.$store.dispatch("lists/modifyList",list);
-
-        }catch(e){
+      async modifyList() {
+        try {
+          let items = this.$store.getters["lists/listItems"];
+          let list = {listId: this.listId, listName: this.listName, items: items};
+          await this.$store.dispatch("lists/modifyList", list);
+        } catch (e) {
           console.log(e)
         }
       },
@@ -242,7 +236,6 @@
       deleteItem(index) {
         this.$store.commit('lists/deleteFromList', {index: index});
       },
-
 
     }
   }

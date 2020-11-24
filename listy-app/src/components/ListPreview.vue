@@ -1,7 +1,7 @@
 <template>
   <v-card :to="{
       path: '/home/list',
-      query: {listId: data[0]}
+      query: {listId: data[1].id}
      }">
     <v-row>
       <v-col class="d-flex justify-start align-center pa-4">
