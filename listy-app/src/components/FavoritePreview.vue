@@ -8,7 +8,7 @@
         <span class="pl-4">{{data[1].name}}</span>
       </v-col>
       <v-col cols="2" class="d-flex justify-center align-center pa-4">
-        <v-icon>mdi-star</v-icon>
+        <v-icon class="pr-4">mdi-heart</v-icon>
       </v-col>
     </v-row>
 
