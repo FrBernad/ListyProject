@@ -57,7 +57,7 @@
         </v-row>
 
         <draggable v-model="listItems" direction="vertical" @start="drag=true" @end="drag=false">
-          <v-expansion-panels popout v-for="(item,index) in listItems" :key="index">
+          <v-expansion-panels class="mb-3" popout v-for="(item,index) in listItems" :key="index">
             <ListItem @send="deleteItem" :editable="true" :item="item" :index="index"></ListItem>
           </v-expansion-panels>
         </draggable>
