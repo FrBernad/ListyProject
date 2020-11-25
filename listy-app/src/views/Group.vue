@@ -35,8 +35,8 @@
       </v-row>
 
       <v-list dense>
-        <v-list-item-group  color="primary">
-          <v-list-item v-for="(member, index) of this.membersName" :key="index" >
+        <v-list-item-group color="primary">
+          <v-list-item v-for="(member, index) of this.membersName" :key="index">
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
             </v-list-item-icon>
@@ -47,7 +47,6 @@
         </v-list-item-group>
       </v-list>
     </v-card>
-
 
 
     <v-card class="px-5 justify-center align-content-center" elevation="10" outlined height="10%">
@@ -96,15 +95,13 @@
         if (!this.$v.groupName.$dirty) {
           return errors;
         }
-        this.$store.commit("lists/setGroup", groupData);
-        if (this.share) {
-          await this.addGroup();
-        }
-
-        let aux = await this.$store.dispatch("lists/getNames",{members: this.members });
-        this.$store.commit("lists/setNames",{members: aux});
-      } catch (e) {
-        console.log(e)
+        !this.$v.groupName.minLength && errors.push('El nombre debe contener por lo menos un caracter');
+        !this.$v.groupName.maxLength && errors.push('El nombre debe contener como máximo 15 caracteres');
+        !this.$v.groupName.required && errors.push('El nombre es requerido');
+        return errors;
+      },
+      groupLink() {
+        return this.$store.getters['hostUrl'] + this.$router.currentRoute.fullPath;
       }
     },
     methods: {
@@ -128,6 +125,9 @@
           if (this.share) {
             await this.addGroup();
           }
+
+          let aux = await this.$store.dispatch("lists/getNames", {members: this.members});
+          this.$store.commit("lists/setNames", {members: aux});
         } catch (e) {
           console.log(e)
         }
