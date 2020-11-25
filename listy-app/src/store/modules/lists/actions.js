@@ -290,7 +290,6 @@ export default {
           })
 
         if (!response.ok) {
-          console.log("errooooorr!!!")
           throw new Error('Error deleting list from other user')
         }
       }
@@ -595,6 +594,7 @@ export default {
           })
 
         if (!response.ok) {
+          console.log("errorrr!!!");
           throw new Error('Error deleting group from other user')
         }
       }
