@@ -2,7 +2,14 @@
   <v-card class="pa-5">
     <v-row class="justify-center align-center">
       <v-col cols="12">
+        <v-text-field v-if="find" v-model="item.name"
+                      label="Nombre"
+                      placeholder="Escriba el nombre del producto"
+                      :error-messages="nameError"
+                      @blur="$v.item.name.$touch()">
+        </v-text-field>
         <v-autocomplete
+          v-if="!find"
           v-model="selected"
           :items="items"
           :loading="isLoading"
@@ -55,7 +62,7 @@
         <v-hover
           v-slot:default="{ hover }"
         >
-          <a id="forgot" :class="{'text-decoration-underline':hover}" class="text-center">¿No encontraste el producto
+          <a @click="find = !find" id="forgot" :class="{'text-decoration-underline':hover}" class="text-center">¿No encontraste el producto
             que
             buscabas?</a>
         </v-hover>
@@ -93,7 +100,7 @@
     </v-row>
     <v-row>
       <v-col cols="4" class="d-flex py-0 justify-start">
-        <v-text-field label="Precio" type="number" v-model.number="item.price" :error-messages="priceError"
+        <v-text-field :readonly="!find" label="Precio" type="number" v-model.number="item.price" :error-messages="priceError"
                       @blur="$v.item.price.$touch()"></v-text-field>
       </v-col>
     </v-row>
@@ -125,6 +132,7 @@
           note: '',
           price: 0
         },
+        find: false,
       }
     },
     watch: {
