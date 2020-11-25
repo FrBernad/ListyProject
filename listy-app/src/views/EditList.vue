@@ -20,7 +20,7 @@
             <v-btn icon color="#000000">
               <v-icon>mdi-share-variant</v-icon>
             </v-btn>
-            <v-btn icon color="#000000">
+            <v-btn icon color="#000000" @click="pay">
               <v-icon>mdi-credit-card-outline</v-icon>
             </v-btn>
             <v-btn icon color="#000000">
@@ -55,6 +55,10 @@
 <script>
   import ListItem from "../components/ListItem";
   import {sync} from "vuex-pathify";
+//  import MP from "../../../mercadopagoService/MercadoPagoCheckout/app.js";
+  import axios from "axios";
+//   import mercadopago2 from 'mercadopago'
+//  var mercadopago = require('../MP-master/examples');
 
   export default {
     name: "EditList",
@@ -85,6 +89,21 @@
     },
 
     methods: {
+      pay() {
+        console.log("paying");
+
+        axios.post("http://localhost:3000/payment/new", {
+          name: "nombreItem",
+          price: 333,
+          unit: 1,
+          img: "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+        }).then((response) => {
+          console.log(response);
+          console.log("payed");
+        })
+
+      },
+
       async seedList() {
         try {
           const listData = await this.$store.dispatch("lists/getList", {listId: this.listId});
@@ -92,7 +111,8 @@
         } catch (e) {
           console.log(e)
         }
-      }
+      },
+
     }
   }
 </script>
