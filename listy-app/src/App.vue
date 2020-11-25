@@ -7,6 +7,7 @@
 <script>
   export default {
     name: 'App',
+
     computed: {
       didAutoLogout() {
         return this.$store.getters["auth/didAutoLogout"];

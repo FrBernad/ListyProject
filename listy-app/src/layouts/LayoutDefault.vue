@@ -7,7 +7,6 @@
         <router-view></router-view>
       </v-fade-transition>
     </v-main>
-    <Footer></Footer>
   </v-app>
 </template>
 

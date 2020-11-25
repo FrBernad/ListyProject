@@ -132,7 +132,8 @@
           quantity: 0,
           responsible: '',
           note: '',
-          price: 0
+          price: 0,
+          checked: false
         },
         find: false,
       }
@@ -184,6 +185,7 @@
 
       elementClose() {
         this.resetFields();
+        this.selected=null;
         this.$emit('elementClose');
       }
       ,
@@ -198,7 +200,8 @@
           quantity: this.item.quantity,
           responsible: this.item.responsible,
           note: this.item.note,
-          price: this.item.price
+          price: this.item.price,
+          checked: this.item.checked
         };
         this.$store.commit('lists/addItem', copy);
         this.elementClose();
@@ -211,6 +214,7 @@
         this.item.responsible = '';
         this.item.note = '';
         this.item.price = 0;
+        this.item.checked = false;
       }
     }
     ,

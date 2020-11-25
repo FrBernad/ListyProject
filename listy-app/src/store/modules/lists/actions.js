@@ -402,7 +402,28 @@ export default {
     return !!responseData
   },
 
-  async newGroup (context, payload) {
+  async toogleCheckbox(context, payload) {
+    //add group to global group
+    let url = `https://listy-itba-app.firebaseio.com/lists/${payload.listId}/items/${payload.itemId}.json?auth=` + context.rootGetters['token']
+
+    let response = await fetch(
+      url, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload.item),
+      })
+
+    let responseData = await response.json()
+
+    if (!response.ok) {
+      console.log(responseData)
+      throw new Error('Error toggling item');
+    }
+  },
+
+  async newGroup(context, payload) {
     //add group to global group
     let url = `https://listy-itba-app.firebaseio.com/groups.json?auth=` + context.rootGetters['token']
 

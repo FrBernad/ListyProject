@@ -49,7 +49,6 @@
       </v-list>
     </v-card>
 
-
     <v-card class="px-5 justify-center align-content-center" elevation="10" outlined height="10%">
       <v-row align="center" justify="center">
         <v-col cols="6" class="d-flex justify-start align-center">
@@ -67,6 +66,7 @@
     </v-card>
 
   </v-container>
+
 </template>
 
 <script>
@@ -86,6 +86,7 @@
     data() {
       return {
         errorMessage: "",
+        ready: false,
         loading: false,
         edit: false,
         listDialog : false,
@@ -149,6 +150,7 @@
         } catch (e) {
           console.log(e)
         }
+        this.ready= true;
       },
 
       async addGroup() {

@@ -24,58 +24,67 @@
 </template>
 
 <script>
-import { maxLength, minLength, required } from 'vuelidate/lib/validators'
+  import {maxLength, minLength, required} from 'vuelidate/lib/validators'
 
-export default {
+  export default {
 
-  name: 'CreateGroupDialog',
-  data () {
-    return {
-      groupName: '',
-    }
-  },
-  methods: {
-    closeDialog (refresh) {
-      this.groupName = '';
-      this.$emit('closeDialog',refresh)
-    },
-    async newGroup () {
-      if(this.$v.$invalid){
-        this.$v.$touch();
-        return;
+    name: 'CreateGroupDialog',
+    data() {
+      return {
+        groupName: '',
+        loading: false
       }
-      const copy = {groupName: this.groupName}
-      await this.$store.dispatch('lists/newGroup',copy);
-      this.closeDialog(true);
+    },
+    methods: {
+      closeDialog(refresh) {
+        this.groupName = '';
+        this.$emit('closeDialog', refresh)
+      },
+      async newGroup() {
+        if (!this.loading) {
+          this.loading = true;
+          if (this.$v.$invalid) {
+            this.$v.$touch();
+            return;
+          }
+          const copy = {groupName: this.groupName}
+          try {
+            await this.$store.dispatch('lists/newGroup', copy);
+          } catch (e) {
+            console.log(e)
+          }
+          this.closeDialog(true);
+          this.loading = false;
+        }
+      },
+
     },
 
-  },
-
-  validations: {
-    groupName: {
-      required,
-      minLength: minLength(1),
-      maxLength: maxLength(25)
+    validations: {
+      groupName: {
+        required,
+        minLength: minLength(1),
+        maxLength: maxLength(25)
+      },
     },
-  },
 
-  computed: {
-    nameError () {
-      const errors = []
-      if (!this.$v.groupName.$dirty) {
+    computed: {
+      nameError() {
+        const errors = []
+        if (!this.$v.groupName.$dirty) {
+          return errors
+        }
+        !this.$v.groupName.required && errors.push('El nombre del grupo es requerido')
+        !this.$v.groupName.maxLength && errors.push('El nombre del grupo debe contener como máximo 25 caracteres')
+        !this.$v.groupName.minLength && errors.push('El nombre del grupo debe contener por lo menos un caracter')
         return errors
-      }
-      !this.$v.groupName.required && errors.push('El nombre del grupo es requerido')
-      !this.$v.groupName.maxLength && errors.push('El nombre del grupo debe contener como máximo 25 caracteres')
-      !this.$v.groupName.minLength && errors.push('El nombre del grupo debe contener por lo menos un caracter')
-      return errors
-    },
+      },
+    }
   }
-}
 </script>
 
 <style scoped>
-.borderCard {
-  border: solid #1D50AE;
-}
+  .borderCard {
+    border: solid #1D50AE;
+  }
 </style>

@@ -26,7 +26,7 @@
           </v-col>
 
           <v-col cols="12" sm="4" class="d-flex align-center justify-space-around">
-            <v-btn @click="edit = !edit" icon color="#000000">
+            <v-btn @click="edit = !edit" :disabled="edit" icon color="#000000">
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
             <v-btn icon color="#000000" @click="shareList">
@@ -62,7 +62,7 @@
         <!--LIST ELEMETNS-->
         <draggable :disabled="!edit" v-model="listItems" direction="vertical" @start="drag=true" @end="drag=false">
           <v-expansion-panels class="mb-3" popout v-for="(item,index) in listItems" :key="index">
-            <ListItem :editable="edit" :item="item" :index="index" @send="deleteItem"></ListItem>
+            <ListItem :editable="edit" :listId="listId" :item="item" :index="index" @send="deleteItem"></ListItem>
           </v-expansion-panels>
         </draggable>
       </v-card>
@@ -71,8 +71,13 @@
         <v-row align="center" justify="center" style="height: 100%">
           <v-col cols="6" class="d-flex justify-start align-center">
             <transition name="fade">
-              <v-btn @click="modifyList" v-if="edit" small>
+              <v-btn @click="modifyList" v-if="edit" small class="mr-8">
                 MODIFICAR
+              </v-btn>
+            </transition>
+            <transition name="fade">
+              <v-btn @click="cancelModify" v-if="edit" small>
+                CANCELAR
               </v-btn>
             </transition>
           </v-col>
@@ -145,9 +150,11 @@
       listLink() {
         return this.$store.getters['hostUrl'] + this.$router.currentRoute.fullPath;
       },
+
     },
 
     methods: {
+
       shareList() {
         this.shareDialog = true;
       },
@@ -213,6 +220,7 @@
             console.log("adding")
             await this.addList();
           }
+          console.log(this.listItems)
         } catch (e) {
           console.log(e)
         }
@@ -260,6 +268,11 @@
         }
       },
 
+      async cancelModify() {
+        await this.seedList();
+        this.edit = false;
+      },
+
       async modifyList() {
         let items = this.$store.getters["lists/listItems"];
         let list = {listId: this.listId, listName: this.listName, items: items};
@@ -301,8 +314,7 @@
 
       deleteItem(index) {
         this.$store.commit('lists/deleteFromList', {index: index});
-      }
-      ,
+      },
 
     }
   }
@@ -321,7 +333,7 @@
     opacity: 0;
   }
 
-  .backgroundColor{
+  .backgroundColor {
     background-color: #f0f2f5;
   }
 </style>

@@ -14,11 +14,14 @@ export default {
   },
 
   setList(state, payload) {
-    if (payload.items != null)
-      state.listItems = Object.values(payload.items);
-    else
-      state.listItems = [];
-
+    let aux = [];
+    if (payload.items != null) {
+      Object.entries(payload.items).forEach(value => {
+        value[1].id = value[0];
+        aux.push(value[1]);
+      })
+    }
+    state.listItems = aux;
     state.listName = payload.name;
   },
 
@@ -48,7 +51,7 @@ export default {
     state.members.push(payload);
   },
 
-  setNames(state,payload){
+  setNames(state, payload) {
     state.membersName.push(...payload.members);
   }
 
