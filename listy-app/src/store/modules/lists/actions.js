@@ -565,7 +565,6 @@ export default {
 
   async newListGroup (context, payload) {
     let listId = await context.dispatch('createList',{name: payload.name});
-    console.log(listId);
     for(const user of payload.members){
       await context.dispatch('addListToUser',{listId: listId, userId: user.memberId })
     }
