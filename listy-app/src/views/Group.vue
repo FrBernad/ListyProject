@@ -155,6 +155,7 @@
                 try {
                   return await this.$store.dispatch("lists/deleteGroup", {groupId: this.groupId});
                 } catch (e) {
+                  console.log(e);
                   return 0;
                 }
               },

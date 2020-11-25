@@ -126,7 +126,7 @@ export default {
     //get lists
     let lists = []
 
-    for (const listId in payload) {
+    for (const listId of payload) {
       let url = `https://listy-itba-app.firebaseio.com/lists/${listId}.json?auth=` +
         context.rootGetters['token']
       let response = await fetch(url)
@@ -543,9 +543,9 @@ export default {
       })
 
     if (!response.ok) {
+      console.log(response);
       throw new Error('Error deleting group from user')
     }
-
 
     //delete member from global list
     url = `https://listy-itba-app.firebaseio.com/groups/${payload.groupId}/members/${context.rootGetters["userId"]}.json?auth=` +
@@ -560,6 +560,7 @@ export default {
       })
 
     if (!response.ok) {
+      console.log(response);
       throw new Error('Error deleting group from user')
     }
 
@@ -577,11 +578,12 @@ export default {
         })
 
       if (!response.ok) {
+        console.log(response);
         throw new Error('Error deleting group from user')
       }
 
       //delete list from all users
-      for (const userId of users) {
+      for (const userId in users) {
         url = `https://listy-itba-app.firebaseio.com/users/${userId}/groups/${payload.groupId}.json?auth=` +
           context.rootGetters['token']
 
@@ -594,7 +596,7 @@ export default {
           })
 
         if (!response.ok) {
-          console.log("errorrr!!!");
+          console.log(response);
           throw new Error('Error deleting group from other user')
         }
       }
