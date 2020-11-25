@@ -37,6 +37,7 @@ export default {
   },
   resetGroup(state) {
     state.members = [];
+    state.membersName = [];
     state.groupName = '';
     state.owner = '';
   },
