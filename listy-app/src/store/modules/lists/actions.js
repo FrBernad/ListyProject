@@ -277,7 +277,7 @@ export default {
       }
 
       //delete list from all users
-      for (const userId in users) {
+      for (const userId of users) {
         url = `https://listy-itba-app.firebaseio.com/users/${userId}/lists/${payload.listId}.json?auth=` +
           context.rootGetters['token']
 
@@ -290,6 +290,7 @@ export default {
           })
 
         if (!response.ok) {
+          console.log("errooooorr!!!")
           throw new Error('Error deleting list from other user')
         }
       }
