@@ -104,6 +104,7 @@
         return this.$store.getters['hostUrl'] + this.$router.currentRoute.fullPath;
       }
     },
+
     methods: {
       shareGroup() {
         this.shareDialog = true;
@@ -116,16 +117,16 @@
 
       async seedGroup() {
         try {
+          if (this.share) {
+            await this.addGroup();
+          }
+
           const groupData = await this.$store.dispatch("lists/getGroup", {groupId: this.groupId});
           if (groupData == null) {
             await this.$router.replace("PageNotFound");
             return;
           }
           this.$store.commit("lists/setGroup", groupData);
-          if (this.share) {
-            await this.addGroup();
-          }
-
           let aux = await this.$store.dispatch("lists/getNames", {members: this.members});
           this.$store.commit("lists/setNames", {members: aux});
         } catch (e) {
