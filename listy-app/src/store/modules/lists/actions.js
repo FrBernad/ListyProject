@@ -546,6 +546,23 @@ export default {
       throw new Error('Error deleting group from user')
     }
 
+
+    //delete member from global list
+    url = `https://listy-itba-app.firebaseio.com/groups/${payload.groupId}/members/${context.rootGetters["userId"]}.json?auth=` +
+      context.rootGetters['token']
+
+    response = await fetch(
+      url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+
+    if (!response.ok) {
+      throw new Error('Error deleting group from user')
+    }
+
     //if owner remove list from global lists
     if (owner) {
       url = `https://listy-itba-app.firebaseio.com/groups/${payload.groupId}.json?auth=` +
@@ -635,7 +652,7 @@ export default {
   async addMember(context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/groups/` +
       payload.groupId +
-      '/members/' + payload.memberId+
+      '/members/' + payload.memberId +
       '.json?auth=' +
       context.rootGetters['token']
 
