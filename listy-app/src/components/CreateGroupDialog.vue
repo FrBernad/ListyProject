@@ -15,7 +15,7 @@
 
     <v-row class="align-center justify-end">
       <v-col cols="12" sm="8" md="6" class="d-flex align-center justify-space-around">
-        <v-btn color="primary" @click="closeDialog" width="40%" x-large>Cancelar</v-btn>
+        <v-btn color="primary" @click="closeDialog(false)" width="40%" x-large>Cancelar</v-btn>
         <v-btn color="primary" @click="newGroup" width="40%" x-large>Crear</v-btn>
       </v-col>
     </v-row>
@@ -35,9 +35,9 @@ export default {
     }
   },
   methods: {
-    closeDialog () {
+    closeDialog (refresh) {
       this.groupName = '';
-      this.$emit('closeDialog')
+      this.$emit('closeDialog',refresh)
     },
     async newGroup () {
       if(this.$v.$invalid){
@@ -46,7 +46,7 @@ export default {
       }
       const copy = {groupName: this.groupName}
       await this.$store.dispatch('lists/newGroup',copy);
-      this.closeDialog();
+      this.closeDialog(true);
     },
 
   },

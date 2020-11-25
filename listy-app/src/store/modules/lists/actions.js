@@ -375,7 +375,7 @@ export default {
       throw new Error('Error creating group')
     }
 
-    const groupId = responseData['name']
+    const groupId = responseData['name'];
 
     await context.dispatch('addUserToGroup', {
         userId: userId,
@@ -384,7 +384,6 @@ export default {
 
     //add group to user groups
     await context.dispatch('addGroupToUser',{userId: userId, groupId: groupId});
-
   },
 
   //add group to local user
@@ -398,7 +397,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ group: payload.groupId}),
+        body: JSON.stringify({ groupId: payload.groupId}),
       }
     );
     const responseData = await response.json()
@@ -420,7 +419,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ member: payload.userId}),
+        body: JSON.stringify({ memberId: payload.userId}),
       })
 
     const responseData = await response.json()
@@ -493,7 +492,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ id: payload.groupId }),
+        body: JSON.stringify({ groupId: payload.groupId }),
       })
 
     const responseData = await response.json()

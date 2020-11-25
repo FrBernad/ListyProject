@@ -75,12 +75,13 @@ const routes = [
         }),
       },
       {
-        path: 'group',
+        path: 'grupo',
         name: 'Group',
         meta: {requiresAuth: true},
         component: () => import('../views/Group'),
         props: route => ({
           groupId: route.query.groupId,
+          share: route.query.share
         })
       },
     ]

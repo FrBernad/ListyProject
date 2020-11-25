@@ -94,18 +94,12 @@ export default {
     shareGroup() {
       this.shareDialog = true;
     },
+
     copyToClipboard() {
       navigator.clipboard.writeText(this.groupLink + "&share=true");
       this.shareDialog = false;
     },
-    async addGroup() {
-      try {
-        let groupData = {groupId: this.groupId, name: this.$store.getters["lists/groupName"]}
-        await this.$store.dispatch("lists/addGroup", groupData);
-      } catch (e) {
-        console.log(e);
-      }
-    },
+
     async seedGroup() {
       try {
         const groupData = await this.$store.dispatch("lists/getGroup", {groupId: this.groupId});
@@ -115,13 +109,22 @@ export default {
         }
         this.$store.commit("lists/setGroup", groupData);
         if (this.share) {
-          console.log("adding")
           await this.addGroup();
         }
       } catch (e) {
         console.log(e)
       }
     },
+
+    async addGroup() {
+      try {
+        let groupData = {groupId: this.groupId, name: this.$store.getters["lists/groupName"]}
+        await this.$store.dispatch("lists/addGroup", groupData);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
     async deleteGroup() {
       try {
         await this.$store.dispatch("lists/deleteGroup", {groupId: this.groupId});
