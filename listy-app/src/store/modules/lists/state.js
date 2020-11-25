@@ -2,7 +2,8 @@ const state = {
   listName: '',
   listItems: [],
   groupName: '',
-  members: []
+  members: [],
+  membersName: [],
 }
 
 export default state

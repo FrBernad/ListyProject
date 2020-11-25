@@ -1,5 +1,5 @@
 <template>
-  <v-container class="backgroundColor" max-width="434" tile>
+  <v-container class="backgroundColor" fluid style="height:100%" tile>
     <v-col class="text-center">
       <v-avatar size="200" class="avBorder elevation-5">
         <v-img :src="pic"></v-img>

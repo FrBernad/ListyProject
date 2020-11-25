@@ -648,4 +648,21 @@ export default {
   },
 
 
+  async getNames (context, payload) {
+    let names = []
+    for (const user of payload.members) {
+      let url = `https://listy-itba-app.firebaseio.com/users/` + user.memberId + `.json?auth=` +
+        context.rootGetters['token']
+      let response = await fetch(url)
+      let data = await response.json()
+      if (!response.ok) {
+        throw new Error('Error getting user names')
+      }
+      names.push(data.username);
+    }
+    return names;
+
+  }
+
+
 }

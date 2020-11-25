@@ -47,5 +47,9 @@ export default {
     state.members.push(payload);
   },
 
+  setNames(state,payload){
+    state.membersName.push(...payload.members);
+  }
+
 
 };
