@@ -1,7 +1,7 @@
 <template>
   <v-fade-transition appear>
 
-    <v-container fluid fill-height>
+    <v-container class="backgroundColor" fluid fill-height>
       <v-dialog
         v-model="loading"
         width="500px"
@@ -107,5 +107,7 @@
 </script>
 
 <style scoped>
-
+.backgroundColor{
+  background-color: #f0f2f5;
+}
 </style>

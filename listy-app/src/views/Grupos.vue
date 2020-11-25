@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid style="height: 100%">
+  <v-container class="backgroundColor" fluid style="height: 100%">
     <v-dialog v-model="groupDialog" persistent width="700px" class="justify-center align-center">
       <CreateGroupDialog @closeDialog="groupDialog=false"></CreateGroupDialog>
     </v-dialog>
@@ -90,6 +90,8 @@ export default {
 </script>
 
 <style scoped>
-
+.backgroundColor{
+  background-color: #f0f2f5;
+}
 </style>
 

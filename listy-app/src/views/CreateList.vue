@@ -1,7 +1,7 @@
 <template>
 
   <v-fade-transition appear>
-    <v-container fluid style="height:100%">
+    <v-container fluid class="backgroundColor" style="height:100%">
       <v-card class="pa-5" height="90%" elevation="10" outlined>
         <!--LOADING DIALOG-->
         <v-dialog
@@ -169,5 +169,7 @@
 </script>
 
 <style scoped>
-
+.backgroundColor{
+  background-color: #f0f2f5;
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <v-container fill-height fluid>
+  <v-container fill-height class="backgroundColor" fluid>
     <v-row align="center">
       <v-col col="12">
         <h1 class="text-center text-h3 font-weight-bold mb-5">Ooops... Error 404</h1>
@@ -18,5 +18,8 @@
 <style scoped>
   * {
     background-color: #DEE2E6;
+  }
+  .backgroundColor{
+    background-color: #f0f2f5;
   }
 </style>

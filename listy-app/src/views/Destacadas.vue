@@ -1,5 +1,5 @@
 ``<template>
-  <v-container fluid style="height: 100%">
+  <v-container class="backgroundColor" fluid style="height: 100%">
     <transition name="fade">
       <v-row v-if="!loading" align="start" justify="center" style="height: 100%">
         <v-col cols="12">
@@ -101,5 +101,9 @@
   .fade-enter, .fade-leave-to {
     opacity: 0;
   }
+
+  .backgroundColor{
+    background-color: #f0f2f5;
+  }
 </style>
-``
+

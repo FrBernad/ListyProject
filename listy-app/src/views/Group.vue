@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid style="height:100%">
+  <v-container fluid class="backgroundColor" style="height:100%">
     <v-dialog v-model="shareDialog" width="500px">
       <v-container class="backgroundDialog elevation-8">
         <v-row align="center" justify="center">
@@ -148,5 +148,7 @@ export default {
 </script>
 
 <style scoped>
-
+.backgroundColor{
+  background-color: #f0f2f5;
+}
 </style>

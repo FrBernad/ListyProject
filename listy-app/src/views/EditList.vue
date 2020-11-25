@@ -1,7 +1,7 @@
 <template>
 
   <transition name="fade">
-    <v-container v-if="ready" fluid style="height:100%">
+    <v-container v-if="ready" class="backgroundColor" fluid style="height:100%">
       <v-dialog v-model="shareDialog" width="500px">
         <v-container class="backgroundDialog elevation-8">
           <v-row align="center" justify="center">
@@ -319,5 +319,9 @@
 
   .fade-enter, .fade-leave-to {
     opacity: 0;
+  }
+
+  .backgroundColor{
+    background-color: #f0f2f5;
   }
 </style>

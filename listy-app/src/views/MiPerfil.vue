@@ -1,5 +1,5 @@
 <template>
-  <v-container max-width="434" tile>
+  <v-container class="backgroundColor" max-width="434" tile>
     <v-col class="text-center">
       <v-avatar size="200" class="avBorder elevation-5">
         <v-img :src="pic"></v-img>
@@ -100,4 +100,7 @@ export default {
 </script>
 
 <style scoped>
+.backgroundColor{
+  background-color: #f0f2f5;
+}
 </style>

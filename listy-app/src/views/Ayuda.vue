@@ -1,5 +1,5 @@
 <template>
-  <v-container class="fill-height" fluid>
+  <v-container class="fill-height backgroundColor" fluid>
     <v-row class="justify-center align-start">
       <v-col cols="12" class="align-center justify-center">
         <h1 class="text-center ">FAQs </h1>
@@ -80,5 +80,7 @@ export default {
 </script>
 
 <style scoped>
-
+.backgroundColor{
+  background-color: #f0f2f5;
+}
 </style>
