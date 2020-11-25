@@ -20,6 +20,7 @@ export default {
       },
       userInfo: {
         username: payload.username,
+        avatarUrl: "",
         lists: []
       }
     };
@@ -42,6 +43,7 @@ export default {
       localStorage.setItem('userId', responseData.idToken);
       throw 400;
     }
+    context.commit("user/SET_EMAIL", userMeta.users[0].email);
 
     await context.dispatch("setUserSession", {
       ...responseData
@@ -122,8 +124,9 @@ export default {
       throw new Error("Error getting user data in login");
     }
 
-    let userData = {username: ""};
+    let userData = {username: "", avatarUrl: ""};
     userData.username = responseData.username;
+    userData.avatarUrl = responseData.avatarUrl;
     context.commit("user/setUserData", userData);
   },
 
@@ -189,13 +192,13 @@ export default {
         throw new Error("Error getting user data in autologin");
       }
 
-      let userKey;
-      for (const key in responseData) {
-        userKey = key;
-      }
-      let userData = {username: ""};
+      let userData = {username: "", avatarUrl: ""};
       userData.username = responseData.username;
+      userData.avatarUrl = responseData.avatarUrl;
       context.commit("user/setUserData", userData);
+
+      let userMeta = await context.dispatch("getUserInfo", {idToken: context.rootGetters["token"]});
+      context.commit("user/SET_EMAIL", userMeta.users[0].email);
     }
   }
   ,

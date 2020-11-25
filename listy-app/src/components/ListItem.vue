@@ -30,12 +30,13 @@
     <v-expansion-panel-content>
       <v-row>
         <v-col cols="6" class="justify-end px-6">
-          <v-text-field label="Aclaración" v-model="item.note" :readonly="!editable">{{ item.note }}
+          <v-text-field label="Aclaración" v-model="item.note" :readonly="!editable">
+            {{ item.note }}
           </v-text-field>
         </v-col>
         <v-col cols="6" class="justify-start px-8">
-          <v-text-field label="Responsable" v-model="item.responsible" :readonly="!editable">{{
-            item.responsible}}
+          <v-text-field label="Responsable" v-model="item.responsible" :readonly="!editable">
+            {{item.responsible}}
           </v-text-field>
         </v-col>
       </v-row>
