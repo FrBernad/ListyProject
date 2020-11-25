@@ -3,7 +3,7 @@
 
     <v-expansion-panel-header class="pt-0 pb-0 ">
       <v-row class="align-center justify-center">
-        <v-col cols="1">
+        <v-col cols="2" md="1">
           <v-btn @click.stop="" v-if="editable" icon color="#000000" @click="sendDelete">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
@@ -13,16 +13,16 @@
             v-model="checkbox"
           ></v-checkbox>
         </v-col>
-        <v-col cols="7" class="text-start">
+        <v-col cols="10" md="7" class="text-start">
           <v-text-field v-model="item.name" :class="{done: checkbox}" :readonly="!editable">{{ item.name }}
           </v-text-field>
         </v-col>
-        <v-col cols="2">
+        <v-col cols="6" md="2">
           <v-text-field label="Cantidad" v-model="item.quantity" :readonly="!editable">{{ item.quantity }}
           </v-text-field>
 
         </v-col>
-        <v-col cols="2">
+        <v-col cols="6" md="2">
           <v-text-field label="Precio" v-model="item.price" :readonly="!editable">{{ item.price }}</v-text-field>
         </v-col>
       </v-row>
