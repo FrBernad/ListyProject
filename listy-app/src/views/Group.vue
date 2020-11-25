@@ -1,5 +1,8 @@
 <template>
   <v-container fluid class="backgroundColor" style="height:100%">
+    <v-dialog v-model="listDialog" persistent width="700px" class="justify-center align-center">
+      <CreateListGroupDialog @closeDialog="close"></CreateListGroupDialog>
+    </v-dialog>
     <v-dialog v-model="shareDialog" width="500px">
       <v-container class="backgroundDialog elevation-8">
         <v-row align="center" justify="center">
@@ -49,9 +52,15 @@
 
     <v-card class="px-5 justify-center align-content-center" elevation="10" outlined height="10%">
       <v-row align="center" justify="center">
-        <v-col cols="12" class="pa-0 d-flex justify-start align-center">
+        <v-col cols="6" class="d-flex justify-start align-center">
           <v-btn @click="modifyGroup" v-if="edit">
             MODIFICAR
+          </v-btn>
+        </v-col>
+        <v-col cols="6" class="d-flex justify-end align-center">
+          <v-btn @click="listDialog = true">
+            <v-icon left color="black">mdi-cart</v-icon>
+            CREATE LIST
           </v-btn>
         </v-col>
       </v-row>
@@ -61,18 +70,25 @@
 </template>
 
 <script>
+  import CreateListGroupDialog from '../components/CreateListGroupDialog'
   import {sync} from "vuex-pathify";
   import {maxLength, minLength, required} from 'vuelidate/lib/validators';
+
+
 
   export default {
     name: "Group",
     props: ["groupId", "share"],
+    components: {
+      CreateListGroupDialog
+    },
 
     data() {
       return {
         errorMessage: "",
         loading: false,
         edit: false,
+        listDialog : false,
         shareDialog: false
       }
     },
@@ -106,6 +122,10 @@
     methods: {
       shareGroup() {
         this.shareDialog = true;
+      },
+
+      close() {
+        this.listDialog = false;
       },
 
       copyToClipboard() {

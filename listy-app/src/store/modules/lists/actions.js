@@ -1,6 +1,6 @@
 export default {
 
-  async createList(context, payload) {
+  async createList (context, payload) {
 
     //add list to global lists
     let url = `https://listy-itba-app.firebaseio.com/lists.json?auth=` +
@@ -27,12 +27,14 @@ export default {
     }
 
     const listId = responseData['name']
+    if(payload.items != null){
 
-    for (const item of payload.items) {
-      await context.dispatch('addItem', {
-        item: item,
-        listId: listId
-      })
+      for (const item of payload.items) {
+        await context.dispatch('addItem', {
+          item: item,
+          listId: listId
+        })
+      }
     }
 
     //add list to user lists
@@ -45,7 +47,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({id: listId}),
+        body: JSON.stringify({ id: listId }),
       })
 
     responseData = await response.json()
@@ -55,10 +57,15 @@ export default {
       throw new Error('Error creating list')
     }
 
-    await context.dispatch("addMemberToList", {listId: listId, memberId: context.rootGetters['userId']});
+    await context.dispatch('addMemberToList', {
+      listId: listId,
+      memberId: context.rootGetters['userId']
+    })
+
+    return listId;
   },
 
-  async addMemberToList(context, payload) {
+  async addMemberToList (context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/lists/` +
       payload.listId +
       '/members/' + payload.memberId +
@@ -70,7 +77,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({memberId: payload.memberId}),
+        body: JSON.stringify({ memberId: payload.memberId }),
       })
 
     const responseData = await response.json()
@@ -81,7 +88,7 @@ export default {
     }
   },
 
-  async addList(context, payload) {
+  async addList (context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters['userId']}/lists/${payload.listId}.json?auth=` +
       context.rootGetters['token']
 
@@ -91,7 +98,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({id: payload.listId}),
+        body: JSON.stringify({ id: payload.listId }),
       })
 
     const responseData = await response.json()
@@ -101,10 +108,13 @@ export default {
       throw new Error('Error creating list')
     }
 
-    await context.dispatch("addMemberToList", {listId: payload.listId, memberId: context.rootGetters['userId']});
+    await context.dispatch('addMemberToList', {
+      listId: payload.listId,
+      memberId: context.rootGetters['userId']
+    })
   },
 
-  async addItem(context, payload) {
+  async addItem (context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/lists/` +
       payload.listId +
       '/items' +
@@ -117,7 +127,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({...payload.item}),
+        body: JSON.stringify({ ...payload.item }),
       })
 
     const responseData = await response.json()
@@ -130,7 +140,7 @@ export default {
     return responseData['name']
   },
 
-  async getLists(context) {
+  async getLists (context) {
 
     //get listsIds
     let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters['userId']}/lists.json?auth=` +
@@ -148,7 +158,7 @@ export default {
     return await context.dispatch('getListsById', listsIds)
   },
 
-  async getListsById(context, payload) {
+  async getListsById (context, payload) {
     //get lists
     let lists = []
 
@@ -167,7 +177,7 @@ export default {
     return lists
   },
 
-  async getFavourites(context) {
+  async getFavourites (context) {
     let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters['userId']}/favourites.json?auth=` +
       context.rootGetters['token']
 
@@ -183,7 +193,7 @@ export default {
     return await context.dispatch('getListsById', listsIds)
   },
 
-  async getList(context, payload) {
+  async getList (context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/lists/${payload.listId}.json?auth=` +
       context.rootGetters['token']
 
@@ -199,7 +209,7 @@ export default {
     return responseData
   },
 
-  async modifyList(context, payload) {
+  async modifyList (context, payload) {
     //cambio nombre en lista global
     let url = `https://listy-itba-app.firebaseio.com/lists/` +
       payload.listId +
@@ -212,7 +222,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({name: payload.listName}),
+        body: JSON.stringify({ name: payload.listName }),
       })
 
     if (!response.ok) {
@@ -248,7 +258,7 @@ export default {
 
   },
 
-  async deleteList(context, payload) {
+  async deleteList (context, payload) {
 
     //get global list data
     let url = `https://listy-itba-app.firebaseio.com/lists/${payload.listId}.json?auth=` +
@@ -263,9 +273,9 @@ export default {
       throw new Error('Error getting global list data when deleting')
     }
 
-    let users = responseData.members;
+    let users = responseData.members
 
-    let owner = responseData.owner === context.rootGetters['userId'];
+    let owner = responseData.owner === context.rootGetters['userId']
 
     //remove list from local user
     url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters['userId']}/lists/${payload.listId}.json?auth=` +
@@ -285,7 +295,7 @@ export default {
 
     await context.dispatch('unfavList', payload)
 
-    url = `https://listy-itba-app.firebaseio.com/lists/${payload.listId}/members/${context.rootGetters["userId"]}.json?auth=` +
+    url = `https://listy-itba-app.firebaseio.com/lists/${payload.listId}/members/${context.rootGetters['userId']}.json?auth=` +
       context.rootGetters['token']
 
     response = await fetch(
@@ -297,7 +307,7 @@ export default {
       })
 
     if (!response.ok) {
-      console.log(response);
+      console.log(response)
       throw new Error('Error deleting list from user')
     }
 
@@ -338,7 +348,7 @@ export default {
     }
   },
 
-  async favList(context, payload) {
+  async favList (context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters['userId']}/favourites/${payload.listId}.json?auth=` +
       context.rootGetters['token']
 
@@ -348,7 +358,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({id: payload.listId})
+        body: JSON.stringify({ id: payload.listId })
       })
 
     let responseData = await response.json()
@@ -359,7 +369,7 @@ export default {
     }
   },
 
-  async unfavList(context, payload) {
+  async unfavList (context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters['userId']}/favourites/${payload.listId}.json?auth=` +
       context.rootGetters['token']
 
@@ -379,7 +389,7 @@ export default {
     }
   },
 
-  async checkFav(context, payload) {
+  async checkFav (context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters['userId']}/favourites/${payload.listId}.json?auth=` +
       context.rootGetters['token']
 
@@ -392,7 +402,7 @@ export default {
     return !!responseData
   },
 
-  async newGroup(context, payload) {
+  async newGroup (context, payload) {
     //add group to global group
     let url = `https://listy-itba-app.firebaseio.com/groups.json?auth=` + context.rootGetters['token']
 
@@ -417,22 +427,24 @@ export default {
       throw new Error('Error creating group')
     }
 
-    const groupId = responseData['name'];
+    const groupId = responseData['name']
 
     await context.dispatch('addUserToGroup', {
       userId: userId,
       groupId: groupId
-    });
-
+    })
 
     //add group to user groups
-    await context.dispatch('addGroupToUser', {userId: userId, groupId: groupId});
+    await context.dispatch('addGroupToUser', {
+      userId: userId,
+      groupId: groupId
+    })
   },
 
   //add group to local user
-  async addGroupToUser(context, payload) {
+  async addGroupToUser (context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/users/` + payload.userId + '/groups/' + payload.groupId + '.json?auth=' +
-      context.rootGetters["token"];
+      context.rootGetters['token']
 
     const response = await fetch(
       url, {
@@ -440,9 +452,9 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({groupId: payload.groupId}),
+        body: JSON.stringify({ groupId: payload.groupId }),
       }
-    );
+    )
     const responseData = await response.json()
 
     if (!response.ok) {
@@ -453,16 +465,16 @@ export default {
   },
 
   //add user to global group
-  async addUserToGroup(context, payload) {
+  async addUserToGroup (context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/groups/` + payload.groupId + '/members/' + payload.userId + '.json?auth=' +
-      context.rootGetters["token"];
+      context.rootGetters['token']
     const response = await fetch(
       url, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({memberId: payload.userId}),
+        body: JSON.stringify({ memberId: payload.userId }),
       })
 
     const responseData = await response.json()
@@ -473,7 +485,7 @@ export default {
     }
   },
 
-  async getGroups(context) {
+  async getGroups (context) {
     //get groupsIds
     let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters['userId']}/groups.json?auth=` +
       context.rootGetters['token']
@@ -487,10 +499,10 @@ export default {
       throw new Error('Error retrieving groups ids ')
     }
 
-    return await context.dispatch('getGroupsById', groupsIds);
+    return await context.dispatch('getGroupsById', groupsIds)
   },
 
-  async getGroupsById(context, payload) {
+  async getGroupsById (context, payload) {
     //get groups
     let groups = []
 
@@ -506,25 +518,60 @@ export default {
       groupData.id = groupId
       groups.push(groupData)
     }
-    return groups;
+    return groups
   },
 
-  async getGroup(context, payload) {
+  async getGroup (context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/groups/${payload.groupId}.json?auth=` +
-      context.rootGetters['token'];
+      context.rootGetters['token']
 
-    const response = await fetch(url);
+    const response = await fetch(url)
 
-    const responseData = await response.json();
+    const responseData = await response.json()
 
     if (!response.ok) {
-      console.log(responseData);
-      throw new Error('Error getting group');
+      console.log(responseData)
+      throw new Error('Error getting group')
     }
-    return responseData;
+    return responseData
   },
 
-  async addGroup(context, payload) {
+  async addListToUser(context,payload){
+    let url = `https://listy-itba-app.firebaseio.com/users/${payload.userId}/lists/${payload.listId}.json?auth=` +
+      context.rootGetters['token']
+
+    const response = await fetch(
+      url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: payload.listId }),
+      })
+
+
+    const responseData = await response.json()
+
+    if (!response.ok) {
+      console.log(responseData)
+      throw new Error('Error creating list')
+    }
+    await context.dispatch('addMemberToList', {
+      listId: payload.listId,
+      memberId: payload.userId,
+    })
+
+  },
+
+  async newListGroup (context, payload) {
+    let listId = await context.dispatch('createList',{name: payload.name});
+    console.log(listId);
+    for(const user of payload.members){
+      await context.dispatch('addListToUser',{listId: listId, userId: user.memberId })
+    }
+  },
+
+  async addGroup (context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters['userId']}/groups/${payload.groupId}.json?auth=` +
       context.rootGetters['token']
 
@@ -534,7 +581,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({groupId: payload.groupId}),
+        body: JSON.stringify({ groupId: payload.groupId }),
       })
 
     const responseData = await response.json()
@@ -544,14 +591,14 @@ export default {
       throw new Error('Error creating group')
     }
 
-    await context.dispatch("addMemberToGroup", {
+    await context.dispatch('addMemberToGroup', {
       memberId: context.rootGetters['userId'],
       groupId: payload.groupId
-    });
+    })
 
   },
 
-  async deleteGroup(context, payload) {
+  async deleteGroup (context, payload) {
 
     //get global group data
     let url = `https://listy-itba-app.firebaseio.com/groups/${payload.groupId}.json?auth=` +
@@ -568,7 +615,7 @@ export default {
 
     let users = responseData.members
 
-    let owner = responseData.owner === context.rootGetters['userId'];
+    let owner = responseData.owner === context.rootGetters['userId']
 
     //remove group from local user
     url = `https://listy-itba-app.firebaseio.com/users/${context.rootGetters['userId']}/groups/${payload.groupId}.json?auth=` +
@@ -583,12 +630,12 @@ export default {
       })
 
     if (!response.ok) {
-      console.log(response);
+      console.log(response)
       throw new Error('Error deleting group from user')
     }
 
     //delete member from global list
-    url = `https://listy-itba-app.firebaseio.com/groups/${payload.groupId}/members/${context.rootGetters["userId"]}.json?auth=` +
+    url = `https://listy-itba-app.firebaseio.com/groups/${payload.groupId}/members/${context.rootGetters['userId']}.json?auth=` +
       context.rootGetters['token']
 
     response = await fetch(
@@ -600,7 +647,7 @@ export default {
       })
 
     if (!response.ok) {
-      console.log(response);
+      console.log(response)
       throw new Error('Error deleting group from user')
     }
 
@@ -618,7 +665,7 @@ export default {
         })
 
       if (!response.ok) {
-        console.log(response);
+        console.log(response)
         throw new Error('Error deleting group from user')
       }
 
@@ -636,14 +683,14 @@ export default {
           })
 
         if (!response.ok) {
-          console.log(response);
+          console.log(response)
           throw new Error('Error deleting group from other user')
         }
       }
     }
   },
 
-  async modifyGroup(context, payload) {
+  async modifyGroup (context, payload) {
     //cambio nombre en grupo global
     let url = `https://listy-itba-app.firebaseio.com/groups/` +
       payload.groupId +
@@ -656,7 +703,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({name: payload.groupName}),
+        body: JSON.stringify({ name: payload.groupName }),
       })
 
     if (!response.ok) {
@@ -692,7 +739,7 @@ export default {
 
   },
 
-  async addMemberToGroup(context, payload) {
+  async addMemberToGroup (context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/groups/` +
       payload.groupId +
       '/members/' + payload.memberId +
@@ -705,7 +752,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({memberId: payload.memberId}),
+        body: JSON.stringify({ memberId: payload.memberId }),
       })
 
     const responseData = await response.json()
@@ -716,7 +763,7 @@ export default {
     }
   },
 
-  async getNames(context, payload) {
+  async getNames (context, payload) {
     let names = []
     for (const user of payload.members) {
       let url = `https://listy-itba-app.firebaseio.com/users/` + user.memberId + `.json?auth=` +
@@ -726,11 +773,10 @@ export default {
       if (!response.ok) {
         throw new Error('Error getting user names')
       }
-      names.push(data.username);
+      names.push(data.username)
     }
-    return names;
+    return names
 
   }
-
 
 }
