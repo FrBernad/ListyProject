@@ -2,13 +2,52 @@
   <v-card class="pa-5">
     <v-row class="justify-center align-center">
       <v-col cols="12">
-        <v-text-field v-model="item.name"
-                      label="Nombre"
-                      placeholder="Comienza a escribir para buscar el producto"
-                      prepend-icon="mdi-database-search"
-                      :error-messages="nameError"
-                      @blur="$v.item.name.$touch()">
-        </v-text-field>
+        <v-autocomplete
+          v-model="selected"
+          :items="items"
+          :loading="isLoading"
+          :search-input.sync="search"
+          chips
+          clearable
+          hide-details
+          hide-selected
+          :item-value="check"
+          item-text="name"
+          label="Busca algun producto..."
+          solo
+        >
+          <template v-slot:no-data>
+            <v-list-item>
+              <v-list-item-title>
+                Busca el producto que
+                <strong>necesites</strong>
+              </v-list-item-title>
+            </v-list-item>
+          </template>
+          <template v-slot:selection="{ attr, on, item, selected }">
+            <v-chip
+              v-bind="attr"
+              :input-value="selected"
+              color="blue-grey"
+              class="white--text"
+              v-on="on"
+            >
+              <v-icon left>
+                mdi-cart-arrow-down
+              </v-icon>
+              <span v-text="item.name"></span>
+            </v-chip>
+          </template>
+          <template v-slot:item="{ item }">
+            <v-list-item-content>
+              <v-list-item-title v-text="item.name"></v-list-item-title>
+              <v-list-item-subtitle v-text="item.price"></v-list-item-subtitle>
+            </v-list-item-content>
+            <v-list-item-action>
+              <v-icon>mdi-cart-arrow-down</v-icon>
+            </v-list-item-action>
+          </template>
+        </v-autocomplete>
       </v-col>
     </v-row>
     <v-row>
@@ -16,8 +55,9 @@
         <v-hover
           v-slot:default="{ hover }"
         >
-        <a id="forgot" :class="{'text-decoration-underline':hover}" class="text-center" >¿No encontraste el producto que
-          buscabas?</a>
+          <a id="forgot" :class="{'text-decoration-underline':hover}" class="text-center">¿No encontraste el producto
+            que
+            buscabas?</a>
         </v-hover>
       </v-col>
     </v-row>
@@ -67,115 +107,154 @@
 </template>
 
 <script>
-import {maxLength, minLength, required, minValue} from 'vuelidate/lib/validators'
+  import {maxLength, minLength, required, minValue} from 'vuelidate/lib/validators'
 
-export default {
-  name: "ElementDetails",
+  export default {
+    name: "ElementDetails",
 
-  data() {
-    return {
+    data() {
+      return {
+        selected: null,
+        isLoading: false,
+        items: [],
+        search: null,
+        item: {
+          name: '',
+          quantity: 0,
+          responsible: '',
+          note: '',
+          price: 0
+        },
+      }
+    },
+    watch: {
+      selected(val) {
+        this.item.price = val.price;
+        this.item.name = val.name;
+      },
+      search(val) {
+        // Items have already been loaded
+        if (this.items.length > 0) return
+        this.isLoading = true
+        // Lazily load input items
+        fetch('https://listy-itba-app.firebaseio.com/products.json?auth=' +
+          this.$store.getters['token'])
+          .then(res => res.clone().json())
+          .then(res => {
+            this.items = Object.values(res)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+          .finally(() => (this.isLoading = false))
+      },
+    },
+    methods: {
+      check(val) {
+        return val;
+      },
+
+      elementClose() {
+        this.resetFields();
+        this.$emit('elementClose');
+      }
+      ,
+      addElement() {
+        if (this.$v.$invalid) {
+          this.$v.$touch();
+          console.log("the form is missing something");
+          return;
+        }
+        const copy = {
+          name: this.item.name,
+          quantity: this.item.quantity,
+          responsible: this.item.responsible,
+          note: this.item.note,
+          price: this.item.price
+        };
+        this.$store.commit('lists/addItem', copy);
+        this.elementClose();
+        this.resetFields();
+      }
+      ,
+      resetFields() {
+        this.item.name = '';
+        this.item.quantity = undefined;
+        this.item.responsible = '';
+        this.item.note = '';
+        this.item.price = undefined;
+      }
+    }
+    ,
+
+    validations: {
       item: {
-        name: '',
-        quantity: 0,
-        responsible: '',
-        note: '',
-        price: 0
-      },
-    }
-  },
-
-  methods: {
-    elementClose() {
-      this.resetFields();
-      this.$emit('elementClose');
-    },
-    addElement() {
-      if (this.$v.$invalid) {
-        this.$v.$touch();
-        console.log("the form is missing something");
-        return;
-      }
-      const copy = {
-        name: this.item.name,
-        quantity: this.item.quantity,
-        responsible: this.item.responsible,
-        note: this.item.note,
-        price: this.item.price
-      };
-      this.$store.commit('lists/addItem', copy);
-      this.elementClose();
-      this.resetFields();
-    },
-    resetFields() {
-      this.item.name = '';
-      this.item.quantity = undefined;
-      this.item.responsible = '';
-      this.item.note = '';
-      this.item.price = undefined;
-    }
-  },
-
-  validations: {
-    item: {
-      name: {
-        required, minLength: minLength(1), maxLength: maxLength(50)
-      },
-      price: {
-        minValue: minValue(0),
-      },
-      quantity: {required, minValue: minValue(1)},
-      note: {
-        maxLength: maxLength(100)
+        name: {
+          required, minLength: minLength(1), maxLength: maxLength(50)
+        },
+        price: {
+          minValue: minValue(0),
+        }
+        ,
+        quantity: {
+          required, minValue: minValue(1)
+        },
+        note: {
+          maxLength: maxLength(100)
+        }
       }
     }
-}
-  ,
-  computed: {
-    nameError() {
-      const errors = [];
-      if (!this.$v.item.name.$dirty) {
+    ,
+    computed: {
+      nameError() {
+        const errors = [];
+        if (!this.$v.item.name.$dirty) {
+          return errors;
+        }
+        !this.$v.item.name.minLength && errors.push('El nombre debe contener por lo menos un caracter');
+        !this.$v.item.name.maxLength && errors.push('El nombre debe contener como máximo 50 caracteres');
+        !this.$v.item.name.required && errors.push('El nombre es requerido');
         return errors;
       }
-      !this.$v.item.name.minLength && errors.push('El nombre debe contener por lo menos un caracter');
-      !this.$v.item.name.maxLength && errors.push('El nombre debe contener como máximo 50 caracteres');
-      !this.$v.item.name.required && errors.push('El nombre es requerido');
-      return errors;
-    },
+      ,
 
-    quantityError() {
-      const errors = [];
-      if (!this.$v.item.quantity.$dirty) {
+      quantityError() {
+        const errors = [];
+        if (!this.$v.item.quantity.$dirty) {
+          return errors;
+        }
+        !this.$v.item.quantity.required && errors.push('La cantidad es requerida');
+        !this.$v.item.quantity.maxLength && errors.push('La cantidad debe ser minimamente 1');
         return errors;
       }
-      !this.$v.item.quantity.required && errors.push('La cantidad es requerida');
-      !this.$v.item.quantity.maxLength && errors.push('La cantidad debe ser minimamente 1');
-      return errors;
-    },
-    noteError() {
-      const errors = [];
-      if (!this.$v.item.note.$dirty) {
+      ,
+      noteError() {
+        const errors = [];
+        if (!this.$v.item.note.$dirty) {
+          return errors;
+        }
+        !this.$v.item.note.maxLength && errors.push('La nota debe ser como maximo de 100 caracteres');
         return errors;
       }
-      !this.$v.item.note.maxLength && errors.push('La nota debe ser como maximo de 100 caracteres');
-      return errors;
-    },
+      ,
 
-    priceError() {
-      const errors = [];
-      if (!this.$v.item.price.$dirty) {
+      priceError() {
+        const errors = [];
+        if (!this.$v.item.price.$dirty) {
+          return errors;
+        }
+        !this.$v.item.price.minValue && errors.push('El precio debe ser mayor o igual que 0');
         return errors;
       }
-      !this.$v.item.price.minValue && errors.push('El precio debe ser mayor o igual que 0');
-      return errors;
-    },
+      ,
 
+    }
   }
-}
 
 </script>
 
 <style scoped>
-#forgot {
-  color: #1D50AE;
-}
+  #forgot {
+    color: #1D50AE;
+  }
 </style>

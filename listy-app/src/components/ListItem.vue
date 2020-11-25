@@ -8,16 +8,18 @@
             <v-icon>mdi-delete</v-icon>
           </v-btn>
           <v-checkbox
-              @click.stop=""
-              v-if="!editable"
-              v-model="checkbox"
+            @click.stop=""
+            v-if="!editable"
+            v-model="checkbox"
           ></v-checkbox>
         </v-col>
         <v-col cols="7" class="text-start">
-          <v-text-field v-model="item.name" :class="{done: checkbox}" :readonly="!editable">{{ item.name }}</v-text-field>
+          <v-text-field v-model="item.name" :class="{done: checkbox}" :readonly="!editable">{{ item.name }}
+          </v-text-field>
         </v-col>
         <v-col cols="2">
-          <v-text-field label="Cantidad" v-model="item.quantity" :readonly="!editable">{{ item.quantity }}</v-text-field>
+          <v-text-field label="Cantidad" v-model="item.quantity" :readonly="!editable">{{ item.quantity }}
+          </v-text-field>
 
         </v-col>
         <v-col cols="2">
@@ -29,10 +31,11 @@
     <v-expansion-panel-content>
       <v-row>
         <v-col cols="6" class="justify-end px-6">
-            <v-text-field label="Aclaración" v-model="item.note" :readonly="!editable">{{ item.note }}</v-text-field>
+          <v-text-field label="Aclaración" v-model="item.note" :readonly="!editable">{{ item.note }}</v-text-field>
         </v-col>
         <v-col cols="6" class="justify-start px-8">
-            <v-text-field label="Responsable" v-model="item.responsible" :readonly="!editable">{{ item.responsible}}</v-text-field>
+          <v-text-field label="Responsable" v-model="item.responsible" :readonly="!editable">{{ item.responsible}}
+          </v-text-field>
         </v-col>
       </v-row>
     </v-expansion-panel-content>
@@ -42,34 +45,34 @@
 </template>
 
 <script>
-export default {
-  name: "ListItem",
-  data() {
-    return {
-      checkbox: false,
-  }
-  },
-  props: {
-    item: {
-      type: Object,
+  export default {
+    name: "ListItem",
+    data() {
+      return {
+        checkbox: false,
+      }
     },
-    editable:{
-      type: Boolean,
+    props: {
+      item: {
+        type: Object,
+      },
+      editable: {
+        type: Boolean,
+      },
+      index: {
+        type: Number,
+      }
     },
-    index: {
-      type: Number,
-    }
-  },
-  methods: {
-    sendDelete() {
-      this.$emit('send', this.index)
+    methods: {
+      sendDelete() {
+        this.$emit('send', this.index)
+      }
     }
   }
-}
 </script>
 
 <style scoped>
-.done {
-  text-decoration: line-through;
-}
+  .done {
+    text-decoration: line-through;
+  }
 </style>

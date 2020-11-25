@@ -10,7 +10,7 @@
         </router-link>
       </v-col>
 
-      <v-col cols="2" class="offset-6 d-flex align-center justify-space-around">
+      <v-col cols="5" sm="3" md="2" class="offset-md-6  offset-sm-5 offset-3 d-flex align-center justify-space-around">
           <v-btn to="/home/miPerfil" large exact text elevation="0">
             <v-icon left>mdi-account</v-icon>
             {{user}}
