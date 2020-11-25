@@ -73,7 +73,7 @@
             </v-btn>
           </v-col>
           <v-col cols="6" class="d-flex justify-center align-center">
-            <span>Total: ${{ total }} </span>
+            <span>Total: ${{ total.toFixed(2) }} </span>
           </v-col>
         </v-row>
       </v-card>
