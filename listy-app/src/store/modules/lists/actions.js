@@ -502,9 +502,10 @@ export default {
       console.log(responseData)
       throw new Error('Error creating group')
     }
-    payload.groupId
+
+    console.log("adding membmer")
     await context.dispatch("addMember", {
-      member: context.rootGetters['userId'],
+      memberId: context.rootGetters['userId'],
       groupId: payload.groupId
     });
 
@@ -624,7 +625,7 @@ export default {
     //Agrego nuevos items
     for (const member of payload.members) {
       await context.dispatch('addMember', {
-        member: member,
+        memberId: member,
         groupId: payload.groupId
       })
     }
@@ -634,7 +635,7 @@ export default {
   async addMember(context, payload) {
     let url = `https://listy-itba-app.firebaseio.com/groups/` +
       payload.groupId +
-      '/members/' + payload.member+
+      '/members/' + payload.memberId+
       '.json?auth=' +
       context.rootGetters['token']
 
@@ -653,8 +654,6 @@ export default {
       console.log(responseData)
       throw new Error('Error creating list')
     }
-
-    return responseData['name']
   },
 
   async getNames(context, payload) {

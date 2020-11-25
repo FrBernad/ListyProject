@@ -120,7 +120,6 @@
           if (this.share) {
             await this.addGroup();
           }
-
           const groupData = await this.$store.dispatch("lists/getGroup", {groupId: this.groupId});
           if (groupData == null) {
             await this.$router.replace("PageNotFound");
