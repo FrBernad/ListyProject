@@ -573,6 +573,7 @@ export default {
       }
     }
   },
+
   async modifyGroup (context, payload) {
     //cambio nombre en grupo global
     let url = `https://listy-itba-app.firebaseio.com/groups/` +

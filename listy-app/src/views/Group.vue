@@ -64,63 +64,37 @@
 </template>
 
 <script>
-import {sync} from "vuex-pathify";
-import {maxLength, minLength, required} from 'vuelidate/lib/validators';
+  import {sync} from "vuex-pathify";
+  import {maxLength, minLength, required} from 'vuelidate/lib/validators';
 
-export default {
-  name: "Group",
-  props: ["groupId", "share"],
+  export default {
+    name: "Group",
+    props: ["groupId", "share"],
 
-  data() {
-    return {
-      errorMessage: "",
-      loading: false,
-      edit: false,
-      shareDialog: false
-    }
-  },
-  created() {
-    this.$store.commit("lists/resetGroup");
-    this.seedGroup();
-  },
-  validations: {
-    groupName: {
-      required, minLength: minLength(1), maxLength: maxLength(15)
-    }
-  },
-
-  computed: {
-    ...sync("lists/*"),
-    nameError() {
-      const errors = [];
-      if (!this.$v.groupName.$dirty) {
-        return errors;
+    data() {
+      return {
+        errorMessage: "",
+        loading: false,
+        edit: false,
+        shareDialog: false
       }
-      !this.$v.groupName.minLength && errors.push('El nombre debe contener por lo menos un caracter');
-      !this.$v.groupName.maxLength && errors.push('El nombre debe contener como máximo 15 caracteres');
-      !this.$v.groupName.required && errors.push('El nombre es requerido');
-      return errors;
     },
-    groupLink() {
-      return this.$store.getters['hostUrl'] + this.$router.currentRoute.fullPath;
-    }
-  },
-  methods: {
-    shareGroup() {
-      this.shareDialog = true;
+    created() {
+      this.$store.commit("lists/resetGroup");
+      this.seedGroup();
+    },
+    validations: {
+      groupName: {
+        required, minLength: minLength(1), maxLength: maxLength(15)
+      }
     },
 
-    copyToClipboard() {
-      navigator.clipboard.writeText(this.groupLink + "&share=true");
-      this.shareDialog = false;
-    },
-
-    async seedGroup() {
-      try {
-        const groupData = await this.$store.dispatch("lists/getGroup", {groupId: this.groupId});
-        if (groupData == null) {
-          await this.$router.replace("PageNotFound");
-          return;
+    computed: {
+      ...sync("lists/*"),
+      nameError() {
+        const errors = [];
+        if (!this.$v.groupName.$dirty) {
+          return errors;
         }
         this.$store.commit("lists/setGroup", groupData);
         if (this.share) {
@@ -133,43 +107,100 @@ export default {
         console.log(e)
       }
     },
+    methods: {
+      shareGroup() {
+        this.shareDialog = true;
+      },
 
-    async addGroup() {
-      try {
-        let groupData = {groupId: this.groupId, name: this.$store.getters["lists/groupName"]}
-        await this.$store.dispatch("lists/addGroup", groupData);
-      } catch (e) {
-        console.log(e);
-      }
-    },
+      copyToClipboard() {
+        navigator.clipboard.writeText(this.groupLink + "&share=true");
+        this.shareDialog = false;
+      },
 
-    async deleteGroup() {
-      try {
-        await this.$store.dispatch("lists/deleteGroup", {groupId: this.groupId});
-        await this.$router.replace("/home/grupos")
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    async modifyGroup() {
-      try {
-        let members = this.$store.getters["lists/members"];
-        let group = {groupId: this.groupId, groupName: this.groupName, members: members};
-        await this.$store.dispatch("lists/modifyGroup", group);
-        this.edit = false;
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    deleteMember(index) {
-      this.$store.commit('lists/deleteFromGroup', {index: index});
-    },
+      async seedGroup() {
+        try {
+          const groupData = await this.$store.dispatch("lists/getGroup", {groupId: this.groupId});
+          if (groupData == null) {
+            await this.$router.replace("PageNotFound");
+            return;
+          }
+          this.$store.commit("lists/setGroup", groupData);
+          if (this.share) {
+            await this.addGroup();
+          }
+        } catch (e) {
+          console.log(e)
+        }
+      },
+
+      async addGroup() {
+        try {
+          let groupData = {groupId: this.groupId, name: this.$store.getters["lists/groupName"]}
+          await this.$store.dispatch("lists/addGroup", groupData);
+        } catch (e) {
+          console.log(e);
+        }
+      },
+
+      async deleteGroup() {
+        try {
+          this.$swal.fire({
+              didOpen: (popup) => {
+                this.$swal.showLoading();
+                this.$swal.clickConfirm();
+              },
+              padding: "6rem",
+              showConfirmButton: false,
+              preConfirm: async () => {
+                try {
+                  return await this.$store.dispatch("lists/deleteGroup", {groupId: this.groupId});
+                } catch (e) {
+                  return 0;
+                }
+              },
+              allowOutsideClick: () => !this.$swal.isLoading()
+            }
+          ).then((result) => {
+              if (result.isConfirmed) {
+                if (!result.value) {
+                  this.$swal.fire({
+                    icon: "error",
+                    title: "Error al eliminar el grupo, intente denuevo.",
+                  })
+                } else {
+                  this.$swal.fire({
+                    icon: "success",
+                    title: "Grupo eliminado.",
+                  }).then(async (result) =>
+                    await this.$router.replace("/home/grupos")
+                  )
+                }
+              }
+            }
+          )
+        } catch (e) {
+          console.log(e)
+        }
+      },
+      async modifyGroup() {
+        try {
+          let members = this.$store.getters["lists/members"];
+          let group = {groupId: this.groupId, groupName: this.groupName, members: members};
+          await this.$store.dispatch("lists/modifyGroup", group);
+          this.edit = false;
+        } catch (e) {
+          console.log(e)
+        }
+      },
+      deleteMember(index) {
+        this.$store.commit('lists/deleteFromGroup', {index: index});
+      },
+    }
   }
-}
 </script>
 
 <style scoped>
-.backgroundColor{
-  background-color: #f0f2f5;
-}
+  .backgroundColor {
+    background-color: #f0f2f5;
+  }
 </style>

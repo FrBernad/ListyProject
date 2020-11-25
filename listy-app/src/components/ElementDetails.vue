@@ -6,7 +6,8 @@
                       label="Nombre"
                       placeholder="Escriba el nombre del producto"
                       :error-messages="nameError"
-                      @blur="$v.item.name.$touch()">
+                      @blur="$v.item.name.$touch()"
+                      hide-details="auto">
         </v-text-field>
         <v-autocomplete
           v-if="!find"
@@ -62,9 +63,8 @@
         <v-hover
           v-slot:default="{ hover }"
         >
-          <a @click="find = !find" id="forgot" :class="{'text-decoration-underline':hover}" class="text-center">¿No encontraste el producto
-            que
-            buscabas?</a>
+          <a @click="changeLookup" id="forgot" :class="{'text-decoration-underline':hover}" class="text-center">
+            {{lookupText}}</a>
         </v-hover>
       </v-col>
     </v-row>
@@ -100,7 +100,8 @@
     </v-row>
     <v-row>
       <v-col cols="4" class="d-flex py-0 justify-start">
-        <v-text-field :readonly="!find" label="Precio" type="number" v-model.number="item.price" :error-messages="priceError"
+        <v-text-field :readonly="!find" label="Precio" type="number" v-model.number="item.price"
+                      :error-messages="priceError"
                       @blur="$v.item.price.$touch()"></v-text-field>
       </v-col>
     </v-row>
@@ -123,6 +124,7 @@
       return {
         selected: null,
         isLoading: false,
+        text: "¿No encontraste el producto que buscabas?",
         items: [],
         search: null,
         item: {
@@ -137,8 +139,15 @@
     },
     watch: {
       selected(val) {
-        this.item.price = val.price;
-        this.item.name = val.name;
+        if (val) {
+          this.item.price = val.price;
+          this.item.name = val.name;
+          this.item.quantity = 1;
+        } else {
+          this.item.price = 0;
+          this.item.name = "";
+          this.item.quantity = 0;
+        }
       },
       search(val) {
         // Items have already been loaded
@@ -158,6 +167,17 @@
       },
     },
     methods: {
+      changeLookup() {
+        if (!this.find) {
+          this.find = true;
+          this.text = "¿Deseas buscar el producto en nuestra base de datos?"
+        } else {
+          this.find = false;
+          this.text = "¿No encontraste el producto que buscabas?"
+        }
+        this.resetFields();
+      },
+
       check(val) {
         return val;
       },
@@ -187,10 +207,10 @@
       ,
       resetFields() {
         this.item.name = '';
-        this.item.quantity = undefined;
+        this.item.quantity = 0;
         this.item.responsible = '';
         this.item.note = '';
-        this.item.price = undefined;
+        this.item.price = 0;
       }
     }
     ,
@@ -223,8 +243,11 @@
         !this.$v.item.name.maxLength && errors.push('El nombre debe contener como máximo 50 caracteres');
         !this.$v.item.name.required && errors.push('El nombre es requerido');
         return errors;
-      }
-      ,
+      },
+
+      lookupText() {
+        return this.text;
+      },
 
       quantityError() {
         const errors = [];
