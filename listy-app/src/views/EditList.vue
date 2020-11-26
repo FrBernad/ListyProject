@@ -10,7 +10,7 @@
             </v-col>
           </v-row>
           <v-row class="align-center justify-end">
-            <v-col cols="12"  class="d-flex align-center justify-end">
+            <v-col cols="12" class="d-flex align-center justify-end">
               <v-btn color="primary" outlined @click="shareDialog = false">Cancelar</v-btn>
               <v-btn color="primary" class="ml-8" @click="copyToClipboard">Copiar link</v-btn>
             </v-col>
@@ -69,21 +69,23 @@
         </draggable>
       </v-card>
 
-      <v-card class="px-5 " elevation="10" outlined height="10%">
+      <v-card class="px-5 " elevation="10" outlined>
         <v-row align="center" justify="center" style="height: 100%">
-          <v-col cols="6" class="d-flex justify-start align-center">
+          <v-col cols="6" sm="3" class="d-flex justify-start align-center">
             <transition name="fade">
               <v-btn color="primary" outlined @click="cancelModify" v-if="edit" class="mr-8">
                 CANCELAR
               </v-btn>
             </transition>
+          </v-col>
+          <v-col cols="6" sm="3" class="d-flex justify-sm-start justify-end align-center">
             <transition name="fade">
               <v-btn color="primary" @click="modifyList" v-if="edit">
                 MODIFICAR
               </v-btn>
             </transition>
           </v-col>
-          <v-col cols="6" class="d-flex justify-end align-center">
+          <v-col cols="6" class="d-flex justify-center justify-sm-end align-center">
             <span>Total: ${{ total.toFixed(2) }}</span>
           </v-col>
         </v-row>
@@ -94,151 +96,203 @@
 </template>
 
 <script>
-import ListItem from '../components/ListItem'
-import { sync } from 'vuex-pathify'
-import ElementDetails from '../components/ElementDetails'
-import draggable from 'vuedraggable'
-import { maxLength, minLength, required } from 'vuelidate/lib/validators'
+  import ListItem from '../components/ListItem'
+  import {sync} from 'vuex-pathify'
+  import ElementDetails from '../components/ElementDetails'
+  import draggable from 'vuedraggable'
+  import {maxLength, minLength, required} from 'vuelidate/lib/validators'
 
-export default {
-  name: 'EditList',
+  export default {
+    name: 'EditList',
 
-  props: ['listId', 'share'],
+    props: ['listId', 'share'],
 
-  components: {
-    ListItem,
-    ElementDetails,
-    draggable
-  },
-
-  data () {
-    return {
-      errorMessage: '',
-      loading: false,
-      edit: false,
-      addElement: false,
-      fav: false,
-      shareDialog: false,
-      ready: false
-    }
-  },
-
-  created () {
-    this.$store.commit('lists/resetList')
-    this.checkFav()
-    this.seedList()
-  },
-
-  validations: {
-    listName: {
-      required,
-      minLength: minLength(1),
-      maxLength: maxLength(15)
-    }
-  },
-
-  computed: {
-    ...sync('lists/*'),
-
-    nameError () {
-      const errors = []
-      if (!this.$v.listName.$dirty) {
-        return errors
-      }
-      !this.$v.listName.minLength && errors.push('El nombre debe contener por lo menos un caracter')
-      !this.$v.listName.maxLength && errors.push('El nombre debe contener como máximo 15 caracteres')
-      !this.$v.listName.required && errors.push('El nombre es requerido')
-      return errors
-    },
-    total () {
-      let sum = 0
-      return this.listItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
+    components: {
+      ListItem,
+      ElementDetails,
+      draggable
     },
 
-    listLink () {
-      return this.$store.getters['hostUrl'] + this.$router.currentRoute.fullPath
-    },
-
-  },
-
-  methods: {
-
-    shareList () {
-      this.shareDialog = true
-    },
-
-    copyToClipboard () {
-      navigator.clipboard.writeText(this.listLink + '&share=true')
-      this.shareDialog = false
-    },
-
-    async checkFav () {
-      try {
-        this.fav = await this.$store.dispatch('lists/checkFav', { listId: this.listId })
-      } catch (e) {
-        console.log(e)
+    data() {
+      return {
+        errorMessage: '',
+        loading: false,
+        edit: false,
+        addElement: false,
+        fav: false,
+        shareDialog: false,
+        ready: false
       }
     },
 
-    async addList () {
-      try {
-        let listData = {
-          listId: this.listId,
-          name: this.$store.getters['lists/listName']
+    created() {
+      this.$store.commit('lists/resetList')
+      this.checkFav()
+      this.seedList()
+    },
+
+    validations: {
+      listName: {
+        required,
+        minLength: minLength(1),
+        maxLength: maxLength(15)
+      }
+    },
+
+    computed: {
+      ...sync('lists/*'),
+
+      nameError() {
+        const errors = []
+        if (!this.$v.listName.$dirty) {
+          return errors
         }
-        await this.$store.dispatch('lists/addList', listData)
-      } catch (e) {
-        console.log(e)
-      }
+        !this.$v.listName.minLength && errors.push('El nombre debe contener por lo menos un caracter')
+        !this.$v.listName.maxLength && errors.push('El nombre debe contener como máximo 15 caracteres')
+        !this.$v.listName.required && errors.push('El nombre es requerido')
+        return errors
+      },
+      total() {
+        let sum = 0
+        return this.listItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
+      },
+
+      listLink() {
+        return this.$store.getters['hostUrl'] + this.$router.currentRoute.fullPath
+      },
+
     },
 
-    async toogleFav () {
-      if (this.fav) {
+    methods: {
+
+      shareList() {
+        this.shareDialog = true
+      },
+
+      copyToClipboard() {
+        navigator.clipboard.writeText(this.listLink + '&share=true')
+        this.shareDialog = false
+      },
+
+      async checkFav() {
         try {
-          await this.$store.dispatch('lists/unfavList', {
-            listId: this.listId,
-          })
-          this.fav = false
+          this.fav = await this.$store.dispatch('lists/checkFav', {listId: this.listId})
         } catch (e) {
-          this.fav = false
-          console.log('error unfaving')
           console.log(e)
         }
-      } else {
+      },
+
+      async addList() {
         try {
-          await this.$store.dispatch('lists/favList', {
+          let listData = {
             listId: this.listId,
             name: this.$store.getters['lists/listName']
-          })
-          this.fav = true
+          }
+          await this.$store.dispatch('lists/addList', listData)
         } catch (e) {
-          this.fav = true
-          console.log('error faving')
           console.log(e)
         }
-      }
-    },
+      },
 
-    async seedList () {
-      try {
-        const listData = await this.$store.dispatch('lists/getList', { listId: this.listId })
-        if (listData == null) {
-          await this.$router.replace('PageNotFound')
-          return
+      async toogleFav() {
+        if (this.fav) {
+          try {
+            await this.$store.dispatch('lists/unfavList', {
+              listId: this.listId,
+            })
+            this.fav = false
+          } catch (e) {
+            this.fav = false
+            console.log('error unfaving')
+            console.log(e)
+          }
+        } else {
+          try {
+            await this.$store.dispatch('lists/favList', {
+              listId: this.listId,
+              name: this.$store.getters['lists/listName']
+            })
+            this.fav = true
+          } catch (e) {
+            this.fav = true
+            console.log('error faving')
+            console.log(e)
+          }
         }
-        this.$store.commit('lists/setList', listData)
-        if (this.share) {
-          console.log('adding')
-          await this.addList()
-        }
-      } catch (e) {
-        console.log(e)
-      }
-      this.ready = true
-    },
+      },
 
-    async deleteList () {
-      try {
+      async seedList() {
+        try {
+          const listData = await this.$store.dispatch('lists/getList', {listId: this.listId})
+          if (listData == null) {
+            await this.$router.replace('PageNotFound')
+            return
+          }
+          this.$store.commit('lists/setList', listData)
+          if (this.share) {
+            console.log('adding')
+            await this.addList()
+          }
+        } catch (e) {
+          console.log(e)
+        }
+        this.ready = true
+      },
+
+      async deleteList() {
+        try {
+          this.$swal.fire({
+              didOpen: (popup) => {
+                this.$swal.showLoading()
+                this.$swal.clickConfirm()
+              },
+              padding: '6rem',
+              showConfirmButton: false,
+              preConfirm: async () => {
+                try {
+                  return await this.$store.dispatch('lists/deleteList', {listId: this.listId})
+                } catch (e) {
+                  return 0
+                }
+              },
+              allowOutsideClick: () => !this.$swal.isLoading()
+            }
+          ).then((result) => {
+              if (result.isConfirmed) {
+                if (!result.value) {
+                  this.$swal.fire({
+                    icon: 'error',
+                    title: 'Error al eliminar la lista, intente denuevo.',
+                  })
+                } else {
+                  this.$swal.fire({
+                    icon: 'success',
+                    title: 'Lista eliminada.',
+                  }).then(async (result) =>
+                    await this.$router.replace('/home')
+                  )
+                }
+              }
+            }
+          )
+        } catch (e) {
+          console.log(e)
+        }
+      },
+
+      async cancelModify() {
+        await this.seedList()
+        this.edit = false
+      },
+
+      async modifyList() {
+        let items = this.$store.getters['lists/listItems']
+        let list = {
+          listId: this.listId,
+          listName: this.listName,
+          items: items
+        }
+
         this.$swal.fire({
             didOpen: (popup) => {
               this.$swal.showLoading()
@@ -248,7 +302,7 @@ export default {
             showConfirmButton: false,
             preConfirm: async () => {
               try {
-                return await this.$store.dispatch('lists/deleteList', { listId: this.listId })
+                return await this.$store.dispatch('lists/modifyList', list)
               } catch (e) {
                 return 0
               }
@@ -260,94 +314,42 @@ export default {
               if (!result.value) {
                 this.$swal.fire({
                   icon: 'error',
-                  title: 'Error al eliminar la lista, intente denuevo.',
+                  title: 'Error al modificar la rutina, intente denuevo.',
                 })
               } else {
                 this.$swal.fire({
                   icon: 'success',
-                  title: 'Lista eliminada.',
-                }).then(async (result) =>
-                  await this.$router.replace('/home')
-                )
+                  title: 'Lista modificada.',
+                })
               }
             }
           }
         )
-      } catch (e) {
-        console.log(e)
-      }
-    },
+        this.edit = false
+      },
 
-    async cancelModify () {
-      await this.seedList()
-      this.edit = false
-    },
+      deleteItem(index) {
+        this.$store.commit('lists/deleteFromList', {index: index})
+      },
 
-    async modifyList () {
-      let items = this.$store.getters['lists/listItems']
-      let list = {
-        listId: this.listId,
-        listName: this.listName,
-        items: items
-      }
-
-      this.$swal.fire({
-          didOpen: (popup) => {
-            this.$swal.showLoading()
-            this.$swal.clickConfirm()
-          },
-          padding: '6rem',
-          showConfirmButton: false,
-          preConfirm: async () => {
-            try {
-              return await this.$store.dispatch('lists/modifyList', list)
-            } catch (e) {
-              return 0
-            }
-          },
-          allowOutsideClick: () => !this.$swal.isLoading()
-        }
-      ).then((result) => {
-          if (result.isConfirmed) {
-            if (!result.value) {
-              this.$swal.fire({
-                icon: 'error',
-                title: 'Error al modificar la rutina, intente denuevo.',
-              })
-            } else {
-              this.$swal.fire({
-                icon: 'success',
-                title: 'Lista modificada.',
-              })
-            }
-          }
-        }
-      )
-      this.edit = false
-    },
-
-    deleteItem (index) {
-      this.$store.commit('lists/deleteFromList', { index: index })
-    },
-
+    }
   }
-}
 </script>
 
 <style scoped>
-.backgroundDialog {
-  background-color: #FFFFFF;
-}
+  .backgroundDialog {
+    background-color: #FFFFFF;
+  }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
 
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
 
-.backgroundColor {
-  background-color: #FFFFFF;
-}
+  .backgroundColor {
+    background-color: #FFFFFF;
+  }
 </style>

@@ -3,8 +3,10 @@
     <v-row class="justify-center align-center">
       <v-col cols="12">
         <v-text-field v-if="find" v-model="item.name"
-                      label="Escriba el nombre del producto"
-                      solo
+                      label="Producto"
+                      outlined
+                      dense
+                      placeholder="Escriba el nombre del producto"
                       :error-messages="nameError"
                       @blur="$v.item.name.$touch()"
                       hide-details="auto">
@@ -18,11 +20,13 @@
           chips
           clearable
           hide-details
+          placeholder="Busca algun producto..."
           hide-selected
           :item-value="check"
           item-text="name"
-          label="Busca algun producto..."
-          solo
+          label="Producto"
+          dense
+          outlined
         >
           <template v-slot:no-data>
             <v-list-item>
@@ -39,8 +43,9 @@
               color="blue-grey"
               class="white--text"
               v-on="on"
+              small
             >
-              <v-icon left>
+              <v-icon left small>
                 mdi-cart-arrow-down
               </v-icon>
               <span v-text="item.name"></span>
@@ -59,7 +64,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12">
+      <v-col cols="12" class="pt-0 pb-4">
         <v-hover
           v-slot:default="{ hover }"
         >
@@ -71,14 +76,17 @@
     <v-row class="justify-center align-center">
       <v-col cols="6" class="pt-0">
         <v-text-field width="100%" background-color="#ffffff" dense
-                      solo label="Cantidad"
+                      label="Cantidad"
+                      placeholder="Cantidad"
+                      outlined
                       type="number" v-model.number="item.quantity"
                       :error-messages="quantityError"
                       @blur="$v.item.quantity.$touch()"
         ></v-text-field>
       </v-col>
       <v-col cols="6" class="pt-0">
-        <v-text-field :readonly="!find" label="Precio" type="number" solo dense   v-model.number="item.price"
+        <v-text-field :readonly="!find" label="Precio" type="number" outlined placeholder="Precio" dense
+                      v-model.number="item.price"
                       :error-messages="priceError"
                       @blur="$v.item.price.$touch()"></v-text-field>
       </v-col>
@@ -88,10 +96,11 @@
       <v-col cols="12" class="py-0">
         <v-textarea
           auto-grow
-          solo
+          outlined
           name="input-7-4"
           v-model="item.note"
           label="Aclaración"
+          placeholder="Aclaración"
           :error-messages="noteError" @blur="$v.item.note.$touch()"
           clearable
           counter="100"
@@ -101,14 +110,15 @@
     <v-row>
       <v-col cols="12" class="pt-0">
         <v-text-field background-color="#ffffff" dense
-                      hide-details solo label="Responsable"
+                      hide-details outlined label="Responsable"
+                      placeholder="Responsable"
                       clearable width="100%" v-model="item.responsible"></v-text-field>
       </v-col>
     </v-row>
     <v-row class="align-center justify-end">
       <v-col cols="12" sm="8" md="6" class="d-flex align-center justify-space-around">
-        <v-btn color="primary" outlined  @click="elementClose">Cerrar</v-btn>
-        <v-btn color="primary"  @click="addElement">Agregar</v-btn>
+        <v-btn color="primary" outlined @click="elementClose">Cerrar</v-btn>
+        <v-btn color="primary" @click="addElement">Agregar</v-btn>
       </v-col>
     </v-row>
   </v-card>
@@ -173,6 +183,8 @@
           this.find = true;
           this.text = "¿Deseas buscar el producto en nuestra base de datos?"
         } else {
+          this.name = "";
+          this.$v.item.name.$reset();
           this.find = false;
           this.text = "¿No encontraste el producto que buscabas?"
         }
@@ -185,7 +197,7 @@
 
       elementClose() {
         this.resetFields();
-        this.selected=null;
+        this.selected = null;
         this.$emit('elementClose');
       }
       ,

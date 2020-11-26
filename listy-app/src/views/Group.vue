@@ -53,21 +53,23 @@
 
     </v-card>
 
-    <v-card class="px-5 justify-center align-content-center" elevation="10" outlined >
+    <v-card class="px-5" elevation="10" outlined>
       <v-row align="center" justify="center">
-        <v-col cols="6" class="d-flex justify-start align-center">
+        <v-col cols="6" sm="3"  class="d-flex justify-start align-center">
           <transition name="fade">
             <v-btn color="primary" outlined @click="cancelModify" v-if="edit" class="mr-8">
               CANCELAR
             </v-btn>
           </transition>
+        </v-col>
+        <v-col cols="6" sm="3" class="d-flex justify-sm-start justify-end align-center">
           <transition name="fade">
             <v-btn color="primary" @click="modifyGroup" v-if="edit">
               MODIFICAR
             </v-btn>
           </transition>
         </v-col>
-        <v-col cols="6" class="d-flex justify-end align-center">
+        <v-col cols="6" class="d-flex justify-center justify-sm-end align-center">
           <v-btn class="white--text" color="primary" @click="listDialog = true">
             <v-icon left color="white">mdi-cart</v-icon>
             CREATE LIST
