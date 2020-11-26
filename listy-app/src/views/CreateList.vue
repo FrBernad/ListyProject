@@ -70,8 +70,8 @@
       <v-card class="px-5 " color="#F5F7FA" elevation="10" outlined height="10%">
         <v-row align="center" justify="center">
           <v-col cols="6" class="d-flex justify-start align-center">
-            <v-btn color="#212529" outlined @click="createList">
-              <v-icon left color="black">mdi-cart</v-icon>
+            <v-btn color="primary"  @click="createList">
+              <v-icon left color="white">mdi-cart</v-icon>
               CREATE
             </v-btn>
           </v-col>

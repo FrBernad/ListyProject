@@ -108,8 +108,8 @@
     </v-row>
     <v-row class="align-center justify-end">
       <v-col cols="12" sm="8" md="6" class="d-flex align-center justify-space-around">
-        <v-btn color="#212529" outlined @click="elementClose">Cerrar</v-btn>
-        <v-btn color="#212529" outlined @click="addElement">Agregar</v-btn>
+        <v-btn color="primary" outlined  @click="elementClose">Cerrar</v-btn>
+        <v-btn color="primary"  @click="addElement">Agregar</v-btn>
       </v-col>
     </v-row>
   </v-card>

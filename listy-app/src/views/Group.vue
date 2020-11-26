@@ -9,9 +9,11 @@
           <v-col cols="12">
             <h1 class="text-center">Copia el link y compartelo con tus amigos</h1>
           </v-col>
-          <v-col cols="12" class="d-flex align-center justify-space-around">
-            <v-btn @click="shareDialog = false">Cancelar</v-btn>
-            <v-btn @click="copyToClipboard">Copiar link</v-btn>
+        </v-row>
+        <v-row class="align-center justify-end">
+          <v-col cols="12" class="d-flex align-center justify-end">
+            <v-btn color="primary" outlined @click="shareDialog = false">Cancelar</v-btn>
+            <v-btn color="primary" class="ml-8" @click="copyToClipboard">Copiar link</v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -53,19 +55,19 @@
       <v-row align="center" justify="center">
         <v-col cols="6" class="d-flex justify-start align-center">
           <transition name="fade">
-            <v-btn @click="modifyGroup" small v-if="edit" class="mr-8">
-              MODIFICAR
+            <v-btn color="primary" outlined @click="cancelModify" v-if="edit" class="mr-8">
+              CANCELAR
             </v-btn>
           </transition>
           <transition name="fade">
-            <v-btn @click="cancelModify" v-if="edit" small>
-              CANCELAR
+            <v-btn color="primary" @click="modifyGroup" v-if="edit">
+              MODIFICAR
             </v-btn>
           </transition>
         </v-col>
         <v-col cols="6" class="d-flex justify-end align-center">
-          <v-btn @click="listDialog = true">
-            <v-icon left color="black">mdi-cart</v-icon>
+          <v-btn class="white--text" color="primary" @click="listDialog = true">
+            <v-icon left color="white">mdi-cart</v-icon>
             CREATE LIST
           </v-btn>
         </v-col>
@@ -237,7 +239,7 @@
   }
 
   .backgroundDialog {
-    background-color: #e3edf7;
+    background-color: #FFFFFF;
   }
 
   .fade-enter-active, .fade-leave-active {

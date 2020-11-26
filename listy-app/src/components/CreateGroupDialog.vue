@@ -15,8 +15,8 @@
 
     <v-row class="align-center justify-end">
       <v-col cols="12" sm="8" md="6" class="d-flex align-center justify-space-around">
-        <v-btn color="primary" @click="closeDialog(false)" width="40%" x-large>Cancelar</v-btn>
-        <v-btn color="primary" @click="newGroup" width="40%" x-large>Crear</v-btn>
+        <v-btn color="primary" outlined @click="closeDialog(false)" width="40%">Cancelar</v-btn>
+        <v-btn color="primary" @click="newGroup" width="40%" >Crear</v-btn>
       </v-col>
     </v-row>
 
