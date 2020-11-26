@@ -25,7 +25,7 @@
           </v-text-field>
         </v-col>
         <v-col cols="12" sm="4" class="d-flex align-center justify-space-around">
-          <v-btn @click="edit = !edit" icon color="#000000">
+          <v-btn @click="edit = !edit" :disabled="edit" icon color="#000000">
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
           <v-btn icon color="#000000" @click="shareGroup">
@@ -38,23 +38,30 @@
       </v-row>
 
       <v-list dense>
-          <v-list-item  v-for="(member, index) of this.membersName" :key="index">
-            <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title v-text="member"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+        <v-list-item v-for="(member, index) of this.membersName" :key="index">
+          <v-list-item-icon>
+            <v-icon>mdi-account</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title v-text="member"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-card>
 
     <v-card class="px-5 justify-center align-content-center" elevation="10" outlined height="10%">
       <v-row align="center" justify="center">
         <v-col cols="6" class="d-flex justify-start align-center">
-          <v-btn @click="modifyGroup" v-if="edit">
-            MODIFICAR
-          </v-btn>
+          <transition name="fade">
+            <v-btn @click="modifyGroup" small v-if="edit" class="mr-8">
+              MODIFICAR
+            </v-btn>
+          </transition>
+          <transition name="fade">
+            <v-btn @click="cancelModify" v-if="edit" small>
+              CANCELAR
+            </v-btn>
+          </transition>
         </v-col>
         <v-col cols="6" class="d-flex justify-end align-center">
           <v-btn @click="listDialog = true">
@@ -75,7 +82,6 @@
   import {maxLength, minLength, required} from 'vuelidate/lib/validators';
 
 
-
   export default {
     name: "Group",
     props: ["groupId", "share"],
@@ -89,7 +95,7 @@
         ready: false,
         loading: false,
         edit: false,
-        listDialog : false,
+        listDialog: false,
         shareDialog: false
       }
     },
@@ -121,6 +127,11 @@
     },
 
     methods: {
+      async cancelModify() {
+        await this.seedGroup();
+        this.edit = false;
+      },
+
       shareGroup() {
         this.shareDialog = true;
       },
@@ -150,7 +161,7 @@
         } catch (e) {
           console.log(e)
         }
-        this.ready= true;
+        this.ready = true;
       },
 
       async addGroup() {
@@ -208,10 +219,10 @@
           let members = this.$store.getters["lists/members"];
           let group = {groupId: this.groupId, groupName: this.groupName, members: members};
           await this.$store.dispatch("lists/modifyGroup", group);
-          this.edit = false;
         } catch (e) {
           console.log(e)
         }
+        this.edit = false;
       },
       deleteMember(index) {
         this.$store.commit('lists/deleteFromGroup', {index: index});
@@ -224,4 +235,18 @@
   .backgroundColor {
     background-color: #f0f2f5;
   }
+
+  .backgroundDialog {
+    background-color: #e3edf7;
+  }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
+
+
 </style>

@@ -25,61 +25,71 @@
 
 <script>
 
-import {sync} from "vuex-pathify";
-import { maxLength, minLength, required } from 'vuelidate/lib/validators'
+  import {sync} from "vuex-pathify";
+  import {maxLength, minLength, required} from 'vuelidate/lib/validators'
 
-export default {
+  export default {
 
-  name: 'CreateListGroupDialog',
-  data () {
-    return {
-      groupListName: '',
-    }
-  },
-
-  methods: {
-    closeDialog () {
-      this.groupListName = '';
-      this.$emit('closeDialog')
-    },
-    async newListGroup () {
-      if(this.$v.$invalid){
-        this.$v.$touch();
-        return;
+    name: 'CreateListGroupDialog',
+    data() {
+      return {
+        groupListName: '',
+        loading: false,
       }
-      const copy = {name: this.groupListName, members: this.members}
-      await this.$store.dispatch('lists/newListGroup',copy);
-      this.closeDialog();
     },
 
-  },
+    methods: {
+      closeDialog() {
+        this.groupListName = '';
+        this.$emit('closeDialog')
+      },
 
-  validations: {
-    groupListName: {
-      required,
-      minLength: minLength(1),
-      maxLength: maxLength(25)
+      async newListGroup() {
+        if (!this.loading) {
+          this.loading = true;
+          if (this.$v.$invalid) {
+            this.$v.$touch();
+            return;
+          }
+          try {
+            const copy = {name: this.groupListName, members: this.members}
+            await this.$store.dispatch('lists/newListGroup', copy);
+            this.closeDialog();
+          } catch (e) {
+            console.log(e);
+          }
+          this.loading = false;
+        }
+      }
     },
-  },
 
-  computed: {
-    ...sync("lists/*"),
-    nameError () {
-      const errors = []
-      if (!this.$v.groupListName.$dirty) {
+    validations: {
+      groupListName: {
+        required,
+        minLength: minLength(1),
+        maxLength: maxLength(25)
+      },
+    },
+
+    computed: {
+      ...sync("lists/*"),
+      nameError() {
+        const errors = []
+        if (!this.$v.groupListName.$dirty) {
+          return errors
+        }
+        !this.$v.groupListName.required && errors.push('El nombre de la lista del grupo es requerido')
+        !this.$v.groupListName.maxLength && errors.push('El nombre de la lista del grupo debe contener como máximo 15 caracteres')
+        !this.$v.groupListName.minLength && errors.push('El nombre de la lista del grupo debe contener por lo menos un caracter')
         return errors
-      }
-      !this.$v.groupListName.required && errors.push('El nombre de la lista del grupo es requerido')
-      !this.$v.groupListName.maxLength && errors.push('El nombre de la lista del grupo debe contener como máximo 15 caracteres')
-      !this.$v.groupListName.minLength && errors.push('El nombre de la lista del grupo debe contener por lo menos un caracter')
-      return errors
-    },
+      },
+    }
   }
-}
 </script>
 
 <style scoped>
-.borderCard {
-  border: solid #1D50AE;
-}
+  .borderCard {
+    border: solid #1D50AE;
+  }
+
 </style>

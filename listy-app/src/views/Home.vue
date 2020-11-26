@@ -3,11 +3,11 @@
     <transition name="fade">
       <v-row align="start" justify="center" style="height: 100%" v-if="!loading">
         <v-col cols="12">
-          <v-row class="px-8 pt-4" :justify="this.currentEntries.length ? 'start': 'center'">
+          <v-row class="px-6 pt-4" :justify="this.currentEntries.length ? 'start': 'center'">
             <v-col cols="12" class="d-flex justify-center align-center" v-if="this.currentEntries.length">
-              <v-btn color="primary" width="40%" to="/home/createList">CREAR LISTA</v-btn>
+              <v-btn color="primary" width="50%" to="/home/createList">CREAR LISTA</v-btn>
             </v-col>
-            <v-col v-if="!this.currentEntries.length" cols="10" sm="8">
+            <v-col v-if="!this.currentEntries.length" cols="12" sm="8">
               <v-card :height="$vuetify.breakpoint.smAndDown ? '40vh' : '400px'"
                       class="d-flex justify-center align-center mt-5">
                 <v-row justify="center" align="center">
@@ -27,7 +27,6 @@
             </v-col>
           </v-row>
         </v-col>
-
         <v-col cols="12" class="d-flex justify-center align-center align-self-end">
           <v-container class="max-width">
             <v-pagination
@@ -107,6 +106,7 @@
   .fade-enter, .fade-leave-to {
     opacity: 0;
   }
+
   .backgroundColor{
     background-color: #f0f2f5;
   }

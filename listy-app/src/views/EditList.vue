@@ -220,7 +220,6 @@
             console.log("adding")
             await this.addList();
           }
-          console.log(this.listItems)
         } catch (e) {
           console.log(e)
         }

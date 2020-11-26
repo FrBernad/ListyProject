@@ -3,8 +3,8 @@
     <transition name="fade">
       <v-row v-if="!loading" align="start" justify="center" style="height: 100%">
         <v-col cols="12">
-          <v-row class="px-8 pt-4" :justify="this.favoriteEntries.length ? 'start': 'center'">
-            <v-col v-if="!this.favoriteEntries.length" cols="10" sm="8">
+          <v-row class="px-6 pt-4" :justify="this.favoriteEntries.length ? 'start': 'center'">
+            <v-col v-if="!this.favoriteEntries.length" cols="12" sm="8">
               <v-card :height="$vuetify.breakpoint.smAndDown ? '40vh' : '400px'"
                       class="d-flex justify-center align-center mt-5">
                 <v-row justify="center" align="center">

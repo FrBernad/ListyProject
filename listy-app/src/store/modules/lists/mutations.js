@@ -52,7 +52,9 @@ export default {
   },
 
   setNames(state, payload) {
-    state.membersName.push(...payload.members);
+    const aux = [];
+    aux.push(...payload.members)
+    state.membersName = aux;
   }
 
 

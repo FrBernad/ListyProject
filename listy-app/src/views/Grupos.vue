@@ -6,17 +6,17 @@
     <transition name="fade">
       <v-row align="start" justify="center" style="height: 100%" v-if="!loading">
         <v-col cols="12">
-          <v-row class="px-8 pt-4" :justify="this.groupEntries.length ? 'start': 'center'">
+          <v-row class="px-6 pt-4" :justify="this.groupEntries.length ? 'start': 'center'">
             <v-col cols="12" class="d-flex justify-center align-center" v-if="this.groupEntries.length">
-              <v-btn color="primary" width="40%" @click="groupDialog=true">CREAR GRUPO</v-btn>
+              <v-btn color="primary" width="55%" @click="groupDialog=true">CREAR GRUPO</v-btn>
             </v-col>
-            <v-col v-if="!this.groupEntries.length" cols="10" sm="8">
+            <v-col v-if="!this.groupEntries.length" cols="12" sm="8">
               <v-card :height="$vuetify.breakpoint.smAndDown ? '40vh' : '400px'"
                       class="d-flex justify-center align-center mt-5">
                 <v-row justify="center" align="center">
                   <v-col cols="12">
                     <p class="my-md-3 my-0 px-6 px-md-13 text-center text-body-1 text-sm-h6 text-md-h4 grey--text">
-                      Parece que perteneces a ningún grupo. Crea un grupo o únete a uno mediante un link</p>
+                      Parece que no perteneces a ningún grupo. Crea un grupo o únete a uno mediante un link.</p>
                   </v-col>
                   <v-col cols="8" class="d-flex justify-center align-center mt-md-3">
                     <v-btn color="primary" width="80%" @click="groupDialog=true">CREAR GRUPO</v-btn>
