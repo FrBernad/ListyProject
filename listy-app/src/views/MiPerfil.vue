@@ -41,12 +41,10 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="8" class="d-flex justify-space-between align-center">
-              <v-btn @click="cancelPicChange" outlined color="#212529">
-                <v-icon class="mr-2" left>mdi-cancel</v-icon>
+              <v-btn color="primary" outlined @click="cancelPicChange">
                 CANCELAR
               </v-btn>
-              <v-btn @click="changePic" outlined color="#212529">
-                <v-icon class="mr-2">mdi-content-save-outline</v-icon>
+              <v-btn @click="changePic" color="primary">
                 MODIFICAR
               </v-btn>
             </v-col>

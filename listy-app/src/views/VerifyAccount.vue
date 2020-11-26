@@ -6,7 +6,7 @@
         v-model="loading"
         width="500px"
       >
-        <v-card light color="#F8F9FA" width="500px" height="250px">
+        <v-card light color="#FFFFFF" width="500px" height="250px">
           <v-container fill-height fluid>
             <v-row align="center" justify="center">
               <v-fade-transition>
@@ -43,16 +43,16 @@
                   </p>
                 </v-col>
                 <v-col cols="6" class="d-flex align-center justify-center pt-0">
-                  <v-btn light outlined large width="50%" @click="redirect">LISTO</v-btn>
+                  <v-btn color="primary" large width="50%" @click="redirect">LISTO</v-btn>
                 </v-col>
                 <v-col cols="12" class="pb-0">
                   <v-divider class="mb-5"></v-divider>
                   <v-row justify="space-around" align="center">
                     <v-col cols="6">
-                      <p class="text-start text-subtitle-2 mb-0 text-sm-subtitle-1">No resibiste nuestro email?</p>
+                      <p class="text-start text-subtitle-2 mb-0 text-sm-subtitle-1">¿No recibiste nuestro email?</p>
                     </v-col>
                     <v-col cols="5" class="d-flex align-center justify-center">
-                      <v-btn light outlined width="80%" @click="resendVerification">REENVIAR</v-btn>
+                      <v-btn color="primary" large width="50%" @click="resendVerification">REENVIAR</v-btn>
                     </v-col>
                   </v-row>
                 </v-col>
