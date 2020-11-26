@@ -23,7 +23,7 @@
               v-model="username"
               :counter="10"
               label="Usuario"
-              placeholder= 'ingrese su nombre de usuario'
+              placeholder= 'ingrese usuario'
             ></v-text-field>
 
             <v-text-field
@@ -49,25 +49,30 @@
 
 <script>
 import {email, maxLength } from "vuelidate/lib/validators";
-
+import {sync} from "vuex-pathify"
 export default {
   name: "MiPerfil",
   data(){
     return {
-      username: "test",
-      email: "test@hotmail.com",
       pic: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg'
+    }
+  },
+  created(){
+    if(this.avatarUrl){
+      this.pic=this.avatarUrl
     }
   },
   methods:{
     senddata: function (event){
+
     },
     getImage: function(){
 
     },
     changePicture: function(){
       this.pic="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg"
-    }
+    },
+
   },
 
   validations: {
@@ -94,8 +99,8 @@ export default {
       return errors
     }
     ,
+    ...sync("user/*")
   }
-
 }
 </script>
 

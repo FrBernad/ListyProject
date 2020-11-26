@@ -797,6 +797,6 @@ export default {
     }
     return names
 
-  }
+  },
 
 }
