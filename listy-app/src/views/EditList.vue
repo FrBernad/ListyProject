@@ -1,7 +1,8 @@
 <template>
-
   <transition name="fade">
     <v-container v-if="ready" class="backgroundColor" fluid style="height:100%">
+
+      <!--Share dialog-->
       <v-dialog v-model="shareDialog" width="500px">
         <v-container class="backgroundDialog elevation-8">
           <v-row class="align-center justify-center">
@@ -9,14 +10,15 @@
               <h1 class="text-center">Copia el link y compartelo con tus amigos</h1>
             </v-col>
           </v-row>
-          <v-row class="align-center justify-end">
-            <v-col cols="12" class="d-flex align-center justify-end">
+          <v-row class="align-center justify-center">
+            <v-col cols="10" md="8" class="d-flex align-center justify-space-between">
               <v-btn color="primary" outlined @click="shareDialog = false">Cancelar</v-btn>
-              <v-btn color="primary" class="ml-8" @click="copyToClipboard">Copiar link</v-btn>
+              <v-btn color="primary" @click="copyToClipboard">Copiar link</v-btn>
             </v-col>
           </v-row>
         </v-container>
       </v-dialog>
+
       <v-card class="pa-5" height="90%" elevation="10" outlined>
 
         <!--LIST HEADER-->
@@ -71,21 +73,22 @@
 
       <v-card class="px-5 " elevation="10" outlined>
         <v-row align="center" justify="center" style="height: 100%">
-          <v-col cols="6" sm="3" class="d-flex justify-start align-center">
+          <v-col cols="6" sm="3" md="2" class="d-flex justify-sm-start justify-center align-center">
             <transition name="fade">
-              <v-btn color="primary" :small="this.$vuetify.breakpoint.xsOnly" outlined @click="cancelModify" v-if="edit">
+              <v-btn color="primary" :small="this.$vuetify.breakpoint.xsOnly" outlined @click="cancelModify"
+                     v-if="edit">
                 CANCELAR
               </v-btn>
             </transition>
           </v-col>
-          <v-col cols="6" sm="3" class="d-flex justify-sm-start justify-end align-center">
+          <v-col cols="6" sm="3" md="2" class="d-flex justify-sm-start justify-center align-center">
             <transition name="fade">
               <v-btn color="primary" :small="this.$vuetify.breakpoint.xsOnly" @click="modifyList" v-if="edit">
                 MODIFICAR
               </v-btn>
             </transition>
           </v-col>
-          <v-col cols="6" class="d-flex justify-center justify-sm-end align-center">
+          <v-col cols="6" md="8" class="d-flex justify-center justify-sm-end align-center">
             <span>Total: ${{ total.toFixed(2) }}</span>
           </v-col>
         </v-row>

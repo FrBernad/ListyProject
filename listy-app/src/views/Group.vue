@@ -14,10 +14,10 @@
             <h1 class="text-center">Copia el link y compartelo con tus amigos</h1>
           </v-col>
         </v-row>
-        <v-row class="align-center justify-end">
-          <v-col cols="12" class="d-flex align-center justify-end">
+        <v-row class="align-center justify-center">
+          <v-col cols="10" md="8" class="d-flex align-center justify-space-between">
             <v-btn color="primary" outlined @click="shareDialog = false">Cancelar</v-btn>
-            <v-btn color="primary" class="ml-8" @click="copyToClipboard">Copiar link</v-btn>
+            <v-btn color="primary" @click="copyToClipboard">Copiar link</v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -55,21 +55,21 @@
 
     <v-card class="px-5" elevation="10" outlined>
       <v-row align="center" justify="center">
-        <v-col cols="6" sm="3" class="d-flex justify-start align-center">
+        <v-col cols="6" sm="3" md="2" class="d-flex justify-center justify-small-start align-center">
           <transition name="fade">
             <v-btn color="primary" :small="this.$vuetify.breakpoint.xsOnly" outlined @click="cancelModify" v-if="edit">
               CANCELAR
             </v-btn>
           </transition>
         </v-col>
-        <v-col cols="6" sm="3" class="d-flex justify-sm-start justify-end align-center">
+        <v-col cols="6" sm="3" md="2" class="d-flex justify-sm-start justify-center align-center">
           <transition name="fade">
             <v-btn color="primary" :small="this.$vuetify.breakpoint.xsOnly" @click="modifyGroup" v-if="edit">
               MODIFICAR
             </v-btn>
           </transition>
         </v-col>
-        <v-col cols="6" class="d-flex justify-center justify-sm-end align-center">
+        <v-col cols="6" md="8" class="d-flex justify-center justify-sm-end align-center">
           <v-btn class="white--text" :small="this.$vuetify.breakpoint.xsOnly" color="primary" @click="listDialog = true">
             <v-icon left color="white">mdi-cart</v-icon>
             CREATE LIST
