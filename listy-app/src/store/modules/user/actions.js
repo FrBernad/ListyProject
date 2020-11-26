@@ -29,4 +29,26 @@ export default {
     context.commit("setUserData", user);
   },
 
+  async changeAvatarUrl(context, payload) {
+    const response = await fetch(`https://listy-itba-app.firebaseio.com/users/${context.rootGetters["userId"]}.json?auth=` +
+      context.rootGetters["token"],
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({avatarUrl:payload.url}),
+      });
+
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      console.log(responseData);
+      throw new Error("Error changin avatarUrl");
+    }
+
+    context.commit("SET_AVATAR_URL", payload.url)
+  }
+
 }
