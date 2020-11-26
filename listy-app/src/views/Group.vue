@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="backgroundColor" style="height:100%">
+  <v-container v-if="ready" fluid class="backgroundColor" style="height:100%">
     <v-dialog v-model="listDialog" persistent width="700px" class="justify-center align-center">
       <CreateListGroupDialog @closeDialog="close"></CreateListGroupDialog>
     </v-dialog>
