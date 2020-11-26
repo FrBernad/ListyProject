@@ -25,6 +25,8 @@
           </v-btn>
         </div>
       </v-col>
+
+      <!--avatar change dialog-->
       <v-dialog v-model="picDialog" width="550">
         <v-card class="pa-6">
           <v-row align="center" justify="center">
@@ -51,9 +53,11 @@
           </v-row>
         </v-card>
       </v-dialog>
+
     </v-row>
+
     <v-row class="justify-center">
-      <v-col cols="7">
+      <v-col cols="11" md="9">
         <v-card ref="form" class="mt-10">
           <v-card-text>
             <v-text-field

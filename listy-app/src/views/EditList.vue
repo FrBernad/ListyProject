@@ -73,14 +73,14 @@
         <v-row align="center" justify="center" style="height: 100%">
           <v-col cols="6" sm="3" class="d-flex justify-start align-center">
             <transition name="fade">
-              <v-btn color="primary" outlined @click="cancelModify" v-if="edit" class="mr-8">
+              <v-btn color="primary" :small="this.$vuetify.breakpoint.xsOnly" outlined @click="cancelModify" v-if="edit">
                 CANCELAR
               </v-btn>
             </transition>
           </v-col>
           <v-col cols="6" sm="3" class="d-flex justify-sm-start justify-end align-center">
             <transition name="fade">
-              <v-btn color="primary" @click="modifyList" v-if="edit">
+              <v-btn color="primary" :small="this.$vuetify.breakpoint.xsOnly" @click="modifyList" v-if="edit">
                 MODIFICAR
               </v-btn>
             </transition>

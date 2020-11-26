@@ -55,22 +55,22 @@
 
     <v-card class="px-5" elevation="10" outlined>
       <v-row align="center" justify="center">
-        <v-col cols="6" sm="3"  class="d-flex justify-start align-center">
+        <v-col cols="6" sm="3" class="d-flex justify-start align-center">
           <transition name="fade">
-            <v-btn color="primary" outlined @click="cancelModify" v-if="edit" class="mr-8">
+            <v-btn color="primary" :small="this.$vuetify.breakpoint.xsOnly" outlined @click="cancelModify" v-if="edit">
               CANCELAR
             </v-btn>
           </transition>
         </v-col>
         <v-col cols="6" sm="3" class="d-flex justify-sm-start justify-end align-center">
           <transition name="fade">
-            <v-btn color="primary" @click="modifyGroup" v-if="edit">
+            <v-btn color="primary" :small="this.$vuetify.breakpoint.xsOnly" @click="modifyGroup" v-if="edit">
               MODIFICAR
             </v-btn>
           </transition>
         </v-col>
         <v-col cols="6" class="d-flex justify-center justify-sm-end align-center">
-          <v-btn class="white--text" color="primary" @click="listDialog = true">
+          <v-btn class="white--text" :small="this.$vuetify.breakpoint.xsOnly" color="primary" @click="listDialog = true">
             <v-icon left color="white">mdi-cart</v-icon>
             CREATE LIST
           </v-btn>
