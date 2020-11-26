@@ -1,8 +1,12 @@
 <template>
   <v-container v-if="ready" fluid class="backgroundColor" style="height:100%">
+
+    <!--create list dialog-->
     <v-dialog v-model="listDialog" persistent width="700px" class="justify-center align-center">
       <CreateListGroupDialog @closeDialog="close"></CreateListGroupDialog>
     </v-dialog>
+
+    <!--share group dialog-->
     <v-dialog v-model="shareDialog" width="500px">
       <v-container class="backgroundDialog elevation-8">
         <v-row align="center" justify="center">
@@ -18,7 +22,9 @@
         </v-row>
       </v-container>
     </v-dialog>
+
     <v-card class="pa-5" height="90%" elevation="10" outlined>
+
       <v-row class="align-center justify-center">
         <v-col cols="12" sm="8" class="d-flex align-center justify-start">
           <v-text-field class="text-h4 font-weight-bold" @blur="$v.groupName.$touch()" :error-messages="nameError"
@@ -39,16 +45,12 @@
         </v-col>
       </v-row>
 
-      <v-list dense>
-        <v-list-item v-for="(member, index) of this.membersName" :key="index">
-          <v-list-item-icon>
-            <v-icon>mdi-account</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title v-text="member"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+      <v-row>
+        <v-col md="4" cols="6" v-for="(member, index) of this.membersName" :key="index">
+          <GroupUser :user-data="member"></GroupUser>
+        </v-col>
+      </v-row>
+
     </v-card>
 
     <v-card class="px-5 justify-center align-content-center" elevation="10" outlined height="10%">
@@ -80,6 +82,7 @@
 
 <script>
   import CreateListGroupDialog from '../components/CreateListGroupDialog'
+  import GroupUser from '../components/GroupUser'
   import {sync} from "vuex-pathify";
   import {maxLength, minLength, required} from 'vuelidate/lib/validators';
 
@@ -88,7 +91,8 @@
     name: "Group",
     props: ["groupId", "share"],
     components: {
-      CreateListGroupDialog
+      CreateListGroupDialog,
+      GroupUser
     },
 
     data() {
@@ -158,8 +162,8 @@
             return;
           }
           this.$store.commit("lists/setGroup", groupData);
-          let aux = await this.$store.dispatch("lists/getNames", {members: this.members});
-          this.$store.commit("lists/setNames", {members: aux});
+          let aux = await this.$store.dispatch("lists/getGroupMembersInfo", {members: this.members});
+          this.$store.commit("lists/setGroupMembersData", {members: aux});
         } catch (e) {
           console.log(e)
         }

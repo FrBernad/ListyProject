@@ -38,20 +38,23 @@ export default {
     state.owner = payload.owner;
     state.groupName = payload.name;
   },
+
   resetGroup(state) {
     state.members = [];
     state.membersName = [];
     state.groupName = '';
     state.owner = '';
   },
+
   deleteFromGroup(state, payload) {
     state.members.splice(payload.index, 1);
   },
+
   addMember(state, payload) {
     state.members.push(payload);
   },
 
-  setNames(state, payload) {
+  setGroupMembersData(state, payload) {
     const aux = [];
     aux.push(...payload.members)
     state.membersName = aux;
