@@ -1,5 +1,5 @@
 <template>
-  <v-card :to="{
+  <v-card color="#FFFFFF" :to="{
       path: '/home/list',
       query: {listId: data[1].id}
      }">

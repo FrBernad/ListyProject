@@ -3,8 +3,8 @@
     <v-row class="justify-center align-center">
       <v-col cols="12">
         <v-text-field v-if="find" v-model="item.name"
-                      label="Nombre"
-                      placeholder="Escriba el nombre del producto"
+                      label="Escriba el nombre del producto"
+                      solo
                       :error-messages="nameError"
                       @blur="$v.item.name.$touch()"
                       hide-details="auto">
@@ -69,24 +69,25 @@
       </v-col>
     </v-row>
     <v-row class="justify-center align-center">
-      <v-col cols="4" class="pt-0">
-        <v-text-field width="100%" background-color="#ffffff" dense hide-details
+      <v-col cols="6" class="pt-0">
+        <v-text-field width="100%" background-color="#ffffff" dense
                       solo label="Cantidad"
                       type="number" v-model.number="item.quantity"
                       :error-messages="quantityError"
                       @blur="$v.item.quantity.$touch()"
         ></v-text-field>
       </v-col>
-      <v-col cols="8" class="pt-0">
-        <v-text-field background-color="#ffffff" dense
-                      hide-details solo label="Responsable"
-                      clearable width="100%" v-model="item.responsible"></v-text-field>
+      <v-col cols="6" class="pt-0">
+        <v-text-field :readonly="!find" label="Precio" type="number" solo dense   v-model.number="item.price"
+                      :error-messages="priceError"
+                      @blur="$v.item.price.$touch()"></v-text-field>
       </v-col>
+
     </v-row>
     <v-row>
       <v-col cols="12" class="py-0">
         <v-textarea
-          outlined
+          solo
           name="input-7-4"
           v-model="item.note"
           label="Aclaración"
@@ -99,10 +100,10 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="4" class="d-flex py-0 justify-start">
-        <v-text-field :readonly="!find" label="Precio" type="number" v-model.number="item.price"
-                      :error-messages="priceError"
-                      @blur="$v.item.price.$touch()"></v-text-field>
+      <v-col cols="12" class="pt-0">
+        <v-text-field background-color="#ffffff" dense
+                      hide-details solo label="Responsable"
+                      clearable width="100%" v-model="item.responsible"></v-text-field>
       </v-col>
     </v-row>
     <v-row class="align-center justify-end">

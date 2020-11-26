@@ -39,7 +39,6 @@
             <v-text-field
               placeholder="Seleccione la url de su foto"
               label="Cambiar foto"
-              append-icon="mdi mdi-camera"
             ></v-text-field>
           </v-card-text>
         </v-card>

@@ -34,15 +34,6 @@
             <v-btn color="primary" @click="processData" large width="90%">Entrar</v-btn>
           </v-form>
 
-          <div class="mt-3">
-            <v-hover
-              v-slot:default="{ hover }"
-            >
-              <a id="forgot" :class="{'text-decoration-underline':hover}" class="text-center">¿olvidaste tu usuario o
-                contraseña?</a>
-            </v-hover>
-          </div>
-
           <v-divider class="mt-4 mb-6"/>
 
           <v-btn color="success" large width="70%" @click="registerOverlay=true">Registrarse</v-btn>

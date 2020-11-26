@@ -2,13 +2,13 @@
 
   <v-fade-transition appear>
     <v-container fluid class="backgroundColor" style="height:100%">
-      <v-card class="pa-5" height="90%" elevation="10" outlined>
+      <v-card class="pa-5" color="#F5F7FA" height="90%" elevation="10" outlined>
         <!--LOADING DIALOG-->
         <v-dialog
           v-model="loading"
           width="500px"
         >
-          <v-card light color="#F8F9FA" width="500px" height="250px">
+          <v-card light  width="500px" height="250px">
             <v-container fill-height fluid>
               <v-row align="center" justify="center">
                 <v-fade-transition>
@@ -49,9 +49,9 @@
           <v-col cols="12">
             <v-dialog v-model="addElement" max-width="600px">
               <template v-slot:activator="{on, attrs}">
-                <v-btn color="rgba(227,237,247,1)" block v-bind="attrs" v-on="on">
-                  <v-icon color="#69A74E" size="x-large">mdi-plus-circle</v-icon>
-                  <span class="font-weight-bold ">Agregar elemento</span>
+                <v-btn color="#1976d2" block v-bind="attrs" v-on="on">
+                  <v-icon class="mr-4" color="#69A74E" size="x-large">mdi-plus-circle</v-icon>
+                  <span class="font-weight-bold white--text" >Agregar elemento</span>
                 </v-btn>
               </template>
               <ElementDetails @elementClose="addElement=false"></ElementDetails>
@@ -67,10 +67,10 @@
 
       </v-card>
 
-      <v-card class="px-5 " elevation="10" outlined height="10%">
+      <v-card class="px-5 " color="#F5F7FA" elevation="10" outlined height="10%">
         <v-row align="center" justify="center">
           <v-col cols="6" class="d-flex justify-start align-center">
-            <v-btn @click="createList">
+            <v-btn color="#212529" outlined @click="createList">
               <v-icon left color="black">mdi-cart</v-icon>
               CREATE
             </v-btn>
