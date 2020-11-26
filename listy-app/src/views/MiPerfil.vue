@@ -12,6 +12,7 @@
           Cambiar foto
         </v-btn>
       </v-row>
+
       <v-row class="justify-center">
         <v-col cols="7">
         <v-card ref="form" class="mt-10">
@@ -34,6 +35,12 @@
               label="E-mail"
               placeholder= 'ingrese su email'
             ></v-text-field>
+
+            <v-text-field
+              placeholder="Seleccione la url de su foto"
+              label="Cambiar foto"
+              append-icon="mdi mdi-camera"
+            ></v-text-field>
           </v-card-text>
         </v-card>
         </v-col>
@@ -54,7 +61,7 @@ export default {
   name: "MiPerfil",
   data(){
     return {
-      pic: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg'
+      pic: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
     }
   },
   created(){
