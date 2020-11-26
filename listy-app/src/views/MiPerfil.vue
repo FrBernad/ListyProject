@@ -11,6 +11,7 @@
                    lazy-src="../assets/images/emptyUser.png"
             />
           </v-avatar>
+
           <v-btn
             class="mx-2"
             fab
@@ -51,7 +52,6 @@
           </v-row>
         </v-card>
       </v-dialog>
-
     </v-row>
 
     <v-row class="justify-center">
@@ -86,15 +86,8 @@
     name: "MiPerfil",
     data() {
       return {
-        pic: 'https://cdn.vuetifyjs.com/images/profiles/marcus.jpg',
         picDialog: false,
         url: "",
-      }
-    },
-
-    created() {
-      if (this.avatarUrl) {
-        this.pic = this.avatarUrl
       }
     },
 

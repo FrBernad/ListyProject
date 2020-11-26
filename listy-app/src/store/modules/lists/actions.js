@@ -729,34 +729,6 @@ export default {
     if (!response.ok) {
       throw new Error('Error modifying group name')
     }
-
-    //Remuevo elementos de grupo global
-    url = `https://listy-itba-app.firebaseio.com/groups/` +
-      payload.groupId +
-      '/members' +
-      '.json?auth=' +
-      context.rootGetters['token']
-
-    response = await fetch(
-      url, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-
-    if (!response.ok) {
-      throw new Error('Error deleting members')
-    }
-
-    //Agrego nuevos items
-    for (const member of payload.members) {
-      await context.dispatch('addMemberToGroup', {
-        memberId: member,
-        groupId: payload.groupId
-      })
-    }
-
   },
 
   async addMemberToGroup(context, payload) {

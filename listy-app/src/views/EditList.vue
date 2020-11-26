@@ -63,12 +63,14 @@
             </v-col>
           </v-row>
         </transition>
-        <!--LIST ELEMETNS-->
+
+        <!--LIST ELEMENTS-->
         <draggable :disabled="!edit" v-model="listItems" direction="vertical" @start="drag=true" @end="drag=false">
           <v-expansion-panels class="mb-3" popout v-for="(item,index) in listItems" :key="index">
             <ListItem :editable="edit" :listId="listId" :item="item" :index="index" @send="deleteItem"></ListItem>
           </v-expansion-panels>
         </draggable>
+
       </v-card>
 
       <v-card class="px-5 " elevation="10" outlined>

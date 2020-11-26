@@ -10,10 +10,16 @@
         </router-link>
       </v-col>
 
-      <v-col cols="5" sm="3" md="2" class="offset-md-6  offset-sm-5 offset-3 d-flex align-center justify-space-around">
+      <v-col cols="6" sm="3" md="2" class="offset-md-6 offset-sm-5 offset-2 d-flex align-center justify-space-around">
 
-        <v-btn to="/home/miPerfil" large exact text elevation="0">
-          <v-icon left>mdi-account</v-icon>
+        <v-btn to="/home/miPerfil" large exact text elevation="0" class="d-flex justify-space-around align-center">
+          <v-avatar size="25px" class="mr-2">
+            <v-img alt="profile picture"
+                   class="ma-0 pa-0"
+                   :src="profilePic"
+                   lazy-src="../assets/images/emptyUser.png"
+            />
+          </v-avatar>
           <h1 class="text-body-1">{{user}}</h1>
         </v-btn>
 
@@ -32,9 +38,18 @@
   export default {
     name: "AppBar",
     computed: {
+      avatarUrl() {
+        return this.$store.getters["user/avatarUrl"];
+      },
       user() {
         return this.$store.getters["user/username"];
-      }
+      },
+      profilePic() {
+        if (this.avatarUrl)
+          return this.avatarUrl
+
+        return require("../assets/images/emptyUser.png");
+      },
     },
     methods: {
       async logout() {
