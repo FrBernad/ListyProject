@@ -53,7 +53,7 @@
 
     </v-card>
 
-    <v-card class="px-5 justify-center align-content-center" elevation="10" outlined height="10%">
+    <v-card class="px-5 justify-center align-content-center" elevation="10" outlined >
       <v-row align="center" justify="center">
         <v-col cols="6" class="d-flex justify-start align-center">
           <transition name="fade">

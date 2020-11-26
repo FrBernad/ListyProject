@@ -87,12 +87,11 @@
     <v-row>
       <v-col cols="12" class="py-0">
         <v-textarea
+          auto-grow
           solo
           name="input-7-4"
           v-model="item.note"
           label="Aclaración"
-          no-resize
-          height="70px"
           :error-messages="noteError" @blur="$v.item.note.$touch()"
           clearable
           counter="100"

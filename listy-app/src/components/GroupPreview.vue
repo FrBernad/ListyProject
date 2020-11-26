@@ -1,5 +1,5 @@
 <template>
-  <v-card  class="ma-5 pa-5 mx-auto" elevation="10" outlined max-width="80%"
+  <v-card  color="#FFFFFF" class="ma-5 pa-5 mx-auto" elevation="10" outlined max-width="80%"
   :to="{
       path: '/home/grupo',
       query: {groupId: data[1].id}

@@ -34,8 +34,8 @@
 
         <!--LIST HEADER-->
         <v-row class="align-center justify-start">
-          <v-col cols="6" class="pl-4 d-flex align-center justify-center">
-            <v-text-field class="text-h4 font-weight-bold"
+          <v-col cols="12" class="pl-4 d-flex align-center justify-center">
+            <v-text-field label="Nombre de la lista" class="text-h4 font-weight-bold"
                           @blur="$v.listName.$touch()"
                           :error-messages="nameError"
                           v-model="listName">
