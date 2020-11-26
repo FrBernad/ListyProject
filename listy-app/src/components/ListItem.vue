@@ -14,7 +14,7 @@
           ></v-checkbox>
         </v-col>
         <v-col cols="10" md="7" class="text-start">
-          <v-text-field v-model="item.name" :class="{done: checkbox}" :readonly="!editable">{{ item.name }}
+          <v-text-field v-model="item.name" :class="{done: item.checked}" :readonly="!editable">{{ item.name }}
           </v-text-field>
         </v-col>
         <v-col cols="6" md="2">
