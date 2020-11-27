@@ -4,7 +4,7 @@
       <v-col cols="6" class="d-flex align-center justify-center" style="position: relative">
         <div class="d-flex" style="position: absolute">
           <v-avatar size="200px"
-                    class="avBorder elevation-5">
+                    class="elevation-5">
             <v-img alt="profile picture"
                    class="ma-0 pa-0"
                    :src="profilePic"

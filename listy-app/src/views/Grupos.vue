@@ -19,7 +19,7 @@
                       Parece que no perteneces a ningún grupo. Crea un grupo o únete a uno mediante un link.</p>
                   </v-col>
                   <v-col cols="8" class="d-flex justify-center align-center mt-md-3">
-                    <v-btn color="primary" width="80%" @click="groupDialog=true">CREAR GRUPO</v-btn>
+                    <v-btn color="primary" width="90%" @click="groupDialog=true">CREAR GRUPO</v-btn>
                   </v-col>
                 </v-row>
               </v-card>

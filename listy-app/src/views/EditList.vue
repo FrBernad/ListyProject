@@ -7,13 +7,16 @@
         <v-container class="backgroundDialog elevation-8">
           <v-row class="align-center justify-center">
             <v-col cols="12">
-              <h1 class="text-center">Copia el link y compartelo con tus amigos</h1>
+              <h1 class="text-center text-h6 text-sm-h4">Copia el link y compartelo con tus amigos</h1>
             </v-col>
           </v-row>
           <v-row class="align-center justify-center">
-            <v-col cols="10" md="8" class="d-flex align-center justify-space-between">
-              <v-btn color="primary" outlined @click="shareDialog = false">Cancelar</v-btn>
-              <v-btn color="primary" @click="copyToClipboard">Copiar link</v-btn>
+            <v-col cols="10" md="8" class="d-flex align-center justify-space-around">
+              <v-btn color="primary" :small="this.$vuetify.breakpoint.xsOnly" outlined @click="shareDialog = false">
+                Cancelar
+              </v-btn>
+              <v-btn color="primary" :small="this.$vuetify.breakpoint.xsOnly" @click="copyToClipboard">Copiar link
+              </v-btn>
             </v-col>
           </v-row>
         </v-container>
