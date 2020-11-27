@@ -72,7 +72,7 @@
           <v-col cols="6" class="d-flex justify-start align-center">
             <v-btn color="primary"  @click="createList">
               <v-icon left color="white">mdi-cart</v-icon>
-              CREATE
+              CREAR
             </v-btn>
           </v-col>
           <v-col cols="6" class="d-flex justify-end align-center">
