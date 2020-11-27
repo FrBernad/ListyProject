@@ -30,7 +30,7 @@
       </v-dialog>
 
       <v-row align="center" justify="center">
-        <v-col cols="10" sm="10" md="7" lg="6">
+        <v-col cols="11" sm="10" md="7" lg="6">
           <v-card light color="#F8F9FA" class="pa-4">
             <v-container fluid>
               <v-row align="center" justify="center">
@@ -43,16 +43,16 @@
                   </p>
                 </v-col>
                 <v-col cols="6" class="d-flex align-center justify-center pt-0">
-                  <v-btn color="primary" large width="50%" @click="redirect">LISTO</v-btn>
+                  <v-btn color="primary" large width="60%" @click="redirect">LISTO</v-btn>
                 </v-col>
                 <v-col cols="12" class="pb-0">
                   <v-divider class="mb-5"></v-divider>
                   <v-row justify="space-around" align="center">
-                    <v-col cols="6">
+                    <v-col cols="7">
                       <p class="text-start text-subtitle-2 mb-0 text-sm-subtitle-1">¿No recibiste nuestro email?</p>
                     </v-col>
                     <v-col cols="5" class="d-flex align-center justify-center">
-                      <v-btn color="primary" large width="50%" @click="resendVerification">REENVIAR</v-btn>
+                      <v-btn color="primary" large width="100%" @click="resendVerification">REENVIAR</v-btn>
                     </v-col>
                   </v-row>
                 </v-col>
