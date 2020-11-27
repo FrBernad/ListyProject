@@ -41,7 +41,7 @@
                 :error-messages="urlErrors"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" md="8" class="d-flex justify-space-between align-center">
+            <v-col cols="12" md="8" class="d-flex justify-space-around align-center">
               <v-btn color="primary" outlined @click="cancelPicChange">
                 CANCELAR
               </v-btn>
