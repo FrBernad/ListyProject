@@ -11,7 +11,7 @@
       <v-container class="backgroundDialog elevation-8">
         <v-row align="center" justify="center">
           <v-col cols="12">
-            <h1 class="text-center text-h6 text-sm-h4">Copia el link y compartelo con tus amigos</h1>
+            <h1 class="text-center text-h6 text-sm-h4">Copia el link y compártelo con tus amigos</h1>
           </v-col>
         </v-row>
         <v-row class="align-center justify-center">
@@ -75,7 +75,7 @@
           <v-btn class="white--text" :small="this.$vuetify.breakpoint.xsOnly" color="primary"
                  @click="listDialog = true">
             <v-icon left color="white">mdi-cart</v-icon>
-            CREATE LIST
+            CREAR LISTA
           </v-btn>
         </v-col>
       </v-row>

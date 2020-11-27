@@ -7,7 +7,7 @@
         <v-container class="backgroundDialog elevation-8">
           <v-row class="align-center justify-center">
             <v-col cols="12">
-              <h1 class="text-center text-h6 text-sm-h4">Copia el link y compartelo con tus amigos</h1>
+              <h1 class="text-center text-h6 text-sm-h4">Copia el link y compártelo con tus amigos</h1>
             </v-col>
           </v-row>
           <v-row class="align-center justify-center">
@@ -93,7 +93,7 @@
               </v-btn>
             </transition>
           </v-col>
-          <v-col cols="6" md="8" class="d-flex justify-center justify-sm-end align-center">
+          <v-col cols="12" md="8" class="d-flex justify-center justify-sm-end align-center">
             <span>Total: ${{ total.toFixed(2) }}</span>
           </v-col>
         </v-row>

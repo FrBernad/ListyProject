@@ -1,3 +1,4 @@
 .idea
 listy-app/package-lock.json
 .gitignore
+/listy-app/.firebase/
