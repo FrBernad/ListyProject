@@ -1,4 +1,4 @@
-![alt listy logo](fitness-hub-app/src/assets/images/longlogonobg.png)
+![alt listy logo](listy-app/src/assets/images/longlogonobg.png)
 ## Authors
 - [Francisco Bernad](https://github.com/FrBernad)
 - [Nicolás Rampoldi](https://github.com/NicolasRampoldi) 
