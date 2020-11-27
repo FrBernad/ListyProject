@@ -93,7 +93,7 @@
               </v-btn>
             </transition>
           </v-col>
-          <v-col cols="6" md="8" class="d-flex justify-center justify-sm-end align-center">
+          <v-col cols="12" md="8" class="d-flex justify-center justify-sm-end align-center">
             <span>Total: ${{ total.toFixed(2) }}</span>
           </v-col>
         </v-row>
