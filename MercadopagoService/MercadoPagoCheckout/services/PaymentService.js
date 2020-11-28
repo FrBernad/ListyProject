@@ -105,10 +105,12 @@ class PaymentService {
                     "Content-Type": "application/json"
                 }
             });
-
+            //console.log(request.data.init_point);
+            //return request.data.init_point;
             return request.data;
 // devolvemos la data que devuelve el POST
         } catch (e) {
+            console.log("catch 112");
             console.log(e);
 // mostramos error en caso de que falle el POST
         }

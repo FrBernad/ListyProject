@@ -14,10 +14,16 @@ class PaymentController {
                 req.body.img,
                 req.body.token,
             );
+            //console.log(checkout.init_point);
+            //return checkout.init_point;
+            return res.status(200).json({
+                link:checkout.init_point,
+            });
 
-            return res.redirect(checkout.init_point);
+            //return res.redirect(checkout.init_point);
 
         } catch (err) {
+            console.log("error 22");
 
             return res.status(500).json({
                 error: true,

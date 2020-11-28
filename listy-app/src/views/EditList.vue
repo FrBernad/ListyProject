@@ -59,6 +59,27 @@
         </v-container>
       </v-dialog>
 
+      <!--Share Link dialog-->
+      <v-dialog v-model="shareLinkDialog" width="900px">
+        <v-container class="backgroundDialog elevation-8">
+          <v-row class="align-center justify-center">
+            <v-col cols="12">
+              <h1 class="text-center text-h6 text-sm-h4">Link para {{this.currentPayer}}:</h1>
+              <h6 class="text-center text-h6 text-sm-h4">{{this.currentLink}}</h6>
+            </v-col>
+          </v-row>
+          <v-row class="align-center justify-center">
+            <v-col cols="10" md="8" class="d-flex align-center justify-space-around">
+              <v-btn color="primary" :small="this.$vuetify.breakpoint.xsOnly" outlined @click="shareLinkDialog = false">
+                Cancelar
+              </v-btn>
+              <v-btn color="primary" :small="this.$vuetify.breakpoint.xsOnly" @click="copyLinkToClipboard">Copiar link
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-dialog>
+
       <v-card class="pa-5" height="90%" elevation="10" outlined>
 
         <!--LIST HEADER-->
@@ -171,6 +192,9 @@
 
         payDialog: false,
         personas: [ {nombre:"juan", aporte:100} , {nombre:"pedro", aporte:250} ],
+        shareLinkDialog: false,
+        currentLink: '',
+        currentPayer: '',
       }
     },
 
@@ -221,13 +245,21 @@
           name: "Pago Listy " + payerName,
           price: payerAmount,
           unit: 1,
-          img: "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+          img: "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png", //me re soba la foto
           token: "APP_USR-5960318184922397-102520-866ba27b14d46384d0caa72844037f54-226725459", //currentUser.getAccesstoken
         }).then((response) => {
           console.log("payed");
-          console.log(response);
+          console.log(response.data.link);
+          this.currentPayer = payerName;
+          this.currentLink=(response.data.link);
+          this.shareLinkDialog = true;
           console.log("payedd");
         })
+      },
+
+      copyLinkToClipboard() {
+        navigator.clipboard.writeText(this.currentLink + '&share=true')
+        this.shareLinkDialog = false
       },
 
       shareList() {
