@@ -22,7 +22,7 @@
         </v-container>
       </v-dialog>
 
-      <v-card class="pa-5" height="90%" elevation="10" outlined>
+      <v-card class="pa-5" elevation="10" outlined>
 
         <!--LIST HEADER-->
         <v-row class="align-center justify-center">

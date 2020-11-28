@@ -2,7 +2,7 @@
 
   <v-fade-transition appear>
     <v-container fluid class="backgroundColor" style="height:100%">
-      <v-card class="pa-5" color="#F5F7FA" height="90%" elevation="10" outlined>
+      <v-card class="pa-5" color="#F5F7FA"  elevation="10" outlined>
         <!--LOADING DIALOG-->
         <v-dialog
           v-model="loading"
@@ -68,7 +68,7 @@
 
       </v-card>
 
-      <v-card class="px-5 " color="#F5F7FA" elevation="10" outlined height="10%">
+      <v-card class="px-5 " color="#F5F7FA" elevation="10" outlined >
         <v-row align="center" justify="center">
           <v-col cols="6" class="d-flex justify-start align-center">
             <v-btn color="primary"  @click="createList">
