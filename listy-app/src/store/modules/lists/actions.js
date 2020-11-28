@@ -772,7 +772,7 @@ export default {
   },
 
   async pay(context, payload) {
-    let url = "http://localhost:3000/payment/new";
+    let url = "https://listy-mercadopago-service.herokuapp.com/payment/new";
 
     const response = await fetch(
       url, {
@@ -780,15 +780,17 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({memberId: payload.memberId}),
+        body: JSON.stringify(payload),
       })
 
-    const responseData = await response.json()
+    const responseData = await response.json();
 
     if (!response.ok) {
       console.log(responseData)
       throw new Error('Error paying items')
     }
+
+    return responseData;
   }
 
 }

@@ -113,7 +113,7 @@
                         <v-list-item-content>
                           <v-list-item-title
                             v-text="item.name+` (${item.quantity} x $${item.price})`"></v-list-item-title>
-                          <v-list-item-subtitle v-text="'total:'+' $'+item.quantity*item.price"></v-list-item-subtitle>
+                          <v-list-item-subtitle v-text="'Total:'+' $'+item.quantity*item.price"></v-list-item-subtitle>
                         </v-list-item-content>
                         <v-list-item-action>
                           <v-checkbox
@@ -185,26 +185,18 @@
           let item = this.listItems[itemIndex];
           amount += item.quantity * item.price;
         }
-        console.log({
-          name: "Pago Listy " + payerName,
-          price: amount,
-          unit: 1,
-          img: "https://github.com/FrBernad/ListyProject/blob/main/listy-app/src/assets/images/logonobg.png",
-          token: recipientInfo.mercadoPagoToken
-        });
-        // try {
-        //   const payment = await this.$store.dispatch("lists/pay", {
-        //     name: "Pago Listy " + payerName,
-        //     price: amount,
-        //     unit: 1,
-        //     img: "https://github.com/FrBernad/ListyProject/blob/main/listy-app/src/assets/images/logonobg.png",
-        //     token: recipientInfo.mercadoPagoToken
-        //   });
-        //   console.log("payed");
-        //   console.log(payment);
-        // } catch (e) {
-        //   console.log(e);
-        // }
+        try {
+          const payment = await this.$store.dispatch("lists/pay", {
+            name: "Pago Listy de " + payerName,
+            price: amount,
+            unit: 1,
+            img: "https://github.com/FrBernad/ListyProject/blob/main/listy-app/src/assets/images/logonobg.png?raw=true",
+            token: recipientInfo.mercadoPagoToken
+          });
+          this.paymentLink = payment.link;
+        } catch (e) {
+          console.log(e);
+        }
         this.e1 = 3;
       },
 
