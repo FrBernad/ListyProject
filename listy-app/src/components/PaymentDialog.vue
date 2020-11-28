@@ -3,7 +3,6 @@
     <v-stepper v-model="e1">
 
       <v-stepper-header>
-
         <v-stepper-step
           :complete="e1 > 1"
           step="1"
@@ -31,68 +30,70 @@
       <v-stepper-items>
         <v-stepper-content step="1">
           <v-card
-
-            class="mb-12 pa-5"
-            height="200px"
+            class="mb-8 pa-5 pt-0"
+            height="300px"
           >
             <v-list-item-group
               v-model="selectedMember"
             >
               <v-list subheader>
                 <v-subheader>Selecciona un miembro para pagarle</v-subheader>
-                <v-list-item
-                  v-for="member in listMembers"
-                  :key="member.username"
-                  dense
-                  :disabled="!member.mercadoPagoToken"
-                  v-if="member.username !== $store.getters['user/username']"
-                >
-                  <template v-slot:default="{ active }">
+                <v-virtual-scroll
+                  :items="listMembers"
+                  height="230"
+                  item-height="58">
+                  <template v-slot:default="{ item, index }">
+                    <v-list-item
+                      :key="item.username+index"
+                      dense
+                      :disabled="!item.mercadoPagoToken"
+                      v-if="item.username !== $store.getters['user/username']"
+                    >
+                      <template v-slot:default="{ active }">
 
-                    <v-list-item-avatar>
-                      <v-img
-                        max-width="35"
-                        max-height="35"
-                        :alt="`${member.username} avatar`"
-                        :src="member.avatarUrl ? member.avatarUrl : require('../assets/images/emptyUser.png')"
-                      ></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                      <v-list-item-title v-text="member.username"></v-list-item-title>
-                      <v-list-item-subtitle v-if="!!member.mercadoPagoToken">
-                        <span class="pr-2">Cuenta vinculada</span>
-                        <v-icon small color="green">mdi-check</v-icon>
-                      </v-list-item-subtitle>
-                      <v-list-item-subtitle v-else>
-                        <span class="pr-2">Cuenta no vinculada</span>
-                        <v-icon small color="red">mdi-alpha-x-circle-outline</v-icon>
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                    <v-list-item-action>
-                      <v-checkbox
-                        :input-value="active"
-                        color="primary"
-                        :disabled="!member.mercadoPagoToken"
-                      ></v-checkbox>
-                    </v-list-item-action>
+                        <v-list-item-avatar>
+                          <v-img
+                            max-width="35"
+                            max-height="35"
+                            :alt="`${item.username} avatar`"
+                            :src="item.avatarUrl ? item.avatarUrl : require('../assets/images/emptyUser.png')"
+                          ></v-img>
+                        </v-list-item-avatar>
+                        <v-list-item-content>
+                          <v-list-item-title v-text="item.username"></v-list-item-title>
+                          <v-list-item-subtitle v-if="!!item.mercadoPagoToken">
+                            <span class="pr-2">Cuenta vinculada</span>
+                            <v-icon small color="green">mdi-check</v-icon>
+                          </v-list-item-subtitle>
+                          <v-list-item-subtitle v-else>
+                            <span class="pr-2">Cuenta no vinculada</span>
+                            <v-icon small color="red">mdi-alpha-x-circle-outline</v-icon>
+                          </v-list-item-subtitle>
+                        </v-list-item-content>
+                        <v-list-item-action>
+                          <v-checkbox
+                            :input-value="active"
+                            color="primary"
+                            :disabled="!item.mercadoPagoToken"
+                          ></v-checkbox>
+                        </v-list-item-action>
+                      </template>
+                    </v-list-item>
                   </template>
-                </v-list-item>
+                </v-virtual-scroll>
               </v-list>
             </v-list-item-group>
           </v-card>
 
-
-              <v-btn color="primary" outlined text @click="closeStepper" class="mr-2">CANCELAR</v-btn>
-              <v-btn color="primary" @click="e1 = 2" :disabled="selectedMember==null">CONTINUAR</v-btn>
-
-
+          <v-btn color="primary" outlined text @click="closeStepper" class="mr-4">CANCELAR</v-btn>
+          <v-btn color="primary" @click="e1 = 2" :disabled="selectedMember==null">CONTINUAR</v-btn>
 
         </v-stepper-content>
 
         <v-stepper-content step="2">
           <v-card
-            class="mb-12"
-            height="200px"
+            class="mb-8 pa-5 pt-0"
+            height="300px"
           >
             <v-list-item-group
               v-model="items"
@@ -100,25 +101,31 @@
             >
               <v-list subheader>
                 <v-subheader>Selecciona los productos a pagar</v-subheader>
-                <v-list-item
-                  v-for="item in listItems"
-                  :key="item.name"
-                  dense
-                >
-                  <template v-slot:default="{ active }">
-                    <v-list-item-content>
-                      <v-list-item-title
-                        v-text="item.name+` (${item.quantity} x $${item.price})`"></v-list-item-title>
-                      <v-list-item-subtitle v-text="'total:'+' $'+item.quantity*item.price"></v-list-item-subtitle>
-                    </v-list-item-content>
-                    <v-list-item-action>
-                      <v-checkbox
-                        :input-value="active"
-                        color="primary"
-                      ></v-checkbox>
-                    </v-list-item-action>
+                <v-virtual-scroll
+                  :items="listItems"
+                  height="230"
+                  item-height="50">
+                  <template v-slot:default="{ item, index }">
+                    <v-list-item
+                      dense
+                      :key="item.name+index"
+                    >
+                      <template v-slot:default="{ active }">
+                        <v-list-item-content>
+                          <v-list-item-title
+                            v-text="item.name+` (${item.quantity} x $${item.price})`"></v-list-item-title>
+                          <v-list-item-subtitle v-text="'total:'+' $'+item.quantity*item.price"></v-list-item-subtitle>
+                        </v-list-item-content>
+                        <v-list-item-action>
+                          <v-checkbox
+                            :input-value="active"
+                            color="primary"
+                          ></v-checkbox>
+                        </v-list-item-action>
+                      </template>
+                    </v-list-item>
                   </template>
-                </v-list-item>
+                </v-virtual-scroll>
               </v-list>
             </v-list-item-group>
           </v-card>
@@ -137,8 +144,8 @@
 
         <v-stepper-content step="3">
           <v-card
-            class="mb-12"
-            height="200px"
+            class="mb-8 pa-5 pt-0"
+            height="300px"
           >
             <v-row class="align-center justify-center" style="height: 100%">
               <v-col cols="12">
@@ -209,7 +216,7 @@
 
       resetData() {
         this.e1 = 1;
-        this.selectedMember = "";
+        this.selectedMember = null;
         this.items = [];
         this.paymentLink = "";
       }

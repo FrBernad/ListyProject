@@ -25,7 +25,7 @@
       <!--Payment dialog-->
       <PaymentDialog @closeDialog="paymentDialog=false" :paymentDialog="paymentDialog"></PaymentDialog>
 
-      <v-card class="pa-5" height="90%" elevation="10" outlined>
+      <v-card class="pa-5" :height="listItems.length >= 4 ? undefined:'90%'" elevation="10" outlined>
 
         <!--LIST HEADER-->
         <v-row class="align-center justify-center">

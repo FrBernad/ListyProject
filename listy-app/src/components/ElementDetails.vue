@@ -130,186 +130,188 @@
 </template>
 
 <script>
-import { maxLength, minLength, required, minValue } from 'vuelidate/lib/validators'
+  import {maxLength, minLength, required, minValue} from 'vuelidate/lib/validators'
 
-export default {
-  name: 'ElementDetails',
+  export default {
+    name: 'ElementDetails',
 
-  data () {
-    return {
-      selected: null,
-      isLoading: false,
-      text: '¿No encontraste el producto que buscabas?',
-      items: [],
-      search: null,
-      item: {
-        name: '',
-        quantity: 0,
-        responsible: '',
-        note: '',
-        price: 0,
-        checked: false
+    data() {
+      return {
+        selected: null,
+        isLoading: false,
+        text: '¿No encontraste el producto que buscabas?',
+        items: [],
+        search: null,
+        item: {
+          name: '',
+          quantity: 0,
+          responsible: '',
+          note: '',
+          price: 0,
+          checked: false
+        },
+        find: false,
+      }
+    },
+
+    watch: {
+      selected(val) {
+        if (val) {
+          this.item.price = val.price
+          this.item.name = val.name
+          this.item.quantity = 1
+        } else {
+          this.item.price = 0
+          this.item.name = ''
+          this.item.quantity = 0
+        }
       },
-      find: false,
-    }
-  },
-  watch: {
-    selected (val) {
-      if (val) {
-        this.item.price = val.price
-        this.item.name = val.name
-        this.item.quantity = 1
-      } else {
-        this.item.price = 0
-        this.item.name = ''
-        this.item.quantity = 0
-      }
-    },
-    search (val) {
-      // Items have already been loaded
-      if (this.items.length > 0) return
-      this.isLoading = true
-      // Lazily load input items
-      fetch('https://listy-itba-app.firebaseio.com/products.json?auth=' +
-        this.$store.getters['token'])
-        .then(res => res.clone().json())
-        .then(res => {
-          this.items = Object.values(res)
-        })
-        .catch(err => {
-          console.log(err)
-        })
-        .finally(() => (this.isLoading = false))
-    },
-  },
-  methods: {
-    changeLookup () {
-      if (!this.find) {
-        this.find = true
-        this.text = '¿Deseas buscar el producto en nuestra base de datos?'
-      } else {
-        this.name = ''
-        this.$v.item.name.$reset()
-        this.find = false
-        this.text = '¿No encontraste el producto que buscabas?'
-      }
-      this.resetFields()
-    },
-
-    check (val) {
-      return val
-    },
-
-    elementClose () {
-      this.resetFields()
-      this.selected = null
-      this.$emit('elementClose')
-    }
-    ,
-    addElement () {
-      if (this.$v.$invalid) {
-        this.$v.$touch()
-        console.log('the form is missing something')
-        return
-      }
-      const copy = {
-        name: this.item.name,
-        quantity: this.item.quantity,
-        responsible: this.item.responsible,
-        note: this.item.note,
-        price: this.item.price,
-        checked: this.item.checked
-      }
-      this.$store.commit('lists/addItem', copy)
-      this.elementClose()
-      this.resetFields()
-    }
-    ,
-    resetFields () {
-      this.item.name = ''
-      this.item.quantity = 0
-      this.item.responsible = ''
-      this.item.note = ''
-      this.item.price = 0
-      this.item.checked = false
-    }
-  }
-  ,
-
-  validations: {
-    item: {
-      name: {
-        required,
-        minLength: minLength(1),
-        maxLength: maxLength(50)
+      search(val) {
+        // Items have already been loaded
+        if (this.items.length > 0) return
+        this.isLoading = true
+        // Lazily load input items
+        fetch('https://listy-itba-app.firebaseio.com/products.json?auth=' +
+          this.$store.getters['token'])
+          .then(res => res.clone().json())
+          .then(res => {
+            this.items = Object.values(res)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+          .finally(() => (this.isLoading = false))
       },
-      price: {
-        minValue: minValue(0),
+    },
+    methods: {
+      changeLookup() {
+        if (!this.find) {
+          this.find = true
+          this.text = '¿Deseas buscar el producto en nuestra base de datos?'
+        } else {
+          this.name = ''
+          this.$v.item.name.$reset()
+          this.find = false
+          this.text = '¿No encontraste el producto que buscabas?'
+        }
+        this.resetFields()
+      },
+
+      check(val) {
+        return val
+      },
+
+      elementClose() {
+        this.resetFields()
+        this.selected = null
+        this.$emit('elementClose')
       }
       ,
-      quantity: {
-        required,
-        minValue: minValue(1)
+      addElement() {
+        if (this.$v.$invalid) {
+          this.$v.$touch()
+          console.log('the form is missing something')
+          return
+        }
+        const copy = {
+          name: this.item.name,
+          quantity: this.item.quantity,
+          responsible: this.item.responsible,
+          note: this.item.note,
+          price: this.item.price,
+          checked: this.item.checked
+        }
+        this.$store.commit('lists/addItem', copy)
+        this.elementClose()
+        this.resetFields()
+      }
+      ,
+      resetFields() {
+        this.item.name = ''
+        this.item.quantity = 0
+        this.item.responsible = ''
+        this.item.note = ''
+        this.item.price = 0
+        this.item.checked = false
+        this.$v.$reset();
+      }
+    }
+    ,
+
+    validations: {
+      item: {
+        name: {
+          required,
+          minLength: minLength(1),
+          maxLength: maxLength(50)
+        },
+        price: {
+          minValue: minValue(0),
+        }
+        ,
+        quantity: {
+          required,
+          minValue: minValue(1)
+        },
+        note: {
+          maxLength: maxLength(100)
+        }
+      }
+    }
+    ,
+    computed: {
+      nameError() {
+        const errors = []
+        if (!this.$v.item.name.$dirty) {
+          return errors
+        }
+        !this.$v.item.name.minLength && errors.push('El nombre debe contener por lo menos un caracter')
+        !this.$v.item.name.maxLength && errors.push('El nombre debe contener como máximo 50 caracteres')
+        !this.$v.item.name.required && errors.push('El nombre es requerido')
+        return errors
       },
-      note: {
-        maxLength: maxLength(100)
+
+      lookupText() {
+        return this.text
+      },
+
+      quantityError() {
+        const errors = []
+        if (!this.$v.item.quantity.$dirty) {
+          return errors
+        }
+        !this.$v.item.quantity.required && errors.push('La cantidad es requerida')
+        !this.$v.item.quantity.minValue && errors.push('La cantidad debe ser minimamente 1')
+        return errors
       }
+      ,
+      noteError() {
+        const errors = []
+        if (!this.$v.item.note.$dirty) {
+          return errors
+        }
+        !this.$v.item.note.maxLength && errors.push('La nota debe ser como maximo de 100 caracteres')
+        return errors
+      }
+      ,
+
+      priceError() {
+        const errors = []
+        if (!this.$v.item.price.$dirty) {
+          return errors
+        }
+        !this.$v.item.price.minValue && errors.push('El precio debe ser mayor o igual que 0')
+        return errors
+      }
+      ,
+
     }
   }
-  ,
-  computed: {
-    nameError () {
-      const errors = []
-      if (!this.$v.item.name.$dirty) {
-        return errors
-      }
-      !this.$v.item.name.minLength && errors.push('El nombre debe contener por lo menos un caracter')
-      !this.$v.item.name.maxLength && errors.push('El nombre debe contener como máximo 50 caracteres')
-      !this.$v.item.name.required && errors.push('El nombre es requerido')
-      return errors
-    },
-
-    lookupText () {
-      return this.text
-    },
-
-    quantityError () {
-      const errors = []
-      if (!this.$v.item.quantity.$dirty) {
-        return errors
-      }
-      !this.$v.item.quantity.required && errors.push('La cantidad es requerida')
-      !this.$v.item.quantity.minValue && errors.push('La cantidad debe ser minimamente 1')
-      return errors
-    }
-    ,
-    noteError () {
-      const errors = []
-      if (!this.$v.item.note.$dirty) {
-        return errors
-      }
-      !this.$v.item.note.maxLength && errors.push('La nota debe ser como maximo de 100 caracteres')
-      return errors
-    }
-    ,
-
-    priceError () {
-      const errors = []
-      if (!this.$v.item.price.$dirty) {
-        return errors
-      }
-      !this.$v.item.price.minValue && errors.push('El precio debe ser mayor o igual que 0')
-      return errors
-    }
-    ,
-
-  }
-}
 
 </script>
 
 <style scoped>
-#forgot {
-  color: #1D50AE;
-}
+  #forgot {
+    color: #1D50AE;
+  }
 </style>

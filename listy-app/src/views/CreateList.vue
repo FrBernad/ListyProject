@@ -2,7 +2,8 @@
 
   <v-fade-transition appear>
     <v-container fluid class="backgroundColor" style="height:100%">
-      <v-card class="pa-5" color="#F5F7FA" height="90%" elevation="10" outlined>
+
+      <v-card class="pa-5" color="#F5F7FA"  :height="listItems.length >= 4 ? undefined:'90%'"  elevation="10" outlined>
         <!--LOADING DIALOG-->
         <v-dialog
           v-model="loading"
