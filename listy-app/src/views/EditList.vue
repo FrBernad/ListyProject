@@ -28,7 +28,7 @@
         <v-row class="align-center justify-center">
           <v-col cols="12" sm="8" class="d-flex align-center justify-start">
             <v-text-field class="text-h4 font-weight-bold" @blur="$v.listName.$touch()" :error-messages="nameError"
-                          :readonly="!edit" v-model="listName">{{ listName }}
+                          id="listName" :readonly="!edit" v-model="listName">{{ listName }}
             </v-text-field>
           </v-col>
 

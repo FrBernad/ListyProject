@@ -10,6 +10,7 @@
             </v-col>
             <!--EMAIL-->
             <v-text-field
+              id="loginEmail"
               @blur="$v.email.$touch()"
               :error-messages=emailErrors
               label="Correo electrónico"
@@ -19,6 +20,7 @@
             ></v-text-field>
             <!--PASSWORD-->
             <v-text-field
+              id="loginPassword"
               @blur="$v.password.$touch()"
               :error-messages=passwordErrors
               v-model="password"

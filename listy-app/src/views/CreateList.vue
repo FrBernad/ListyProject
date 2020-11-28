@@ -38,6 +38,7 @@
             <v-text-field label="Nombre de la lista" class="text-h4 font-weight-bold"
                           @blur="$v.listName.$touch()"
                           :error-messages="nameError"
+                          id="listName"
                           v-model="listName">
             </v-text-field>
           </v-col>

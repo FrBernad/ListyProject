@@ -17,7 +17,7 @@
                       <strong>CREAR LISTA</strong> para crear una.</p>
                   </v-col>
                   <v-col cols="8" class="d-flex justify-center align-center mt-md-3">
-                    <v-btn color="primary" width="80%" to="/home/createList">CREAR LISTA</v-btn>
+                    <v-btn id="createList" color="primary" width="80%" to="/home/createList">CREAR LISTA</v-btn>
                   </v-col>
                 </v-row>
               </v-card>

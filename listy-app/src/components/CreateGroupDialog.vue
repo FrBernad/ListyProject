@@ -3,6 +3,7 @@
     <v-row class="align-center justify-center">
       <v-col cols="12">
         <v-text-field
+          id="groupName"
           v-model="groupName"
           label="* Nombre del grupo"
           prepend-icon="mdi-account-group"

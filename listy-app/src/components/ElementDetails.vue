@@ -6,6 +6,7 @@
                       label="Producto"
                       outlined
                       dense
+                      id="productName"
                       placeholder="Escriba el nombre del producto"
                       :error-messages="nameError"
                       @blur="$v.item.name.$touch()"
@@ -77,6 +78,7 @@
       <v-col cols="6" class="pt-0">
         <v-text-field width="100%" background-color="#ffffff" dense
                       label="Cantidad"
+                      id="productQuantity"
                       placeholder="Cantidad"
                       outlined
                       type="number" v-model.number="item.quantity"
@@ -87,6 +89,7 @@
       <v-col cols="6" class="pt-0">
         <v-text-field :readonly="!find" label="Precio" type="number" outlined placeholder="Precio" dense
                       v-model.number="item.price"
+                      id="productPrice"
                       :error-messages="priceError"
                       @blur="$v.item.price.$touch()"></v-text-field>
       </v-col>
