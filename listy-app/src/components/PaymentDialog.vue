@@ -31,7 +31,8 @@
       <v-stepper-items>
         <v-stepper-content step="1">
           <v-card
-            class="mb-12"
+
+            class="mb-12 pa-5"
             height="200px"
           >
             <v-list-item-group
@@ -80,17 +81,12 @@
             </v-list-item-group>
           </v-card>
 
-          <v-btn
-            color="primary"
-            @click="e1 = 2"
-            :disabled="selectedMember==null"
-          >
-            Continuar
-          </v-btn>
 
-          <v-btn text @click="closeStepper" class="ml-2">
-            Cancelar
-          </v-btn>
+              <v-btn color="primary" outlined text @click="closeStepper" class="mr-2">CANCELAR</v-btn>
+              <v-btn color="primary" @click="e1 = 2" :disabled="selectedMember==null">CONTINUAR</v-btn>
+
+
+
         </v-stepper-content>
 
         <v-stepper-content step="2">
