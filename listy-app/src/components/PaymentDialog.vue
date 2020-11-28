@@ -47,7 +47,6 @@
                       :key="item.username+index"
                       dense
                       :disabled="!item.mercadoPagoToken"
-                      v-if="item.username !== $store.getters['user/username']"
                     >
                       <template v-slot:default="{ active }">
 
@@ -130,9 +129,9 @@
             </v-list-item-group>
           </v-card>
           <v-btn
-            color="primary"
             @click="pay"
             :disabled="items.length==0"
+            color="primary"
           >
             Continuar
           </v-btn>
@@ -154,7 +153,7 @@
               </v-col>
             </v-row>
           </v-card>
-          <v-btn text @click="closeStepper">
+          <v-btn color="primary" @click="closeStepper">
             Finalizar
           </v-btn>
         </v-stepper-content>

@@ -70,7 +70,7 @@ export default {
       throw new Error("Error changing mercadoPagoToken");
     }
 
-    context.commit("SET_MERCADO_PAGO_TOKEN", payload.mercadoPagoToken)
+    context.commit("SET_MERCADO_PAGO_TOKEN", payload.token)
   }
 
 }

@@ -27,7 +27,11 @@ export default {
 
   setListMembers(state, payload) {
     const aux = [];
-    aux.push(...payload.members)
+    for (const member of payload.members) {
+      if (member.username !== payload.username) {
+        aux.push(member)
+      }
+    }
     state.listMembers = aux;
   },
 

@@ -82,7 +82,7 @@
 
       <v-card class="px-5 " height="10%" elevation="10" outlined>
         <v-row align="center" justify="center" style="height: 100%">
-          <v-col cols="6" sm="3" md="2" class="d-flex justify-sm-start justify-center align-center">
+          <v-col cols="6" sm="3" class="pb-0 pb-sm-4 d-flex justify-sm-start justify-center align-center">
             <transition name="fade">
               <v-btn color="primary" :small="this.$vuetify.breakpoint.xsOnly" outlined @click="cancelModify"
                      v-if="edit">
@@ -90,14 +90,14 @@
               </v-btn>
             </transition>
           </v-col>
-          <v-col cols="6" sm="3" md="2" class="d-flex justify-sm-start justify-center align-center">
+          <v-col cols="6" sm="3" class="pb-0 pb-sm-4 d-flex justify-sm-start justify-center align-center">
             <transition name="fade">
               <v-btn color="primary" :small="this.$vuetify.breakpoint.xsOnly" @click="modifyList" v-if="edit">
                 MODIFICAR
               </v-btn>
             </transition>
           </v-col>
-          <v-col cols="12" sm="6" md="8" class="d-flex justify-center justify-sm-end align-center">
+          <v-col cols="12" sm="6" class="pt-0 pt-sm-4 d-flex justify-center justify-sm-end align-center">
             <span>Total: ${{ total.toFixed(2) }}</span>
           </v-col>
         </v-row>
@@ -251,7 +251,7 @@
             await this.addList()
           }
           const listMembers = await this.$store.dispatch('lists/getMembersInfo', {members: Object.keys(listData.members)})
-          this.$store.commit('lists/setListMembers', {members: listMembers})
+          this.$store.commit('lists/setListMembers', {members: listMembers, username: this.$store.getters["user/username"]})
         } catch (e) {
           console.log(e)
         }
