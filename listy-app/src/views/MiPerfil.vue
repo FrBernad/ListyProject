@@ -68,7 +68,7 @@
               clearable
               :error-messages="tokenError"
             ></v-text-field>
-            <p class="text-center ma-0">¿No tienes tu token? <a href="https://www.mercadopago.com.ar/developers/es/guides/resources/faqs/credentials/">Obten tu token
+            <p class="text-center ma-0">¿No tienes tu token? <a target="_blank" href="https://www.mercadopago.com.ar/developers/es/guides/resources/faqs/credentials/">Obten tu token
               aqui</a></p>
           </v-col>
           <v-col cols="12" md="8" class="d-flex justify-space-around align-center">
