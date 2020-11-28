@@ -51,6 +51,7 @@
             </v-btn>
           </v-col>
         </v-row>
+
         <transition name="fade">
           <v-row v-if="edit" class="align-center justify-center">
             <v-col cols="12">
@@ -98,7 +99,9 @@
           </v-col>
         </v-row>
       </v-card>
+
     </v-container>
+
   </transition>
 
 </template>
