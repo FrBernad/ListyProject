@@ -71,8 +71,21 @@
               label="E-mail"
               readonly
             ></v-text-field>
+
           </v-card-text>
         </v-card>
+      </v-col>
+    </v-row>
+
+    <v-row class="justify-center">
+      <v-col cols="11" md="9">
+        <v-text-field background-color="#ffffff" dense
+                      hide-details outlined label="Access Token"
+                      placeholder="Pegar access token"
+                      width="100%"></v-text-field>
+        <v-btn @click="" color="primary">
+          Vincular Mercadopago
+        </v-btn>
       </v-col>
     </v-row>
   </v-container>

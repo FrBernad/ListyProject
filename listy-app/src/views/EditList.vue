@@ -38,7 +38,6 @@
         </v-container>
       </v-dialog>
 
-
       <!--Share dialog-->
       <v-dialog v-model="shareDialog" width="500px">
         <v-container class="backgroundDialog elevation-8">
