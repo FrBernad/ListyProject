@@ -1,4 +1,5 @@
 class PaymentController {
+
     constructor(paymentService) {
         this.paymentService = paymentService;
     }
@@ -17,7 +18,7 @@ class PaymentController {
             //console.log(checkout.init_point);
             //return checkout.init_point;
             return res.status(200).json({
-                link:checkout.init_point,
+                link: checkout.init_point,
             });
 
             //return res.redirect(checkout.init_point);

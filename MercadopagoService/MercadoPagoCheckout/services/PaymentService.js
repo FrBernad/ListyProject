@@ -74,7 +74,7 @@ class PaymentService {
                         //id: "amex"
                     }
                 ],
-                excluded_payment_types: [{ id: "atm" }],
+                excluded_payment_types: [{id: "atm"}],
 // aca podemos excluir TIPOS de pagos, es un array de objetos
                 installments: 6,
 // limite superior de cantidad de cuotas permitidas
