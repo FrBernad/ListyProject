@@ -25,7 +25,7 @@
       <!--Payment dialog-->
       <PaymentDialog @closeDialog="paymentDialog=false" :paymentDialog="paymentDialog"></PaymentDialog>
 
-      <v-card class="pa-5" elevation="10" outlined>
+      <v-card class="pa-5" height="90%" elevation="10" outlined>
 
         <!--LIST HEADER-->
         <v-row class="align-center justify-center">
@@ -80,7 +80,7 @@
 
       </v-card>
 
-      <v-card class="px-5 " elevation="10" outlined>
+      <v-card class="px-5 " height="10%" elevation="10" outlined>
         <v-row align="center" justify="center" style="height: 100%">
           <v-col cols="6" sm="3" md="2" class="d-flex justify-sm-start justify-center align-center">
             <transition name="fade">
