@@ -250,6 +250,16 @@
         this.ready = true
       },
 
+      async replaceSeedList() {
+        try {
+          const listData = await this.$store.dispatch('lists/getList', {listId: this.listId})
+          this.$store.commit('lists/setList', listData)
+          console.log(listData);
+        } catch (e) {
+          console.log(e)
+        }
+      },
+
       async deleteList() {
         try {
           this.$swal.fire({
@@ -320,7 +330,7 @@
             },
             allowOutsideClick: () => !this.$swal.isLoading()
           }
-        ).then((result) => {
+        ).then(async (result) => {
             if (result.isConfirmed) {
               if (!result.value) {
                 this.$swal.fire({
@@ -328,6 +338,7 @@
                   title: 'Error al modificar la rutina, intente denuevo.',
                 })
               } else {
+                await this.replaceSeedList();
                 this.$swal.fire({
                   icon: 'success',
                   title: 'Lista modificada.',
@@ -336,6 +347,7 @@
             }
           }
         )
+
         this.edit = false
       },
 
