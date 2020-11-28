@@ -2,6 +2,43 @@
   <transition name="fade">
     <v-container v-if="ready" class="backgroundColor" fluid style="height:100%">
 
+      <!--Pay dialog-->
+      <v-dialog v-model="payDialog" width="700px">
+        <v-container class="backgroundDialog elevation-8">
+          <v-list>
+
+            <v-list-item>
+              <v-col cols="6" class="d-flex ma-0 pa-0 justify-start">
+                Responsable:
+              </v-col>
+              <v-col cols="5" class="d-flex ma-0 pa-0 justify-end">
+                Total a pagar:
+              </v-col>
+            </v-list-item>
+
+            <v-list-item v-for="persona in personas" :key="persona">
+              <v-col>
+                {{ persona.nombre }}
+              </v-col>
+              <v-col cols="2">
+                $
+                {{ persona.aporte }}
+              </v-col>
+              <v-btn icon color="blue" @click="pay(persona.aporte, persona.nombre)">
+                <v-icon>mdi-qrcode</v-icon>
+              </v-btn>
+            </v-list-item>
+
+            <v-divider></v-divider>
+            <v-list-item>
+              <v-spacer></v-spacer>
+              <v-btn color="#212529" outlined @click="payDialog = false">Cerrar</v-btn>
+            </v-list-item>
+          </v-list>
+        </v-container>
+      </v-dialog>
+
+
       <!--Share dialog-->
       <v-dialog v-model="shareDialog" width="500px">
         <v-container class="backgroundDialog elevation-8">
@@ -43,7 +80,7 @@
               <v-icon v-if="fav">mdi-heart</v-icon>
               <v-icon v-else>mdi-heart-outline</v-icon>
             </v-btn>
-            <v-btn icon color="#000000">
+            <v-btn icon color="#000000" @click="payDialog = true">
               <v-icon>mdi-credit-card-outline</v-icon>
             </v-btn>
             <v-btn icon color="#000000" @click="deleteList">
@@ -109,6 +146,7 @@
   import ElementDetails from '../components/ElementDetails'
   import draggable from 'vuedraggable'
   import {maxLength, minLength, required} from 'vuelidate/lib/validators'
+  import axios from 'axios'
 
   export default {
     name: 'EditList',
@@ -129,7 +167,10 @@
         addElement: false,
         fav: false,
         shareDialog: false,
-        ready: false
+        ready: false,
+
+        payDialog: false,
+        personas: [ {nombre:"juan", aporte:100} , {nombre:"pedro", aporte:250} ],
       }
     },
 
@@ -172,6 +213,22 @@
     },
 
     methods: {
+
+      pay(payerAmount, payerName) {
+        console.log("paying");
+
+        axios.post("http://localhost:3000/payment/new",{
+          name: "Pago Listy " + payerName,
+          price: payerAmount,
+          unit: 1,
+          img: "https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png",
+          token: "APP_USR-5960318184922397-102520-866ba27b14d46384d0caa72844037f54-226725459", //currentUser.getAccesstoken
+        }).then((response) => {
+          console.log("payed");
+          console.log(response);
+          console.log("payedd");
+        })
+      },
 
       shareList() {
         this.shareDialog = true
