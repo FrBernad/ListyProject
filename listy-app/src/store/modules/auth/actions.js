@@ -21,7 +21,8 @@ export default {
       userInfo: {
         username: payload.username,
         avatarUrl: "",
-        lists: []
+        lists: [],
+        mercadoPagoToken: ""
       }
     };
 
@@ -124,9 +125,10 @@ export default {
       throw new Error("Error getting user data in login");
     }
 
-    let userData = {username: "", avatarUrl: ""};
+    let userData = {username: "", avatarUrl: "", mercadoPagoToken: ""};
     userData.username = responseData.username;
     userData.avatarUrl = responseData.avatarUrl;
+    userData.mercadoPagoToken = responseData.mercadoPagoToken;
     context.commit("user/setUserData", userData);
   },
 
@@ -192,9 +194,10 @@ export default {
         throw new Error("Error getting user data in autologin");
       }
 
-      let userData = {username: "", avatarUrl: ""};
+      let userData = {username: "", avatarUrl: "", mercadoPagoToken: ""};
       userData.username = responseData.username;
       userData.avatarUrl = responseData.avatarUrl;
+      userData.mercadoPagoToken = responseData.mercadoPagoToken;
       context.commit("user/setUserData", userData);
 
       let userMeta = await context.dispatch("getUserInfo", {idToken: context.rootGetters["token"]});

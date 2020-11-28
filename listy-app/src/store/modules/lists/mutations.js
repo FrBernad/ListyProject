@@ -25,6 +25,12 @@ export default {
     state.listName = payload.name;
   },
 
+  setListMembers(state, payload) {
+    const aux = [];
+    aux.push(...payload.members)
+    state.listMembers = aux;
+  },
+
   deleteFromList(state, payload) {
     state.listItems.splice(payload.index, 1);
   },

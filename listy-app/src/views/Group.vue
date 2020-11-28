@@ -167,7 +167,7 @@
             return;
           }
           this.$store.commit("lists/setGroup", groupData);
-          let aux = await this.$store.dispatch("lists/getGroupMembersInfo", {members: this.members});
+          let aux = await this.$store.dispatch("lists/getMembersInfo", {members: this.members});
           this.$store.commit("lists/setGroupMembersData", {members: aux});
         } catch (e) {
           console.log(e)

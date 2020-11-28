@@ -423,6 +423,7 @@ export default {
     }
   },
 
+
   async newGroup(context, payload) {
     //add group to global group
     let url = `https://listy-itba-app.firebaseio.com/groups.json?auth=` + context.rootGetters['token']
@@ -517,7 +518,7 @@ export default {
 
     if (!response.ok) {
       console.log(groupsIds)
-      throw new Error('Error retrieving groups ids ')
+      throw new Error('Error retrieving groups ids')
     }
 
     return await context.dispatch('getGroupsById', groupsIds)
@@ -755,19 +756,39 @@ export default {
     }
   },
 
-  async getGroupMembersInfo(context, payload) {
-    let groupUsersInfo = []
+  async getMembersInfo(context, payload) {
+    let membersInfo = []
     for (const user of payload.members) {
-      let url = `https://listy-itba-app.firebaseio.com/users/` + user.memberId + `.json?auth=` +
+      let url = `https://listy-itba-app.firebaseio.com/users/` + `${user.memberId ? user.memberId : user}` + `.json?auth=` +
         context.rootGetters['token']
       let response = await fetch(url)
       let data = await response.json()
       if (!response.ok) {
         throw new Error('Error getting user names')
       }
-      groupUsersInfo.push({username: data.username, avatarUrl: data.avatarUrl});
+      membersInfo.push({username: data.username, avatarUrl: data.avatarUrl, mercadoPagoToken: data.mercadoPagoToken});
     }
-    return groupUsersInfo;
+    return membersInfo;
   },
+
+  async pay(context, payload) {
+    let url = "http://localhost:3000/payment/new";
+
+    const response = await fetch(
+      url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({memberId: payload.memberId}),
+      })
+
+    const responseData = await response.json()
+
+    if (!response.ok) {
+      console.log(responseData)
+      throw new Error('Error paying items')
+    }
+  }
 
 }

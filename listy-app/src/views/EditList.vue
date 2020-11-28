@@ -22,7 +22,10 @@
         </v-container>
       </v-dialog>
 
-      <v-card class="pa-5" elevation="10" outlined>
+      <!--Payment dialog-->
+      <PaymentDialog @closeDialog="paymentDialog=false" :paymentDialog="paymentDialog"></PaymentDialog>
+
+      <v-card class="pa-5" height="90%" elevation="10" outlined>
 
         <!--LIST HEADER-->
         <v-row class="align-center justify-center">
@@ -43,7 +46,7 @@
               <v-icon v-if="fav">mdi-heart</v-icon>
               <v-icon v-else>mdi-heart-outline</v-icon>
             </v-btn>
-            <v-btn icon color="#000000">
+            <v-btn icon color="#000000" @click="paymentDialog = true">
               <v-icon>mdi-credit-card-outline</v-icon>
             </v-btn>
             <v-btn icon color="#000000" @click="deleteList">
@@ -94,7 +97,7 @@
               </v-btn>
             </transition>
           </v-col>
-          <v-col cols="12" md="8" class="d-flex justify-center justify-sm-end align-center">
+          <v-col cols="12" sm="6" md="8" class="d-flex justify-center justify-sm-end align-center">
             <span>Total: ${{ total.toFixed(2) }}</span>
           </v-col>
         </v-row>
@@ -110,6 +113,7 @@
   import ListItem from '../components/ListItem'
   import {sync} from 'vuex-pathify'
   import ElementDetails from '../components/ElementDetails'
+  import PaymentDialog from '../components/PaymentDialog'
   import draggable from 'vuedraggable'
   import {maxLength, minLength, required} from 'vuelidate/lib/validators'
 
@@ -121,7 +125,8 @@
     components: {
       ListItem,
       ElementDetails,
-      draggable
+      draggable,
+      PaymentDialog
     },
 
     data() {
@@ -132,6 +137,7 @@
         addElement: false,
         fav: false,
         shareDialog: false,
+        paymentDialog: false,
         ready: false
       }
     },
@@ -244,6 +250,8 @@
             console.log('adding')
             await this.addList()
           }
+          const listMembers = await this.$store.dispatch('lists/getMembersInfo', {members: Object.keys(listData.members)})
+          this.$store.commit('lists/setListMembers', {members: listMembers})
         } catch (e) {
           console.log(e)
         }
