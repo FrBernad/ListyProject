@@ -128,6 +128,9 @@
               </v-list>
             </v-list-item-group>
           </v-card>
+          <v-btn text @click="closeStepper" class="ml-2">
+            Cancelar
+          </v-btn>
           <v-btn
             @click="pay"
             :disabled="items.length==0"
@@ -136,9 +139,6 @@
             Continuar
           </v-btn>
 
-          <v-btn text @click="closeStepper" class="ml-2">
-            Cancelar
-          </v-btn>
         </v-stepper-content>
 
         <v-stepper-content step="3">
