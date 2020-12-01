@@ -23,7 +23,7 @@
       </v-col>
       <v-col cols="12" class="justify-start align-center">
         <p>Es muy sencillo, ve a la sección de Mis Listas en la barra que se encuentra a la
-          izquiera, presiona crear lista y comienza a agregar items y participantes.</p>
+          izquierda, presiona crear lista y comienza a agregar items y participantes.</p>
       </v-col>
     </v-row>
 
@@ -39,7 +39,7 @@
 
     <v-row class="align-center justify-center">
       <v-col cols="12" class="align-center justify-start">
-        <h2 class="text-start">¿Las listas tienen un limite de participantes?</h2>
+        <h2 class="text-start">¿Las listas tienen un límite de participantes?</h2>
       </v-col>
       <v-col cols="12" class="justify-start align-center">
         <p>No lo tiene, agrega a todas las personas con las que quieras compartir tus compras.</p>
@@ -48,7 +48,7 @@
 
     <v-row class="align-center justify-center">
       <v-col cols="12" class="align-center justify-start">
-        <h2 class="text-start">¿Las listas tienen una cantidad maxima de items?</h2>
+        <h2 class="text-start">¿Las listas tienen una cantidad máxima de items?</h2>
       </v-col>
       <v-col cols="12" class="justify-start align-center">
         <p>Tampoco lo tiene, agrega todos los items que necesites.</p>
@@ -57,10 +57,10 @@
 
     <v-row class="align-center justify-center">
       <v-col cols="12" class="align-center justify-start">
-        <h2 class="text-start">¿Puedo pagar a traves de Listy?</h2>
+        <h2 class="text-start">¿Puedo pagar a través de Listy?</h2>
       </v-col>
       <v-col cols="12" class="justify-start align-center">
-        <p>Si, podés pagar lo que le debes a tus compañeros a través de Mercado Pago.</p>
+        <p>Sí, podés pagar lo que le debes a tus compañeros a través de Mercado Pago.</p>
       </v-col>
     </v-row>
 
