@@ -1,12 +1,12 @@
 context('Testing Listy',() => {
-  let url = 'http://localhost:8080/home'
+  let url = 'https://listy-itba-app.web.app/'
 
   before(()=> {
     cy.visit(url)
   })
 
   it('Login',() =>{
-    cy.get('#loginEmail').type('agus@yopmail.com').should('have.value','agus@yopmail.com')
+    cy.get('#loginEmail').type('testing@yopmail.com').should('have.value','testing@yopmail.com')
     cy.get('#loginPassword').type('1234567890').should('have.value','1234567890')
     cy.get('.v-form > .v-btn').click()
     cy.wait(2000)

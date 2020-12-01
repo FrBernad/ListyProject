@@ -80,7 +80,7 @@
 
       </v-card>
 
-      <v-card class="px-5 " height="10%" elevation="10" outlined>
+      <v-card class="px-5  " height="10%" elevation="10" outlined>
         <v-row align="center" justify="center" style="height: 100%">
           <v-col cols="6" sm="3" class="pb-0 pb-sm-4 d-flex justify-sm-start justify-center align-center">
             <transition name="fade">
@@ -381,6 +381,6 @@
   }
 
   .backgroundColor {
-    background-color: #FFFFFF;
+    background-color: #f0f2f5;
   }
 </style>
