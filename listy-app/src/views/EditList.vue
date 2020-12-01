@@ -7,7 +7,7 @@
         <v-container class="backgroundDialog elevation-8">
           <v-row class="align-center justify-center">
             <v-col cols="12">
-              <h1 class="text-center text-h6 text-sm-h4">Copia el link y compártelo con tus amigos</h1>
+              <h1 class="text-center text-h6 text-sm-h4">Copia el link y compártelo con quien quieras</h1>
             </v-col>
           </v-row>
           <v-row class="align-center justify-center">
