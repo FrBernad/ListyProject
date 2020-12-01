@@ -48,6 +48,15 @@
 
     <v-row class="align-center justify-center">
       <v-col cols="12" class="align-center justify-start">
+        <h2 class="text-start">¿Puedo crear un grupo?</h2>
+      </v-col>
+      <v-col cols="12" class="justify-start align-center">
+        <p>Sí, es tan sencillo como ir a la sección "Grupos", crear uno y compartir el link con las personas que quieras crear listas en conjunto.</p>
+      </v-col>
+    </v-row>
+
+    <v-row class="align-center justify-center">
+      <v-col cols="12" class="align-center justify-start">
         <h2 class="text-start">¿Las listas tienen una cantidad máxima de items?</h2>
       </v-col>
       <v-col cols="12" class="justify-start align-center">
